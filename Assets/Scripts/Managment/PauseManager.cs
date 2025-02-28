@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
@@ -12,7 +13,17 @@ public class PauseManager : MonoBehaviour
     // Volume Slider
     public Slider volumeSlider;
     public TextMeshProUGUI volumeNumText;
-    public void Pause() 
+
+    private InputAction pauseAction;
+
+    void Awake()
+    {
+        pauseAction = new InputAction(binding: "<Keyboard>/tab");
+        pauseAction.Enable();
+
+          pauseAction.performed += Pause;
+    }
+    private void Pause(InputAction.CallbackContext ctx) 
     {
         pauseCanvas.SetActive(true); // Show menu
          Cursor.lockState = CursorLockMode.None; // Free the mouse!!
