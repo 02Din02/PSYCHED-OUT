@@ -35,6 +35,7 @@ public class BossController : MonoBehaviour
         // Get the Slider script of the boss health bar
 
         healthSlider.maxValue = bossHealth;
+        healthSlider.value = bossHealth;
         // set the health on the boss health bar
     }
     void attack()
