@@ -32,7 +32,7 @@ public class PlayerAnimator : MonoBehaviour
 
         //Handle crouching
         _anim.SetBool("Crouching", _player.Crouching);
-        Debug.Log(_player.Crouching);
+        // Debug.Log(_player.Crouching);
 
 
     }
