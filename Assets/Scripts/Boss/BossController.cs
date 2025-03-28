@@ -2,11 +2,12 @@ using UnityEngine;
 using System.Collections.Generic;
 using System.Collections;
 using UnityEngine.UI;
+using UnityEditor.Experimental.GraphView;
+using UnityEditor.SearchService;
 
 public class BossController : MonoBehaviour
 {
     //gameobjects
-    public GameObject boss;
     public PlayerMovement player;
 
     // Values
@@ -27,6 +28,8 @@ public class BossController : MonoBehaviour
     public bool attacking;
     public float dist;
 
+    int facing = -1; //1 for right, -1 for left
+
     void Start()
     {
         player = FindObjectOfType<PlayerMovement>();
@@ -37,6 +40,7 @@ public class BossController : MonoBehaviour
         healthSlider.maxValue = bossHealth;
         healthSlider.value = bossHealth;
         // set the health on the boss health bar
+        laser_orb();
     }
     void attack()
     {
@@ -77,8 +81,21 @@ public class BossController : MonoBehaviour
         attack();
     }
 
-    void lattack1()
+    public GameObject laser_orb_prefab;
+    float h_dist = 7F;
+    float v_dist = 3F;
+    void laser_orb()
     {
+        Vector3 pos_1 = new Vector3(h_dist * facing, v_dist, 0) + transform.position;
+        Vector3 pos_2 = new Vector3(h_dist * facing, 0, 0) + transform.position;
+        Vector3 pos_3 = new Vector3(h_dist * facing, -v_dist, 0) + transform.position;
+
+        Debug.Log("Orbs created");
+
+        GameObject orb1 = Instantiate(laser_orb_prefab, pos_1, Quaternion.identity);
+        GameObject orb2 = Instantiate(laser_orb_prefab, pos_2, Quaternion.identity);
+        GameObject orb3 = Instantiate(laser_orb_prefab, pos_3, Quaternion.identity);
+
         return;
     }
 
@@ -105,7 +122,15 @@ public class BossController : MonoBehaviour
 
     void Update()
     {
-        dist = player.transform.position.x - boss.transform.position.x;
+        dist = player.transform.position.x - transform.position.x;
+        if (dist > 0)
+        {
+            facing = -1;
+        }
+        else
+        {
+            facing = 1;
+        }
 
         if (!attacking)
         {
