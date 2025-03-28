@@ -2,6 +2,8 @@ using UnityEngine;
 using System.Collections.Generic;
 using System.Collections;
 using UnityEngine.UI;
+using DG.Tweening;
+
 
 public class BossController : MonoBehaviour
 {
@@ -37,6 +39,7 @@ public class BossController : MonoBehaviour
         healthSlider.maxValue = bossHealth;
         healthSlider.value = bossHealth;
         // set the health on the boss health bar
+        TwoHitCombo();
     }
     void attack()
     {
@@ -87,8 +90,23 @@ public class BossController : MonoBehaviour
         return;
     }
 
-    void cattack1()
+    void TwoHitCombo()
     {
+        float first_hit_dmg = 20f;
+        float second_hit_dmg = 30f;
+
+        Vector3 hitbox_pos = boss.transform.position + new Vector3(2,0,0);
+        Vector3 hitbox_size = new Vector3(2,2,2);
+
+
+
+        Physics.OverlapBox(new Vector3(0,0,0), new Vector3(1,1,1));
+        Debug.Log(hitbox_pos);
+        Debug.Log(hitbox_size);
+
+        Gizmos.DrawWireCube(hitbox_pos, hitbox_size);
+        Debug.Log("GOT HERE");
+
         return;
     }
 
@@ -111,5 +129,12 @@ public class BossController : MonoBehaviour
         {
             attack();
         }
+    }
+
+    void OnDrawGizmos() {
+        // Vector3 hitbox_size = new Vector3(5,4,0);
+        // Vector3 hitbox_pos = boss.transform.position + new Vector3(-2, boss.transform.h,0);
+        // Gizmos.DrawWireCube(hitbox_pos, hitbox_size);
+        return;
     }
 }
