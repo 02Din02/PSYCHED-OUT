@@ -8,7 +8,8 @@ using UnityEditor.SearchService;
 public class BossController : MonoBehaviour
 {
     //gameobjects
-    public PlayerMovement player;
+    private PlayerMovement player;
+    private BoxCollider2D boxCollider;
 
     // Values
     public float bossHealth;
@@ -33,6 +34,7 @@ public class BossController : MonoBehaviour
     void Start()
     {
         player = FindObjectOfType<PlayerMovement>();
+        boxCollider = GetComponent<BoxCollider2D>();
         // Find the player
         healthSlider.GetComponent<Slider>();
         // Get the Slider script of the boss health bar
@@ -40,7 +42,6 @@ public class BossController : MonoBehaviour
         healthSlider.maxValue = bossHealth;
         healthSlider.value = bossHealth;
         // set the health on the boss health bar
-        laser_orb();
     }
     void attack()
     {
@@ -81,27 +82,35 @@ public class BossController : MonoBehaviour
         attack();
     }
 
-    public GameObject laser_orb_prefab;
-    float h_dist = 7F;
-    float v_dist = 3F;
-    void laser_orb()
+    IEnumerator laser_orb()
     {
-        Vector3 pos_1 = new Vector3(h_dist * facing, v_dist, 0) + transform.position;
-        Vector3 pos_2 = new Vector3(h_dist * facing, 0, 0) + transform.position;
-        Vector3 pos_3 = new Vector3(h_dist * facing, -v_dist, 0) + transform.position;
+        float orb_dist = 2F; //distance from boss
+        float orb_spread = 2F; //distance between each orb
+        float orb_height = 1F; //the height of the middle orb
+        float laser_spawn_delay = 0.3F; //delay between each orb spawn
+
+        GameObject laser_orb_prefab = Resources.Load("Laser_Orb") as GameObject;
+        
+        Vector3 pos_1 = new Vector3(orb_dist * facing, orb_height + orb_spread, 0) + transform.position;
+        Vector3 pos_2 = new Vector3(orb_dist * facing, orb_height, 0) + transform.position;
+        Vector3 pos_3 = new Vector3(orb_dist * facing, orb_height - orb_spread, 0) + transform.position;
 
         Debug.Log("Orbs created");
 
-        GameObject orb1 = Instantiate(laser_orb_prefab, pos_1, Quaternion.identity);
-        GameObject orb2 = Instantiate(laser_orb_prefab, pos_2, Quaternion.identity);
-        GameObject orb3 = Instantiate(laser_orb_prefab, pos_3, Quaternion.identity);
+        yield return new WaitForSeconds(laser_spawn_delay);
+        Instantiate(laser_orb_prefab, pos_1, Quaternion.identity);
 
-        return;
+        yield return new WaitForSeconds(laser_spawn_delay);
+        Instantiate(laser_orb_prefab, pos_2, Quaternion.identity);
+
+        yield return new WaitForSeconds(laser_spawn_delay);
+        Instantiate(laser_orb_prefab, pos_3, Quaternion.identity);
     }
 
-    void mattack1()
+    void optic_pillar()
     {
-        return;
+        GameObject optic_pillar_prefab = Resources.Load("Optic_Pillar") as GameObject;
+        Instantiate(optic_pillar_prefab, transform.position, Quaternion.identity);
     }
 
     void cattack1()
