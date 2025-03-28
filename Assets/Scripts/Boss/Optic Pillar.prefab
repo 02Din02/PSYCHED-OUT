@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 8498063686218725997}
   - component: {fileID: 5216013196041107938}
   m_Layer: 0
-  m_Name: Hitbox
+  m_Name: Optic Pillar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

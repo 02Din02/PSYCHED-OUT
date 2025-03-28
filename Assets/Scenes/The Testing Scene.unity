@@ -829,7 +829,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6783ab5d2a14dfd4b9d406ff884a6144, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  boss: {fileID: 440852378}
   player: {fileID: 2076680748}
   bossHealth: 1500
   healthSlider: {fileID: 1225976418}
@@ -840,6 +839,9 @@ MonoBehaviour:
   cset: []
   attacking: 0
   dist: 0
+  laser_orb_prefab: {fileID: 3441869095395245230, guid: 49ca2c8c8750d55409f8f366ba772fea, type: 3}
+  h_dist: 5
+  v_dist: 1
 --- !u!212 &440852382
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -901,7 +903,7 @@ Transform:
   m_GameObject: {fileID: 440852378}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 4.13, y: 1.86, z: 0}
+  m_LocalPosition: {x: 4.13, y: -1.485, z: 0}
   m_LocalScale: {x: 3, y: 3, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
