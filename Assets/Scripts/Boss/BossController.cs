@@ -4,6 +4,8 @@ using System.Collections;
 using UnityEngine.UI;
 using UnityEditor.Experimental.GraphView;
 using UnityEditor.SearchService;
+using System.Runtime.InteropServices.WindowsRuntime;
+using UnityEditor.Rendering.Universal;
 
 public class BossController : MonoBehaviour
 {
@@ -30,6 +32,8 @@ public class BossController : MonoBehaviour
 
     int facing = -1; //1 for right, -1 for left
 
+    public int fuckYou;
+
     void Start()
     {
         player = FindObjectOfType<PlayerMovement>();
@@ -40,8 +44,11 @@ public class BossController : MonoBehaviour
         healthSlider.maxValue = bossHealth;
         healthSlider.value = bossHealth;
         // set the health on the boss health bar
-        laser_orb();
-        // TwoHitCombo();
+        // laser_orb();
+        StartCoroutine(TwoHitCombo());
+
+        fuckYou = LayerMask.NameToLayer("Player");
+
     }
     void attack()
     {
@@ -105,24 +112,52 @@ public class BossController : MonoBehaviour
         return;
     }
 
-    void TwoHitCombo()
+
+    // TESTING For debugging
+    Vector2 hitbox_pos = new Vector2(0,0);
+    Vector2 hitbox_size = new Vector2(0,0);
+    IEnumerator TwoHitCombo()
     {
+        // Damage values
         float first_hit_dmg = 20f;
         float second_hit_dmg = 30f;
 
-        Vector3 hitbox_pos = transform.position + new Vector3(2,0,0);
-        Vector3 hitbox_size = new Vector3(2,2,2);
+        // Helper vars
+        int current_face = facing;
+        Vector3 boss_size = GetComponent<BoxCollider2D>().bounds.size;
+        Vector2 corner = new Vector2(transform.position.x + (current_face * boss_size.x/2), transform.position.y - boss_size.y/2);
 
+        // Set size of first attack here. Don't change hitbox_pos
+        hitbox_size = new Vector2(6,3); 
+        hitbox_pos = corner + new Vector2(current_face * hitbox_size.x/2, hitbox_size.y/2);
 
+        // First attack delay
+        yield return new WaitForSeconds(2F); 
 
-        Physics.OverlapBox(new Vector3(0,0,0), new Vector3(1,1,1));
-        Debug.Log(hitbox_pos);
-        Debug.Log(hitbox_size);
+        Collider2D first_hit = Physics2D.OverlapBox(hitbox_pos, hitbox_size, 0);
+        Debug.Log(first_hit.gameObject.layer);
 
-        Gizmos.DrawWireCube(hitbox_pos, hitbox_size);
-        Debug.Log("GOT HERE");
+        if (first_hit){ // Hit Player! Add do damage later
+            Debug.Log(first_hit);
+            Debug.Log($"HIT for {first_hit_dmg}");
+        }
 
-        return;
+        // Set size of first attack here. Don't change hitbox_pos
+        hitbox_size = new Vector2(6,5); 
+        hitbox_pos = corner + new Vector2(current_face * hitbox_size.x/2, hitbox_size.y/2);
+
+        // Second attack delay
+        yield return new WaitForSeconds(2F); 
+
+        Collider2D second_hit = Physics2D.OverlapBox(hitbox_pos, hitbox_size, 0);
+        Debug.Log(second_hit.gameObject.layer);
+
+        // Hit Player! Add do damage later
+        if (second_hit){ 
+            Debug.Log(second_hit);
+            Debug.Log($"HIT for {second_hit_dmg}");
+        }
+        
     }
 
     void cattack2()
@@ -154,10 +189,10 @@ public class BossController : MonoBehaviour
         }
     }
 
-    // void OnDrawGizmos() {
-    //     // Vector3 hitbox_size = new Vector3(5,4,0);
-    //     // Vector3 hitbox_pos = boss.transform.position + new Vector3(-2, boss.transform.h,0);
-    //     // Gizmos.DrawWireCube(hitbox_pos, hitbox_size);
-    //     return;
-    // }
+    void OnDrawGizmos() {
+        // Vector3 hitbox_size = new Vector3(5,4,0);
+        // Vector3 hitbox_pos = transform.position; //+ new Vector3(-2, boss.transform.h,0);
+        Gizmos.DrawWireCube(hitbox_pos, hitbox_size);
+        return;
+    }
 }
