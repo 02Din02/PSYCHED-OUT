@@ -12,7 +12,7 @@ public class BossController : MonoBehaviour
 
     // Values
     public float bossHealth;
-
+    
     // UI
     public Slider healthSlider;
 
@@ -41,7 +41,7 @@ public class BossController : MonoBehaviour
         healthSlider.value = bossHealth;
         // set the health on the boss health bar
         laser_orb();
-        TwoHitCombo();
+        // TwoHitCombo();
     }
     void attack()
     {
@@ -110,7 +110,7 @@ public class BossController : MonoBehaviour
         float first_hit_dmg = 20f;
         float second_hit_dmg = 30f;
 
-        Vector3 hitbox_pos = boss.transform.position + new Vector3(2,0,0);
+        Vector3 hitbox_pos = transform.position + new Vector3(2,0,0);
         Vector3 hitbox_size = new Vector3(2,2,2);
 
 
@@ -154,10 +154,10 @@ public class BossController : MonoBehaviour
         }
     }
 
-    void OnDrawGizmos() {
-        // Vector3 hitbox_size = new Vector3(5,4,0);
-        // Vector3 hitbox_pos = boss.transform.position + new Vector3(-2, boss.transform.h,0);
-        // Gizmos.DrawWireCube(hitbox_pos, hitbox_size);
-        return;
-    }
+    // void OnDrawGizmos() {
+    //     // Vector3 hitbox_size = new Vector3(5,4,0);
+    //     // Vector3 hitbox_pos = boss.transform.position + new Vector3(-2, boss.transform.h,0);
+    //     // Gizmos.DrawWireCube(hitbox_pos, hitbox_size);
+    //     return;
+    // }
 }

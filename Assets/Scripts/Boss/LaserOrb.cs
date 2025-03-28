@@ -6,7 +6,7 @@ public class LaserOrb : MonoBehaviour
 {
     float attack_delay = 1F;
     float velocity = 5F;
-    public BoxCollider2D boxCollider;
+    BoxCollider2D boxCollider =  ;
     Vector3 direction;
     public bool debug;
 

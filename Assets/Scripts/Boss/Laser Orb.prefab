@@ -42,12 +42,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 3441869095395245230}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 797b0b70b2258c741992d9444004adda, type: 3}
+  m_Script: {fileID: 11500000, guid: 9117e9cf888a5594584725179603e441, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attack_delay: 10
-  velocity: 0.01
-  player: {fileID: 9127127945342142499, guid: e0745c3bdc321814494bc154d7c99762, type: 3}
   boxCollider: {fileID: 7368780589478281030}
   debug: 0
 --- !u!61 &7368780589478281030
