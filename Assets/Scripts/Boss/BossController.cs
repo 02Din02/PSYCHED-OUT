@@ -133,8 +133,10 @@ public class BossController : MonoBehaviour
 
         // First attack delay
         yield return new WaitForSeconds(2F); 
+        int playerLayer = LayerMask.NameToLayer("Player");
 
-        Collider2D first_hit = Physics2D.OverlapBox(hitbox_pos, hitbox_size, 0);
+        LayerMask hitboxLayer = 1 << playerLayer;
+        Collider2D first_hit = Physics2D.OverlapBox(hitbox_pos, hitbox_size, 0, hitboxLayer);
         Debug.Log(first_hit.gameObject.layer);
 
         if (first_hit){ // Hit Player! Add do damage later
@@ -149,7 +151,7 @@ public class BossController : MonoBehaviour
         // Second attack delay
         yield return new WaitForSeconds(2F); 
 
-        Collider2D second_hit = Physics2D.OverlapBox(hitbox_pos, hitbox_size, 0);
+        Collider2D second_hit = Physics2D.OverlapBox(hitbox_pos, hitbox_size, 0, hitboxLayer);
         Debug.Log(second_hit.gameObject.layer);
 
         // Hit Player! Add do damage later
