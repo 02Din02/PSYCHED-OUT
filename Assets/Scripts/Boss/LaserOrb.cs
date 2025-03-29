@@ -4,17 +4,17 @@ using UnityEngine;
 
 public class LaserOrb : MonoBehaviour
 {
-    float attack_delay = 1F;
+    float attack_delay = 1.5F;
     float velocity = 5F;
-    public BoxCollider2D boxCollider;
-    Vector3 direction;
-    public bool debug;
-
+    private BoxCollider2D boxCollider;
     private PlayerMovement player;
+    private Vector3 direction;
+    public bool debug;
 
     void Awake()
     {
         player = FindObjectOfType<PlayerMovement>();
+        boxCollider = GetComponent<BoxCollider2D>();
     }
 
     void Start()
@@ -31,7 +31,7 @@ public class LaserOrb : MonoBehaviour
         }
     }
 
-    public IEnumerator Attack()
+    IEnumerator Attack()
     {
         yield return new WaitForSeconds(attack_delay);
 

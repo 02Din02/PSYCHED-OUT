@@ -747,7 +747,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6783ab5d2a14dfd4b9d406ff884a6144, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 2076680748}
   bossHealth: 1500
   healthSlider: {fileID: 1225976418}
   lrange: 0
@@ -757,8 +756,6 @@ MonoBehaviour:
   cset: []
   attacking: 0
   dist: 0
-  fuckYou: 0
-  laser_orb_prefab: {fileID: 3441869095395245230, guid: 49ca2c8c8750d55409f8f366ba772fea, type: 3}
 --- !u!212 &440852382
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -4355,17 +4352,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 1721435822973976167, guid: e0745c3bdc321814494bc154d7c99762, type: 3}
   m_PrefabInstance: {fileID: 2076680746}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &2076680748 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 3468117382697901065, guid: e0745c3bdc321814494bc154d7c99762, type: 3}
-  m_PrefabInstance: {fileID: 2076680746}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e2d4937aaaf103e48aa6fc0989e152c2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &2079999531
 GameObject:
   m_ObjectHideFlags: 0
@@ -4585,4 +4571,3 @@ SceneRoots:
   - {fileID: 602300410}
   - {fileID: 191330132}
   - {fileID: 1188147083}
-  - {fileID: 1450744084}
