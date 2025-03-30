@@ -4,37 +4,36 @@ using System.Collections;
 using UnityEngine.UI;
 using UnityEditor.Experimental.GraphView;
 using UnityEditor.SearchService;
+using Unity.Collections;
 
 public class BossController : MonoBehaviour
 {
     //gameobjects
     private PlayerMovement player;
     private BoxCollider2D boxCollider;
+    private Rigidbody2D rigidbody2D;
 
-    // Values
+    // Stats
     public float bossHealth;
 
     // UI
     public Slider healthSlider;
 
-    //ranges (____[L]____lrange____[M]____mrange____[C]____)
-    public int lrange;
-    public int mrange;
-
-    //movesets for each range
-    public List<string> lset;
-    public List<string> mset;
-    public List<string> cset;
-
-    public bool attacking;
-    public float dist;
-
+    private int num_moves = 3;
+    private int curr_moves = 0;
+    private float move_time = 1F;
+    private float move_speed = 1F;
+    private int step_back_chance = 5; //out of 10
+    private bool moving = false;
+    private bool attacking = false;
+    private bool finished_attacking = false;
     int facing = -1; //1 for right, -1 for left
 
     void Start()
     {
         player = FindObjectOfType<PlayerMovement>();
         boxCollider = GetComponent<BoxCollider2D>();
+        rigidbody2D = GetComponent<Rigidbody2D>();
         // Find the player
         healthSlider.GetComponent<Slider>();
         // Get the Slider script of the boss health bar
@@ -42,44 +41,55 @@ public class BossController : MonoBehaviour
         healthSlider.maxValue = bossHealth;
         healthSlider.value = bossHealth;
         // set the health on the boss health bar
+
+        curr_moves = num_moves;
     }
-    void attack()
+    void attack(float dist)
     {
+        //ranges (____[L]____lrange____[M]____mrange____[C]____)
+        float lrange = 3F;
+        float mrange = 2F;
+
+        //movesets for each range
+        string[] lset = {"laser_orb", "optic_pillar"};
+        string[] mset = {"three_hit"};
+        string[] cset = {"two_hit"};
+
+        dist = Mathf.Abs(dist);
+
         attacking = true;
+
         string a;
         if (dist >= lrange) {
-            a = lset[Random.Range(0, lset.Count)];
+            a = lset[Random.Range(0, lset.Length)];
         }
         else if (dist >= mrange) {
-            a = mset[Random.Range(0, mset.Count)];
+            a = mset[Random.Range(0, mset.Length)];
         }
-        else
-        {
-            a = cset[Random.Range(0, cset.Count)];
+        else {
+            a = cset[Random.Range(0, cset.Length)];
         }
 
         Invoke(a, 0);
     }
 
-    void reposition(int x)
+    // chance is out of 10
+    IEnumerator move(bool step_back)
     {
-        if (x == 2)
-        {
-            //reposition so player is past lrange
+        moving = true;
+
+        int dir = facing;
+        if (step_back) {
+            dir *= -1;
         }
-        else if (x == 1)
-        {
-            //reposition so player is between lrange and mrange
-        }
-        else if (x == 0)
-        {
-            //reposition so player is before mrange
-        }
-        else
-        {
-            return;
-        }
-        attack();
+
+        rigidbody2D.velocity = new Vector2(dir * move_speed, 0);
+
+        yield return new WaitForSeconds(move_time);
+
+        rigidbody2D.velocity = Vector2.zero;
+
+        moving = false;
     }
 
     IEnumerator laser_orb()
@@ -105,12 +115,16 @@ public class BossController : MonoBehaviour
 
         yield return new WaitForSeconds(laser_spawn_delay);
         Instantiate(laser_orb_prefab, pos_3, Quaternion.identity);
+
+        attacking = true;
     }
 
     void optic_pillar()
     {
         GameObject optic_pillar_prefab = Resources.Load("Optic_Pillar") as GameObject;
         Instantiate(optic_pillar_prefab, transform.position, Quaternion.identity);
+
+        finished_attacking = true;
     }
 
     void cattack1()
@@ -131,19 +145,46 @@ public class BossController : MonoBehaviour
 
     void Update()
     {
-        dist = player.transform.position.x - transform.position.x;
-        if (dist > 0)
-        {
-            facing = -1;
-        }
-        else
-        {
-            facing = 1;
+        if (moving) {
+            return;
         }
 
-        if (!attacking)
-        {
-            attack();
+        if (attacking) {
+            if (finished_attacking) {
+                curr_moves = num_moves;
+                attacking = false;
+                finished_attacking = false;
+            }
+
+            return;
+        }
+
+        // Updates direction that the boss should face
+        float dist_from_player = player.transform.position.x - transform.position.x;
+        if (dist_from_player > 0) {
+            facing = 1;
+        }
+        else {
+            facing = -1;
+        }
+
+        if (curr_moves == 0) {
+            attack(dist_from_player);
+        } else {
+            int x = 11;
+            if (curr_moves == 1) {
+                x = Random.Range(0, 10) + 1;
+            }
+
+            if (x <= step_back_chance) {
+                //move towards player
+                move(true);
+            } else {
+                //move away from player
+                move(false);
+            }
+
+            curr_moves--;
         }
     }
 }
