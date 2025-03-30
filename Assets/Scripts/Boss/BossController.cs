@@ -130,9 +130,9 @@ public class BossController : MonoBehaviour
     {
         // Attack values
         float[] damage = {15F, 30F, 30F}; 
-        Vector2[] sizes = {new Vector2(2.5F,1F), new Vector2(2F,1F), new Vector2(1.5F,1F)}; 
-        float[] delay = {2F,2F,2F}; 
-        float[] duration = {2F,2F,2F}; 
+        Vector2[] sizes = {new Vector2(2.5F,1F), new Vector2(2F,1F), new Vector2(4F,1F)}; 
+        float[] delay = {0F,0.5F,0.7F}; //No initial delay
+        float[] duration = {0.5F,0.5F,0.5F}; 
 
         // Helper vars
         int current_face = facing;
@@ -143,16 +143,24 @@ public class BossController : MonoBehaviour
             // Delay before attack
             yield return new WaitForSeconds(delay[i]); 
             
+            Vector2 pos = new Vector2(current_face * (sizes[i].x + boss_size.x)/2, (sizes[i].y - boss_size.y)/2);
+
             // Set size of first attack here. Don't change hitbox_pos
             GameObject hit = Instantiate(melee_attack_prefab, transform);
             MeleeAttackHitBox box = hit.GetComponent<MeleeAttackHitBox>();
             if (box != null){
+                if (i == 2){
+                    pos = new Vector2(0, pos.y);
+                }
+
                 box.LoadVars(
-                    new Vector2(current_face * (sizes[i].x + boss_size.x)/2, (sizes[i].y - boss_size.y)/2), 
+                    pos, 
                     sizes[i], 
                     damage[i], 
                     duration[i]);
             }
+
+
         }
     }
 
