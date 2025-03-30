@@ -55,7 +55,8 @@ public class BossController : MonoBehaviour
         melee_attack_prefab = Resources.Load("Melee_Attack") as GameObject;
 
         // laser_orb();
-        StartCoroutine(TwoHit());
+        // StartCoroutine(TwoHit());
+        StartCoroutine(ThreeHit());
 
     }
     void attack()
@@ -125,54 +126,64 @@ public class BossController : MonoBehaviour
         Instantiate(optic_pillar_prefab, transform.position, Quaternion.identity);
     }
 
-    void mattack1()
+    IEnumerator ThreeHit()
     {
-        return;
-    }
-
-
-    // TESTING For debugging
-    Vector2 hitbox_pos = new Vector2(0,0);
-    Vector2 hitbox_size = new Vector2(0,0);
-    IEnumerator TwoHit()
-    {
-        // Damage values
-        float first_hit_dmg = 20f;
-        float second_hit_dmg = 30f;
+        // Attack values
+        float[] damage = {15F, 30F, 30F}; 
+        Vector2[] sizes = {new Vector2(2.5F,1F), new Vector2(2F,1F), new Vector2(1.5F,1F)}; 
+        float[] delay = {2F,2F,2F}; 
+        float[] duration = {2F,2F,2F}; 
 
         // Helper vars
         int current_face = facing;
         Vector3 boss_size = GetComponent<BoxCollider2D>().size;
         Vector2 corner = new Vector2(transform.position.x + (current_face * boss_size.x/2), transform.position.y - boss_size.y/2);
 
-
-        // Delay before first attack
-        yield return new WaitForSeconds(2F); 
-
-        // Set size of first attack here. Don't change hitbox_pos
-        hitbox_size = new Vector2(2F,1F); 
-        hitbox_pos = new Vector2(current_face * (hitbox_size.x + boss_size.x)/2, (hitbox_size.y - boss_size.y)/2);
-        
-        GameObject first_hit = Instantiate(melee_attack_prefab, transform);
-        MeleeAttackHitBox box = first_hit.GetComponent<MeleeAttackHitBox>();
-        if (box != null){
-            box.LoadVars(hitbox_pos, hitbox_size, first_hit_dmg, 2);
+        for (int i = 0; i < 3; i ++){
+            // Delay before attack
+            yield return new WaitForSeconds(delay[i]); 
+            
+            // Set size of first attack here. Don't change hitbox_pos
+            GameObject hit = Instantiate(melee_attack_prefab, transform);
+            MeleeAttackHitBox box = hit.GetComponent<MeleeAttackHitBox>();
+            if (box != null){
+                box.LoadVars(
+                    new Vector2(current_face * (sizes[i].x + boss_size.x)/2, (sizes[i].y - boss_size.y)/2), 
+                    sizes[i], 
+                    damage[i], 
+                    duration[i]);
+            }
         }
+    }
 
-        // Delay before second attack
-        yield return new WaitForSeconds(2F); 
+    IEnumerator TwoHit()
+    {
+        // Attack values
+        float[] damage = {20F, 30F}; 
+        Vector2[] sizes = {new Vector2(2F,1F), new Vector2(1.5F,1F)}; 
+        float[] delay = {2F,2F}; 
+        float[] duration = {2F,2F}; 
 
-        // Set size of first attack here. Don't change hitbox_pos
-        hitbox_size = new Vector2(2F,1F); 
-        hitbox_pos = new Vector2(current_face * (hitbox_size.x + boss_size.x)/2, (hitbox_size.y - boss_size.y)/2);
-        
-        GameObject second_hit = Instantiate(melee_attack_prefab, transform);
-        box = second_hit.GetComponent<MeleeAttackHitBox>();
-        if (box != null){
-            box.LoadVars(hitbox_pos, hitbox_size, first_hit_dmg, 2);
+        // Helper vars
+        int current_face = facing;
+        Vector3 boss_size = GetComponent<BoxCollider2D>().size;
+        Vector2 corner = new Vector2(transform.position.x + (current_face * boss_size.x/2), transform.position.y - boss_size.y/2);
+
+        for (int i = 0; i < 2; i ++){
+            // Delay before attack
+            yield return new WaitForSeconds(delay[i]); 
+            
+            // Set size of first attack here. Don't change hitbox_pos
+            GameObject hit = Instantiate(melee_attack_prefab, transform);
+            MeleeAttackHitBox box = hit.GetComponent<MeleeAttackHitBox>();
+            if (box != null){
+                box.LoadVars(
+                    new Vector2(current_face * (sizes[i].x + boss_size.x)/2, (sizes[i].y - boss_size.y)/2), 
+                    sizes[i], 
+                    damage[i], 
+                    duration[i]);
+            }
         }
-
-        
     }
 
     void cattack2()
