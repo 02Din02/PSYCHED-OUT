@@ -32,8 +32,8 @@ public class MeleeAttackHitBox : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D collision)
     {
-        Debug.Log("Do Damage");
-        boxCollider.enabled = false;
-        Destroy(gameObject);
+        // Debug.Log("Do Damage");
+        // boxCollider.enabled = false;
+        // Destroy(gameObject);
     }
 }
