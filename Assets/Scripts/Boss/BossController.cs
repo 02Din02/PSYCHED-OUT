@@ -12,6 +12,9 @@ public class BossController : MonoBehaviour
     //gameobjects
     private PlayerMovement player;
     private BoxCollider2D boxCollider;
+    private GameObject laser_orb_prefab;
+    private GameObject optic_pillar_prefab;
+    private GameObject melee_attack_prefab;
 
     // Values
     public float bossHealth;
@@ -33,23 +36,26 @@ public class BossController : MonoBehaviour
 
     int facing = -1; //1 for right, -1 for left
 
-    public int fuckYou;
-
     void Start()
     {
+        // Find the player
         player = FindObjectOfType<PlayerMovement>();
         boxCollider = GetComponent<BoxCollider2D>();
-        // Find the player
-        healthSlider.GetComponent<Slider>();
-        // Get the Slider script of the boss health bar
 
+        // Get the Slider script of the boss health bar
+        healthSlider.GetComponent<Slider>();
+
+        // set the health on the boss health bar
         healthSlider.maxValue = bossHealth;
         healthSlider.value = bossHealth;
-        // set the health on the boss health bar
-        // laser_orb();
-        StartCoroutine(TwoHitCombo());
 
-        fuckYou = LayerMask.NameToLayer("Player");
+        // load prefabs
+        laser_orb_prefab = Resources.Load("Laser_Orb") as GameObject;
+        optic_pillar_prefab = Resources.Load("Optic_Pillar") as GameObject;
+        melee_attack_prefab = Resources.Load("Melee_Attack") as GameObject;
+
+        // laser_orb();
+        StartCoroutine(TwoHit());
 
     }
     void attack()
@@ -98,19 +104,25 @@ public class BossController : MonoBehaviour
         float orb_height = 1F; //the height of the middle orb
         float laser_spawn_delay = 0.3F; //delay between each orb spawn
 
-        GameObject laser_orb_prefab = Resources.Load("Laser_Orb") as GameObject;
-        
         Vector3 pos_1 = new Vector3(orb_dist * facing, orb_height + orb_spread, 0) + transform.position;
         Vector3 pos_2 = new Vector3(orb_dist * facing, orb_height, 0) + transform.position;
         Vector3 pos_3 = new Vector3(orb_dist * facing, orb_height - orb_spread, 0) + transform.position;
 
         Debug.Log("Orbs created");
 
-        GameObject orb1 = Instantiate(laser_orb_prefab, pos_1, Quaternion.identity);
-        GameObject orb2 = Instantiate(laser_orb_prefab, pos_2, Quaternion.identity);
-        GameObject orb3 = Instantiate(laser_orb_prefab, pos_3, Quaternion.identity);
+        yield return new WaitForSeconds(laser_spawn_delay);
+        Instantiate(laser_orb_prefab, pos_1, Quaternion.identity);
 
-        return;
+        yield return new WaitForSeconds(laser_spawn_delay);
+        Instantiate(laser_orb_prefab, pos_2, Quaternion.identity);
+
+        yield return new WaitForSeconds(laser_spawn_delay);
+        Instantiate(laser_orb_prefab, pos_3, Quaternion.identity);
+    }
+
+    void optic_pillar()
+    {
+        Instantiate(optic_pillar_prefab, transform.position, Quaternion.identity);
     }
 
     void mattack1()
@@ -122,7 +134,7 @@ public class BossController : MonoBehaviour
     // TESTING For debugging
     Vector2 hitbox_pos = new Vector2(0,0);
     Vector2 hitbox_size = new Vector2(0,0);
-    IEnumerator TwoHitCombo()
+    IEnumerator TwoHit()
     {
         // Damage values
         float first_hit_dmg = 20f;
@@ -130,41 +142,36 @@ public class BossController : MonoBehaviour
 
         // Helper vars
         int current_face = facing;
-        Vector3 boss_size = GetComponent<BoxCollider2D>().bounds.size;
+        Vector3 boss_size = GetComponent<BoxCollider2D>().size;
         Vector2 corner = new Vector2(transform.position.x + (current_face * boss_size.x/2), transform.position.y - boss_size.y/2);
 
-        // Set size of first attack here. Don't change hitbox_pos
-        hitbox_size = new Vector2(6,3); 
-        hitbox_pos = corner + new Vector2(current_face * hitbox_size.x/2, hitbox_size.y/2);
 
-        // First attack delay
-        yield return new WaitForSeconds(2F); 
-        int playerLayer = LayerMask.NameToLayer("Player");
-
-        LayerMask hitboxLayer = 1 << playerLayer;
-        Collider2D first_hit = Physics2D.OverlapBox(hitbox_pos, hitbox_size, 0, hitboxLayer);
-        Debug.Log(first_hit.gameObject.layer);
-
-        if (first_hit){ // Hit Player! Add do damage later
-            Debug.Log(first_hit);
-            Debug.Log($"HIT for {first_hit_dmg}");
-        }
-
-        // Set size of first attack here. Don't change hitbox_pos
-        hitbox_size = new Vector2(6,5); 
-        hitbox_pos = corner + new Vector2(current_face * hitbox_size.x/2, hitbox_size.y/2);
-
-        // Second attack delay
+        // Delay before first attack
         yield return new WaitForSeconds(2F); 
 
-        Collider2D second_hit = Physics2D.OverlapBox(hitbox_pos, hitbox_size, 0, hitboxLayer);
-        Debug.Log(second_hit.gameObject.layer);
-
-        // Hit Player! Add do damage later
-        if (second_hit){ 
-            Debug.Log(second_hit);
-            Debug.Log($"HIT for {second_hit_dmg}");
+        // Set size of first attack here. Don't change hitbox_pos
+        hitbox_size = new Vector2(2F,1F); 
+        hitbox_pos = new Vector2(current_face * (hitbox_size.x + boss_size.x)/2, (hitbox_size.y - boss_size.y)/2);
+        
+        GameObject first_hit = Instantiate(melee_attack_prefab, transform);
+        MeleeAttackHitBox box = first_hit.GetComponent<MeleeAttackHitBox>();
+        if (box != null){
+            box.LoadVars(hitbox_pos, hitbox_size, first_hit_dmg, 2);
         }
+
+        // Delay before second attack
+        yield return new WaitForSeconds(2F); 
+
+        // Set size of first attack here. Don't change hitbox_pos
+        hitbox_size = new Vector2(2F,1F); 
+        hitbox_pos = new Vector2(current_face * (hitbox_size.x + boss_size.x)/2, (hitbox_size.y - boss_size.y)/2);
+        
+        GameObject second_hit = Instantiate(melee_attack_prefab, transform);
+        box = second_hit.GetComponent<MeleeAttackHitBox>();
+        if (box != null){
+            box.LoadVars(hitbox_pos, hitbox_size, first_hit_dmg, 2);
+        }
+
         
     }
 
@@ -200,7 +207,7 @@ public class BossController : MonoBehaviour
     void OnDrawGizmos() {
         // Vector3 hitbox_size = new Vector3(5,4,0);
         // Vector3 hitbox_pos = transform.position; //+ new Vector3(-2, boss.transform.h,0);
-        Gizmos.DrawWireCube(hitbox_pos, hitbox_size);
+        // Gizmos.DrawWireCube(hitbox_pos, hitbox_size);
         return;
     }
 }
