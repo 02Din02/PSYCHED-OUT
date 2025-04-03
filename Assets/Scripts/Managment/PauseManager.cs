@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
@@ -12,26 +13,49 @@ public class PauseManager : MonoBehaviour
     // Volume Slider
     public Slider volumeSlider;
     public TextMeshProUGUI volumeNumText;
-    public void Pause() 
+
+    // Input
+    [SerializeField] private InputActionReference pauseAction;
+
+
+    void Awake()
     {
-        pauseCanvas.SetActive(true); // Show menu
-         Cursor.lockState = CursorLockMode.None; // Free the mouse!!
-         Time.timeScale = 0; // Freeze time
+        if (pauseAction != null)
+        {
+            pauseAction.action.performed += Pause;
+            pauseAction.action.Enable();
+        }
+
+        Time.timeScale = 1; // Un-Freeze time
+    }
+    public void Pause(InputAction.CallbackContext ctx)
+    {
+        if (pauseCanvas != null)
+        {
+            pauseCanvas.SetActive(true); // Show menu
+            Cursor.lockState = CursorLockMode.None; // Free the mouse!!
+            Time.timeScale = 0; // Freeze time
+        }
+
     }
 
-    public void UnPause() 
+    public void UnPause()
     {
-          pauseCanvas.SetActive(false); // Get rid of menu
-        Cursor.lockState = CursorLockMode.Locked; // Locks mouse in place
-        Time.timeScale = 1; // Un-Freeze time
+        if (pauseCanvas != null)
+        {
+            pauseCanvas.SetActive(false); // Get rid of menu
+            Cursor.lockState = CursorLockMode.Locked; // Locks mouse in place
+            Time.timeScale = 1; // Un-Freeze time
+        }
+
     }
 
     public void FullScreen(bool inFullScreen) //Toggles fullscreen from button press
-    {   
-        Screen.fullScreen = inFullScreen;   
+    {
+        Screen.fullScreen = inFullScreen;
     }
 
-    public void Resolution(int dropdown) 
+    public void Resolution(int dropdown)
     //toggles screen resoulation, gets the dropdown int from UI Dropdown
     // If we add more resoluations, MAKE THEM IN ORDER FROM LARGE TO SMALL!!! (16:9)
     {
@@ -45,7 +69,7 @@ public class PauseManager : MonoBehaviour
             widith = 1920;
             height = 1080;
         }
-         else if (dropdown == 1)
+        else if (dropdown == 1)
         {
             widith = 1366;
             height = 768;
