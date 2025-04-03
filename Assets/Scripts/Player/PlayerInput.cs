@@ -8,7 +8,7 @@ using UnityEngine.InputSystem;
     {
 #if ENABLE_INPUT_SYSTEM
         private PlayerInputActions _actions;
-        private InputAction _move, _jump, _roll;
+        private InputAction _move, _jump, _roll, _attack;
 
         private void Awake()
         {
@@ -16,6 +16,7 @@ using UnityEngine.InputSystem;
             _move = _actions.Player.Move;
             _jump = _actions.Player.Jump;
             _roll = _actions.Player.Roll;
+            _attack = _actions.Player.Attack;
         }
 
         private void OnEnable() => _actions.Enable();
@@ -29,6 +30,8 @@ using UnityEngine.InputSystem;
                 JumpDown = _jump.WasPressedThisFrame(),
                 JumpHeld = _jump.IsPressed(),
                 RollDown = _roll.WasPressedThisFrame(),
+                AttackDown = _attack.WasPressedThisFrame(),
+                AttackHeld = _attack.IsPressed(),
                 Move = _move.ReadValue<Vector2>()
             };
         }
@@ -52,4 +55,6 @@ using UnityEngine.InputSystem;
         public bool JumpDown;
         public bool JumpHeld;
         public bool RollDown;
+        public bool AttackDown;
+        public bool AttackHeld;
     }

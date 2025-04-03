@@ -14,7 +14,10 @@ public class PlayerAnimator : MonoBehaviour
 
     private void OnEnable()
     {
-        _player.GroundedChanged += OnGroundedChanged;        
+        _player.GroundedChanged += OnGroundedChanged;
+        _player.RollChanged += OnRollChanged;
+        _player.Jumped += OnJumped;        
+        _player.AttackChanged += OnAttackChanged;
     }
     private void Awake() {
         _player = GetComponentInParent<PlayerMovement>();
@@ -32,13 +35,39 @@ public class PlayerAnimator : MonoBehaviour
 
         //Handle crouching
         _anim.SetBool("Crouching", _player.Crouching);
-        Debug.Log(_player.Crouching);
 
 
     }
     
     private void OnGroundedChanged(bool grounded, float impact){
         _anim.SetBool("Grounded", grounded);
+        if(grounded){
+            _anim.ResetTrigger("Jump");
+        }
+    }
+
+    private void OnJumped(JumpType jumpType){
+        _anim.SetTrigger("Jump");
+    }
+
+    private void OnRollChanged(bool rolling, Vector2 dir){
+        Debug.Log(rolling);
+        if(rolling){
+            _anim.SetTrigger("Roll");
+        }
+        else{
+            _anim.ResetTrigger("Roll");
+        }
+    }
+
+    private void OnAttackChanged(bool attacking){
+        Debug.Log(attacking);
+        if(attacking){
+            _anim.SetTrigger("Attack");
+        }
+        else{
+            _anim.ResetTrigger("Attack");
+        }
     }
 
 }
