@@ -51,7 +51,7 @@ public class PlayerAnimator : MonoBehaviour
     }
 
     private void OnRollChanged(bool rolling, Vector2 dir){
-        Debug.Log(rolling);
+        //Debug.Log(rolling);
         if(rolling){
             _anim.SetTrigger("Roll");
         }
@@ -61,7 +61,7 @@ public class PlayerAnimator : MonoBehaviour
     }
 
     private void OnAttackChanged(bool attacking){
-        Debug.Log(attacking);
+        //Debug.Log(attacking);
         if(attacking){
             _anim.SetTrigger("Attack");
         }

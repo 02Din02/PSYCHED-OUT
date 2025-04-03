@@ -276,5 +276,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e2d4937aaaf103e48aa6fc0989e152c2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  AttackSize: {x: 1.5, y: 1}
+  AttackPos: {x: 0.5, y: 0.6}
   <Stats>k__BackingField: {fileID: 11400000, guid: 0a68723838a1ddb499fc4356f36fd969, type: 2}
   _drawGizmos: 1

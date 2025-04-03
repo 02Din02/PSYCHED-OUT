@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 
@@ -13,6 +14,12 @@ using UnityEngine;
         private ConstantForce2D _constantForce;
         private Rigidbody2D _rb;
         private PlayerInput _playerInput;
+
+        //put this in stats later
+        [SerializeField] Vector2 AttackSize;
+        [SerializeField] Vector2 AttackOrigin;
+
+        Vector2 AttackPos;
 
         #endregion
 
@@ -38,6 +45,8 @@ using UnityEngine;
         public Vector2 Velocity { get; private set; }
         public int WallDirection { get; private set; }
         public bool ClimbingLadder { get; private set; }
+
+        public bool FacingRight { get; private set; }
 
         public void AddFrameForce(Vector2 force, bool resetVelocity = false)
         {
@@ -74,6 +83,7 @@ using UnityEngine;
             if (!TryGetComponent(out _constantForce)) _constantForce = gameObject.AddComponent<ConstantForce2D>();
 
             SetupCharacter();
+            FacingRight = true;
 
         }
 
@@ -101,7 +111,7 @@ using UnityEngine;
             CalculateDirection();
 
             CalculateWalls();
-            CalculateLadders();
+            //CalculateLadders();
             CalculateJump();
             CalculateRoll();
             CalculateGroundAttack();
@@ -153,6 +163,8 @@ using UnityEngine;
             _airborneCollider.sharedMaterial = _rb.sharedMaterial;
 
             SetColliderMode(ColliderMode.Airborne);
+
+            _hitObjects = new List<Collider2D>();
         }
 
         #endregion
@@ -368,6 +380,15 @@ using UnityEngine;
                 if (angle < Stats.MaxWalkableSlope) _frameDirection.y = _frameDirection.x * -GroundNormal.x / GroundNormal.y;
             }
 
+            if(_frameDirection.x < 0){
+                FacingRight = false;
+            }
+            else if(_frameDirection.x > 0){
+                FacingRight = true;
+            }
+
+            AttackPos = new Vector2(transform.position.x + (AttackOrigin.x * (FacingRight ? 1.0f : -1.0f)), transform.position.y + AttackOrigin.y);
+
             _frameDirection = _frameDirection.normalized;
         }
 
@@ -452,7 +473,7 @@ using UnityEngine;
 
         #endregion
 
-        #region Ladders
+       /*  #region Ladders
 
         private bool CanEnterLadder => _ladderHit && _time > _timeLeftLadder + Stats.LadderCooldownTime;
         private bool ShouldMountLadder => Stats.AutoAttachToLadders || _frameInput.Move.y > Stats.VerticalDeadZoneThreshold || (!_grounded && _frameInput.Move.y < -Stats.VerticalDeadZoneThreshold);
@@ -499,7 +520,7 @@ using UnityEngine;
             ResetAirJumps();
         }
 
-        #endregion
+        #endregion */
 
         #region Jump
 
@@ -546,7 +567,7 @@ using UnityEngine;
             _bufferedJumpUsable = false;
             _lastJumpExecutedTime = _time;
             _currentStepDownLength = 0;
-            if (ClimbingLadder) ToggleClimbingLadder(false);
+            //if (ClimbingLadder) ToggleClimbingLadder(false);
 
             if (jumpType is JumpType.Jump or JumpType.Coyote)
             {
@@ -589,6 +610,8 @@ using UnityEngine;
         private bool _attacking;
         private float _attackStart;
         private float _nextAttack;
+
+        private List<Collider2D> _hitObjects;
         
         private void CalculateGroundAttack()
         {
@@ -597,13 +620,26 @@ using UnityEngine;
                 _canAttack = false;
                 _attackStart = _time;
                 _nextAttack = _time + Stats.AttackCooldown;
+                _hitObjects.Clear();
                 AttackChanged?.Invoke(true);
+                CalculateHits();
             }
             if(_attacking){
                 if(_time > _attackStart + Stats.AttackDuration){
                     _attacking = false;
                     AttackChanged?.Invoke(false);
                     _canAttack = true;
+                }
+            }
+        }
+
+        private void CalculateHits(){
+            Collider2D[] hitThisFrame = Physics2D.OverlapBoxAll(AttackPos, AttackSize, 0, LayerMask.GetMask("Boss"));
+            for(int i = 0; i<hitThisFrame.Length; i++){
+                if(!_hitObjects.Contains(hitThisFrame[i])){
+                    Debug.Log("Hit boss");
+                    _hitObjects.Append(hitThisFrame[i]);
+                    // do damage stuff
                 }
             }
         }
@@ -909,6 +945,10 @@ using UnityEngine;
             Gizmos.color = Color.red;
             Gizmos.DrawWireCube(pos + Vector2.up * _character.Height / 2, new Vector3(_character.Width, _character.Height));
             Gizmos.color = Color.magenta;
+            
+            if(_attacking){
+                Gizmos.DrawWireCube(AttackPos, AttackSize);
+            }
 
             /* var rayStart = pos + Vector2.up * _character.StepHeight;
             var rayDir = Vector3.down * _character.StepHeight;
