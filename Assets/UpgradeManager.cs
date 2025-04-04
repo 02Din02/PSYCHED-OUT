@@ -3,25 +3,24 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
-enum Upgrade
-{
-    Instinct,
-    Adrenaline,
-    Vitality,
-    Harmony
-}
-
 public class UpgradeManager : MonoBehaviour
 {
-    [SerializeField] private uint currency;
+    [SerializeField] private int currency;
     [SerializeField] private TextMeshProUGUI currencyDisplay;
-    private Dictionary<Upgrade, uint> upgradeTracker;
+    private Dictionary<string, int> upgradeTracker = new Dictionary<string, int>();
+
+    private readonly string[] upgradeList = { "Instinct", "Adrenaline", "Vital", "Harmony" };
     // Start is called before the first frame update
     void Start()
     {
         Debug.Log("Initializing UpgradeManager");
         currency = DataManager.Instance.currency;
         UpdateText();
+        foreach (string upgrade in upgradeList)
+        {
+            upgradeTracker.Add(upgrade, 0);
+        }
+        Debug.Log("UpgradeManager Initialized");
     }
 
     void UpdateText()
@@ -29,15 +28,26 @@ public class UpgradeManager : MonoBehaviour
         currencyDisplay.text = $"{currency}";
     }
 
-    void PurchaseUpgrade(Upgrade upgrade)
+    public void PurchaseUpgrade(string upgrade)
     {
-        currency -= CalculateCost(upgrade, upgradeTracker[upgrade]);
+        Debug.Assert(upgradeTracker.ContainsKey(upgrade));
+        Debug.Log("Purchasing upgrade: " + upgrade);
+        if (currency - CalculateCost(upgrade) >= 0)
+        {
+            currency -= CalculateCost(upgrade);
+        }
+        else
+        {
+            Debug.Log("No more money :(");
+            // broadcast event no money lolsies
+        }
         upgradeTracker[upgrade] += 1;
+        UpdateText();
         return;
     }
 
-    uint CalculateCost(Upgrade upgrade, uint level)
+    int CalculateCost(string upgrade)
     {
-        return 10;
+        return 1 + upgradeTracker[upgrade];
     }
 }

@@ -5,7 +5,7 @@ using UnityEngine;
 public class DataManager : MonoBehaviour
 {
     public static DataManager Instance;
-    public uint currency;
+    public int currency;
     private void Awake()
     {
         if (Instance != null)
@@ -15,8 +15,8 @@ public class DataManager : MonoBehaviour
         }
         Instance = this;
         DontDestroyOnLoad(gameObject);
-        Debug.Log("printing money: 150");
-        currency = 150;
+        Debug.Log("printing money: 50");
+        currency = 50;
     }
 
 }
