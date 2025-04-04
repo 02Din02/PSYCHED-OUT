@@ -34,6 +34,13 @@ public class PlayerStats : ScriptableObject
     [Header("Attack"), Space] public float AttackCooldown = 1.0f;
     public float AttackDuration = 0.5f;
 
+    // Roll
+    [Header("Roll"), Space] public bool AllowRoll = true;
+    public float RollVelocity = 50;
+    public float RollDuration = 0.2f;
+    public float RollCooldown = 1.5f;
+    public float RollEndHorizontalMultiplier = 0.5f;
+
     // Jump
     [Header("Jump"), Space] public float ExtraConstantGravity = 40;
     public float BufferedJumpTime = 0.15f;
