@@ -4,6 +4,8 @@ using System.Collections;
 using UnityEngine.UI;
 using UnityEditor.Experimental.GraphView;
 using UnityEditor.SearchService;
+using System.Runtime.InteropServices.WindowsRuntime;
+using UnityEditor.Rendering.Universal;
 using Unity.Collections;
 
 public class BossController : MonoBehaviour
@@ -11,11 +13,14 @@ public class BossController : MonoBehaviour
     //gameobjects
     private PlayerMovement player;
     private BoxCollider2D boxCollider;
+    private GameObject laser_orb_prefab;
+    private GameObject optic_pillar_prefab;
+    private GameObject melee_attack_prefab;
     private Rigidbody2D rigidbody2D;
 
     // Stats
     public float bossHealth;
-
+    
     // UI
     public Slider healthSlider;
 
@@ -31,13 +36,16 @@ public class BossController : MonoBehaviour
 
     void Start()
     {
+        // Find the player
         player = FindObjectOfType<PlayerMovement>();
         boxCollider = GetComponent<BoxCollider2D>();
         rigidbody2D = GetComponent<Rigidbody2D>();
         // Find the player
         healthSlider.GetComponent<Slider>();
         // Get the Slider script of the boss health bar
+        healthSlider.GetComponent<Slider>();
 
+        // set the health on the boss health bar
         healthSlider.maxValue = bossHealth;
         healthSlider.value = bossHealth;
         // set the health on the boss health bar
@@ -99,8 +107,6 @@ public class BossController : MonoBehaviour
         float orb_height = 1F; //the height of the middle orb
         float laser_spawn_delay = 0.3F; //delay between each orb spawn
 
-        GameObject laser_orb_prefab = Resources.Load("Laser_Orb") as GameObject;
-        
         Vector3 pos_1 = new Vector3(orb_dist * facing, orb_height + orb_spread, 0) + transform.position;
         Vector3 pos_2 = new Vector3(orb_dist * facing, orb_height, 0) + transform.position;
         Vector3 pos_3 = new Vector3(orb_dist * facing, orb_height - orb_spread, 0) + transform.position;
@@ -121,15 +127,77 @@ public class BossController : MonoBehaviour
 
     void optic_pillar()
     {
-        GameObject optic_pillar_prefab = Resources.Load("Optic_Pillar") as GameObject;
         Instantiate(optic_pillar_prefab, transform.position, Quaternion.identity);
 
         finished_attacking = true;
     }
 
-    void cattack1()
+    IEnumerator ThreeHit()
     {
-        return;
+        // Attack values
+        float[] damage = {15F, 30F, 30F}; 
+        Vector2[] sizes = {new Vector2(2.5F,1F), new Vector2(2F,1F), new Vector2(4F,1F)}; 
+        float[] delay = {0F,0.5F,0.7F}; //No initial delay
+        float[] duration = {0.5F,0.5F,0.5F}; 
+
+        // Helper vars
+        int current_face = facing;
+        Vector3 boss_size = GetComponent<BoxCollider2D>().size;
+        Vector2 corner = new Vector2(transform.position.x + (current_face * boss_size.x/2), transform.position.y - boss_size.y/2);
+
+        for (int i = 0; i < 3; i ++){
+            // Delay before attack
+            yield return new WaitForSeconds(delay[i]); 
+            
+            Vector2 pos = new Vector2(current_face * (sizes[i].x + boss_size.x)/2, (sizes[i].y - boss_size.y)/2);
+
+            // Set size of first attack here. Don't change hitbox_pos
+            GameObject hit = Instantiate(melee_attack_prefab, transform);
+            MeleeAttackHitBox box = hit.GetComponent<MeleeAttackHitBox>();
+            if (box != null){
+                if (i == 2){
+                    pos = new Vector2(0, pos.y);
+                }
+
+                box.LoadVars(
+                    pos, 
+                    sizes[i], 
+                    damage[i], 
+                    duration[i]);
+            }
+
+
+        }
+    }
+
+    IEnumerator TwoHit()
+    {
+        // Attack values
+        float[] damage = {20F, 30F}; 
+        Vector2[] sizes = {new Vector2(2F,1F), new Vector2(1.5F,1F)}; 
+        float[] delay = {2F,2F}; 
+        float[] duration = {2F,2F}; 
+
+        // Helper vars
+        int current_face = facing;
+        Vector3 boss_size = GetComponent<BoxCollider2D>().size;
+        Vector2 corner = new Vector2(transform.position.x + (current_face * boss_size.x/2), transform.position.y - boss_size.y/2);
+
+        for (int i = 0; i < 2; i ++){
+            // Delay before attack
+            yield return new WaitForSeconds(delay[i]); 
+            
+            // Set size of first attack here. Don't change hitbox_pos
+            GameObject hit = Instantiate(melee_attack_prefab, transform);
+            MeleeAttackHitBox box = hit.GetComponent<MeleeAttackHitBox>();
+            if (box != null){
+                box.LoadVars(
+                    new Vector2(current_face * (sizes[i].x + boss_size.x)/2, (sizes[i].y - boss_size.y)/2), 
+                    sizes[i], 
+                    damage[i], 
+                    duration[i]);
+            }
+        }
     }
 
     void cattack2()
