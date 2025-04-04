@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 
@@ -14,6 +15,12 @@ using UnityEngine;
         private Rigidbody2D _rb;
         private PlayerInput _playerInput;
 
+        //put this in stats later
+        [SerializeField] Vector2 AttackSize;
+        [SerializeField] Vector2 AttackOrigin;
+
+        Vector2 AttackPos;
+
         #endregion
 
         #region Interface
@@ -22,7 +29,9 @@ using UnityEngine;
         public ControllerState State { get; private set; }
         public event Action<JumpType> Jumped;
         public event Action<bool, float> GroundedChanged;
-        public event Action<bool, Vector2> DashChanged;
+        public event Action<bool, Vector2> RollChanged;
+        //might have to be an AttackType later
+        public event Action<bool> AttackChanged;
         public event Action<bool> WallGrabChanged;
         public event Action<Vector2> Repositioned;
         public event Action<bool> ToggledPlayer;
@@ -36,6 +45,8 @@ using UnityEngine;
         public Vector2 Velocity { get; private set; }
         public int WallDirection { get; private set; }
         public bool ClimbingLadder { get; private set; }
+
+        public bool FacingRight { get; private set; }
 
         public void AddFrameForce(Vector2 force, bool resetVelocity = false)
         {
@@ -72,6 +83,7 @@ using UnityEngine;
             if (!TryGetComponent(out _constantForce)) _constantForce = gameObject.AddComponent<ConstantForce2D>();
 
             SetupCharacter();
+            FacingRight = true;
 
         }
 
@@ -99,9 +111,10 @@ using UnityEngine;
             CalculateDirection();
 
             CalculateWalls();
-            CalculateLadders();
+            //CalculateLadders();
             CalculateJump();
-            //CalculateDash();
+            CalculateRoll();
+            CalculateGroundAttack();
 
             CalculateExternalModifiers();
 
@@ -133,23 +146,25 @@ using UnityEngine;
                 new Vector3(_character.StandingColliderSize.x + CharacterSize.COLLIDER_EDGE_RADIUS * 2 + Stats.WallDetectorRange, _character.Height - 0.1f));
 
             _rb = GetComponent<Rigidbody2D>();
-            _rb.hideFlags = HideFlags.NotEditable;
+           // _rb.hideFlags = HideFlags.NotEditable;
 
             // Primary collider
             _collider = GetComponent<BoxCollider2D>();
             _collider.edgeRadius = CharacterSize.COLLIDER_EDGE_RADIUS;
-            _collider.hideFlags = HideFlags.NotEditable;
+            //_collider.hideFlags = HideFlags.NotEditable;
             _collider.sharedMaterial = _rb.sharedMaterial;
             _collider.enabled = true;
 
             // Airborne collider
             _airborneCollider = GetComponent<CapsuleCollider2D>();
-            _airborneCollider.hideFlags = HideFlags.NotEditable;
+            //_airborneCollider.hideFlags = HideFlags.NotEditable;
             _airborneCollider.size = new Vector2(_character.Width - SKIN_WIDTH * 2, _character.Height - SKIN_WIDTH * 2);
             _airborneCollider.offset = new Vector2(0, _character.Height / 2);
             _airborneCollider.sharedMaterial = _rb.sharedMaterial;
 
             SetColliderMode(ColliderMode.Airborne);
+
+            _hitObjects = new List<Collider2D>();
         }
 
         #endregion
@@ -167,11 +182,18 @@ using UnityEngine;
             {
                 _jumpToConsume = true;
                 _timeJumpWasPressed = _time;
+                //Debug.Log(_jumpToConsume);
             }
 
             if (_frameInput.RollDown)
             {
-                //_dashToConsume = true;
+                _rollToConsume = true;
+                //Debug.Log(_rollToConsume);
+            }
+
+            if(_frameInput.AttackDown)
+            {
+                _attackToConsume = true;
             }
         }
 
@@ -224,6 +246,8 @@ using UnityEngine;
         private void CleanFrameData()
         {
             _jumpToConsume = false;
+            _rollToConsume = false;
+            _attackToConsume = false;
             _forceToApplyThisFrame = Vector2.zero;
             _lastFrameY = Velocity.y;
         }
@@ -298,6 +322,8 @@ using UnityEngine;
                 _constantForce.force = Vector2.zero;
                 _currentStepDownLength = _character.StepHeight;
                 _coyoteUsable = true;
+                _canRoll = true;
+                _canAttack = true;
                 _bufferedJumpUsable = true;
                 ResetAirJumps();
                 SetColliderMode(ColliderMode.Standard);
@@ -353,6 +379,15 @@ using UnityEngine;
                 var angle = Vector2.Angle(GroundNormal, Up);
                 if (angle < Stats.MaxWalkableSlope) _frameDirection.y = _frameDirection.x * -GroundNormal.x / GroundNormal.y;
             }
+
+            if(_frameDirection.x < 0){
+                FacingRight = false;
+            }
+            else if(_frameDirection.x > 0){
+                FacingRight = true;
+            }
+
+            AttackPos = new Vector2(transform.position.x + (AttackOrigin.x * (FacingRight ? 1.0f : -1.0f)), transform.position.y + AttackOrigin.y);
 
             _frameDirection = _frameDirection.normalized;
         }
@@ -438,7 +473,7 @@ using UnityEngine;
 
         #endregion
 
-        #region Ladders
+       /*  #region Ladders
 
         private bool CanEnterLadder => _ladderHit && _time > _timeLeftLadder + Stats.LadderCooldownTime;
         private bool ShouldMountLadder => Stats.AutoAttachToLadders || _frameInput.Move.y > Stats.VerticalDeadZoneThreshold || (!_grounded && _frameInput.Move.y < -Stats.VerticalDeadZoneThreshold);
@@ -485,7 +520,7 @@ using UnityEngine;
             ResetAirJumps();
         }
 
-        #endregion
+        #endregion */
 
         #region Jump
 
@@ -511,7 +546,7 @@ using UnityEngine;
 
         private void CalculateJump()
         {
-            if ((_jumpToConsume || HasBufferedJump) && CanStand)
+            if ((_jumpToConsume || HasBufferedJump) && CanStand && !_rolling && !_attacking)
             {
                 if (CanWallJump) ExecuteJump(JumpType.WallJump);
                 else if (_grounded || ClimbingLadder) ExecuteJump(JumpType.Jump);
@@ -532,7 +567,7 @@ using UnityEngine;
             _bufferedJumpUsable = false;
             _lastJumpExecutedTime = _time;
             _currentStepDownLength = 0;
-            if (ClimbingLadder) ToggleClimbingLadder(false);
+            //if (ClimbingLadder) ToggleClimbingLadder(false);
 
             if (jumpType is JumpType.Jump or JumpType.Coyote)
             {
@@ -569,46 +604,87 @@ using UnityEngine;
 
         #endregion
 
-/*         #region Dash
+        #region Attack
+        private bool _attackToConsume;
+        private bool _canAttack;
+        private bool _attacking;
+        private float _attackStart;
+        private float _nextAttack;
 
-        private bool _dashToConsume;
-        private bool _canDash;
-        private Vector2 _dashVel;
-        private bool _dashing;
-        private float _startedDashing;
-        private float _nextDashTime;
-
-        private void CalculateDash()
+        private List<Collider2D> _hitObjects;
+        
+        private void CalculateGroundAttack()
         {
-            if (!Stats.AllowDash) return;
-
-            if (_dashToConsume && _canDash && !Crouching && _time > _nextDashTime)
-            {
-                var dir = new Vector2(_frameInput.Move.x, Mathf.Max(_frameInput.Move.y, 0f)).normalized;
-                if (dir == Vector2.zero) return;
-
-                _dashVel = dir * Stats.DashVelocity;
-                _dashing = true;
-                _canDash = false;
-                _startedDashing = _time;
-                _nextDashTime = _time + Stats.DashCooldown;
-                DashChanged?.Invoke(true, dir);
+            if(_canAttack && _attackToConsume && !Crouching && !_rolling && _grounded && _time > _nextAttack){
+                _attacking = true;
+                _canAttack = false;
+                _attackStart = _time;
+                _nextAttack = _time + Stats.AttackCooldown;
+                _hitObjects.Clear();
+                AttackChanged?.Invoke(true);
+                CalculateHits();
             }
-
-            if (_dashing)
-            {
-                if (_time > _startedDashing + Stats.DashDuration)
-                {
-                    _dashing = false;
-                    DashChanged?.Invoke(false, Vector2.zero);
-
-                    SetVelocity(new Vector2(Velocity.x * Stats.DashEndHorizontalMultiplier, Velocity.y));
-                    if (_grounded) _canDash = true;
+            if(_attacking){
+                if(_time > _attackStart + Stats.AttackDuration){
+                    _attacking = false;
+                    AttackChanged?.Invoke(false);
+                    _canAttack = true;
                 }
             }
         }
 
-        #endregion */
+        private void CalculateHits(){
+            Collider2D[] hitThisFrame = Physics2D.OverlapBoxAll(AttackPos, AttackSize, 0, LayerMask.GetMask("Boss"));
+            for(int i = 0; i<hitThisFrame.Length; i++){
+                if(!_hitObjects.Contains(hitThisFrame[i])){
+                    Debug.Log("Hit boss");
+                    _hitObjects.Append(hitThisFrame[i]);
+                    // do damage stuff
+                }
+            }
+        }
+        #endregion
+
+        #region Roll
+
+        private bool _rollToConsume;
+        private bool _canRoll;
+        private Vector2 _rollVel;
+        private bool _rolling;
+        private float _startedRolling;
+        private float _nextRollTime;
+
+        private void CalculateRoll()
+        {
+            if (!Stats.AllowRoll) return;
+
+            if (_grounded && _rollToConsume && _canRoll && _time > _nextRollTime && !_attacking)
+            {
+                var dir = new Vector2(_frameInput.Move.x, Mathf.Max(_frameInput.Move.y, 0f)).normalized;
+                if (dir == Vector2.zero) return;
+
+                _rollVel = dir * Stats.RollVelocity;
+                _rolling = true;
+                _canRoll = false;
+                _startedRolling = _time;
+                _nextRollTime = _time + Stats.RollCooldown;
+                RollChanged?.Invoke(true, dir);
+            }
+
+            if (_rolling)
+            {
+                if (_time > _startedRolling + Stats.RollDuration)
+                {
+                    _rolling = false;
+                    RollChanged?.Invoke(false, Vector2.zero);
+
+                    SetVelocity(new Vector2(Velocity.x * Stats.RollEndHorizontalMultiplier, Velocity.y));
+                    if (_grounded) _canRoll = true;
+                }
+            }
+        }
+
+        #endregion 
 
         #region Crouching
 
@@ -642,6 +718,8 @@ using UnityEngine;
 
             SetColliderMode(Crouching ? ColliderMode.Crouching : ColliderMode.Standard);
         }
+
+
 
         private bool CheckPos(Vector2 pos, Vector2 size)
         {
@@ -696,6 +774,10 @@ using UnityEngine;
                 return;
             }
 
+            if (_rolling){
+                SetVelocity(_rollVel);
+            }
+
             if (_isOnWall)
             {
                 _constantForce.force = Vector2.zero;
@@ -708,7 +790,7 @@ using UnityEngine;
                 return;
             }
 
-            if (ClimbingLadder)
+            /* if (ClimbingLadder)
             {
                 _constantForce.force = Vector2.zero;
                 _rb.gravityScale = 0;
@@ -733,7 +815,7 @@ using UnityEngine;
                 SetVelocity(goalVelocity);
 
                 return;
-            }
+            } */
 
             var extraForce = new Vector2(0, _grounded ? 0 : -Stats.ExtraConstantGravity * (_endedJumpEarly && Velocity.y > 0 ? Stats.EndJumpEarlyExtraForceMultiplier : 1));
             _constantForce.force = extraForce * _rb.mass;
@@ -863,22 +945,26 @@ using UnityEngine;
             Gizmos.color = Color.red;
             Gizmos.DrawWireCube(pos + Vector2.up * _character.Height / 2, new Vector3(_character.Width, _character.Height));
             Gizmos.color = Color.magenta;
+            
+            if(_attacking){
+                Gizmos.DrawWireCube(AttackPos, AttackSize);
+            }
 
-            var rayStart = pos + Vector2.up * _character.StepHeight;
+            /* var rayStart = pos + Vector2.up * _character.StepHeight;
             var rayDir = Vector3.down * _character.StepHeight;
             Gizmos.DrawRay(rayStart, rayDir);
             foreach (var offset in GenerateRayOffsets())
             {
                 Gizmos.DrawRay(rayStart + Vector2.right * offset, rayDir);
                 Gizmos.DrawRay(rayStart + Vector2.left * offset, rayDir);
-            }
+            } 
 
             Gizmos.color = Color.yellow;
             Gizmos.DrawWireCube(pos + (Vector2)_wallDetectionBounds.center, _wallDetectionBounds.size);
 
 
             Gizmos.color = Color.black;
-            Gizmos.DrawRay(RayPoint, Vector3.right);
+            Gizmos.DrawRay(RayPoint, Vector3.right);*/
         }
 
         #endregion
@@ -898,7 +984,7 @@ using UnityEngine;
         public ControllerState State { get; }
         public event Action<JumpType> Jumped;
         public event Action<bool, float> GroundedChanged;
-        public event Action<bool, Vector2> DashChanged;
+        public event Action<bool, Vector2> RollChanged;
         public event Action<bool> WallGrabChanged;
         public event Action<Vector2> Repositioned;
         public event Action<bool> ToggledPlayer;

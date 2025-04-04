@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6c017d35329ed5f498c5c6b36610bdb6, type: 3}
-  m_Name: New Player Stats
+  m_Name: BaseStats
   m_EditorClassIdentifier: 
   PlayerLayer:
     serializedVersion: 2
@@ -39,11 +39,13 @@ MonoBehaviour:
   JumpPower: 15
   EndJumpEarlyExtraForceMultiplier: 3
   MaxAirJumps: 1
-  AllowDash: 1
-  DashVelocity: 50
-  DashDuration: 0.2
-  DashCooldown: 1.5
-  DashEndHorizontalMultiplier: 0.5
+  AllowRoll: 1
+  RollVelocity: 10
+  RollDuration: 0.3
+  RollCooldown: 0.5
+  RollEndHorizontalMultiplier: 0.2
+  AttackCooldown: 0.5
+  AttackDuration: 1
   AllowCrouching: 1
   CrouchSlowDownTime: 0.5
   CrouchSpeedModifier: 0.5
