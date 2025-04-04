@@ -21,8 +21,8 @@ public class BossController : MonoBehaviour
 
     private int num_moves = 3;
     private int curr_moves = 0;
-    private float move_time = 1F;
-    private float move_speed = 1F;
+    private float move_time = 2F;
+    private float move_speed = 0.5F;
     private int step_back_chance = 5; //out of 10
     private bool moving = false;
     private bool attacking = false;
