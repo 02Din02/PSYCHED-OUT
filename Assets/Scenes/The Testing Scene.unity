@@ -656,7 +656,7 @@ GameObject:
   - component: {fileID: 440852381}
   - component: {fileID: 440852380}
   - component: {fileID: 440852379}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Boss
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -747,8 +747,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6783ab5d2a14dfd4b9d406ff884a6144, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  boss: {fileID: 440852378}
-  player: {fileID: 2076680748}
   bossHealth: 1500
   healthSlider: {fileID: 1225976418}
   lrange: 0
@@ -819,7 +817,7 @@ Transform:
   m_GameObject: {fileID: 440852378}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 4.13, y: 1.86, z: 0}
+  m_LocalPosition: {x: 4.13, y: -1.485, z: 0}
   m_LocalScale: {x: 3, y: 3, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1957,6 +1955,7 @@ MonoBehaviour:
   pauseCanvas: {fileID: 602300406}
   volumeSlider: {fileID: 708782476}
   volumeNumText: {fileID: 1322024825}
+  pauseAction: {fileID: 0}
 --- !u!4 &1227718987
 Transform:
   m_ObjectHideFlags: 0
@@ -4253,9 +4252,17 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8949613153460218762, guid: e0745c3bdc321814494bc154d7c99762, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 9127127945342142499, guid: e0745c3bdc321814494bc154d7c99762, type: 3}
       propertyPath: m_Name
       value: Player
+      objectReference: {fileID: 0}
+    - target: {fileID: 9127127945342142499, guid: e0745c3bdc321814494bc154d7c99762, type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 3860440312310277645, guid: e0745c3bdc321814494bc154d7c99762, type: 3}
@@ -4268,17 +4275,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 1721435822973976167, guid: e0745c3bdc321814494bc154d7c99762, type: 3}
   m_PrefabInstance: {fileID: 2076680746}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &2076680748 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 3468117382697901065, guid: e0745c3bdc321814494bc154d7c99762, type: 3}
-  m_PrefabInstance: {fileID: 2076680746}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e2d4937aaaf103e48aa6fc0989e152c2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &2079999531
 GameObject:
   m_ObjectHideFlags: 0

@@ -29,6 +29,10 @@ public class PlayerStats : ScriptableObject
     public float AirFrictionMultiplier = 0.5f;
     public float DirectionCorrectionMultiplier = 3f;
     public float MaxWalkableSlope = 50;
+    
+    // Attack
+    [Header("Attack"), Space] public float AttackCooldown = 1.0f;
+    public float AttackDuration = 0.5f;
 
     // Jump
     [Header("Jump"), Space] public float ExtraConstantGravity = 40;
