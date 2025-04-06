@@ -4,8 +4,9 @@ using UnityEngine;
 
 public class LaserOrb : MonoBehaviour
 {
+    float damage = 15F;
     float attack_delay = 1.5F;
-    float velocity = 5F;
+    float velocity = 20F;
     private BoxCollider2D boxCollider;
     private PlayerMovement player;
     private Vector3 direction;

@@ -10,6 +10,7 @@ public class OpticPillar : MonoBehaviour
     private PlayerMovement player;
     public bool debug;
 
+    float damage = 50F;
     float width = 5.0F;
     float height = 10.0F;
     float attack_delay = 2F;
