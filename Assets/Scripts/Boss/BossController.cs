@@ -1,63 +1,55 @@
 using UnityEngine;
-using System.Collections.Generic;
 using System.Collections;
 using UnityEngine.UI;
-using UnityEditor.Experimental.GraphView;
-using UnityEditor.SearchService;
-using System.Runtime.InteropServices.WindowsRuntime;
-using UnityEditor.Rendering.Universal;
-using Unity.Collections;
+using Unity.Mathematics;
 
 public class BossController : MonoBehaviour
 {
     //gameobjects
     private PlayerMovement player;
     private BoxCollider2D boxCollider;
+    private Rigidbody2D rigidbody2D;
+
+    //prefabs
     private GameObject laser_orb_prefab;
     private GameObject optic_pillar_prefab;
     private GameObject melee_attack_prefab;
-    private Rigidbody2D rigidbody2D;
 
-    // Stats
-    public float bossHealth;
+    //ranges (P____[L]____lrange____[M]____mrange____[C]____B)
+    float mrange = 10F;
+    float crange = 5F;
     
     // UI
     public Slider healthSlider;
 
-    private int num_moves = 3;
-    private int curr_moves = 0;
-    private float move_time = 2F;
-    private float move_speed = 0.5F;
-    private int step_back_chance = 5; //out of 10
-    private bool moving = false;
+    // Stats
+    public float bossHealth;
+    private float move_duration = 4F;
+    private float step_back_duration = 1F;
+    private float move_speed = 1F;
+    private float step_back_chance = 0.2F; //out of 1
+    private float pause_duration = 1F;
     private bool attacking = false;
-    private bool finished_attacking = false;
     int facing = -1; //1 for right, -1 for left
 
     void Start()
     {
-        // Find the player
         player = FindObjectOfType<PlayerMovement>();
         boxCollider = GetComponent<BoxCollider2D>();
         rigidbody2D = GetComponent<Rigidbody2D>();
-        // Find the player
-        healthSlider.GetComponent<Slider>();
-        // Get the Slider script of the boss health bar
+
+        laser_orb_prefab = Resources.Load("Laser_Orb") as GameObject;
+        optic_pillar_prefab = Resources.Load("Optic_Pillar") as GameObject;
+        melee_attack_prefab = Resources.Load("Melee_Attack") as GameObject;
+
         healthSlider.GetComponent<Slider>();
 
         // set the health on the boss health bar
         healthSlider.maxValue = bossHealth;
         healthSlider.value = bossHealth;
-        // set the health on the boss health bar
-
-        curr_moves = num_moves;
     }
     void attack(float dist)
     {
-        //ranges (____[L]____lrange____[M]____mrange____[C]____)
-        float lrange = 3F;
-        float mrange = 2F;
-
         //movesets for each range
         string[] lset = {"laser_orb", "optic_pillar"};
         string[] mset = {"three_hit"};
@@ -68,36 +60,17 @@ public class BossController : MonoBehaviour
         attacking = true;
 
         string a;
-        if (dist >= lrange) {
-            a = lset[Random.Range(0, lset.Length)];
+        if (dist <= crange) {
+            a = cset[UnityEngine.Random.Range(0, cset.Length)];
         }
-        else if (dist >= mrange) {
-            a = mset[Random.Range(0, mset.Length)];
+        else if (dist <= mrange) {
+            a = mset[UnityEngine.Random.Range(0, mset.Length)];
         }
         else {
-            a = cset[Random.Range(0, cset.Length)];
+            a = lset[UnityEngine.Random.Range(0, lset.Length)];
         }
 
-        Invoke(a, 0);
-    }
-
-    // chance is out of 10
-    IEnumerator move(bool step_back)
-    {
-        moving = true;
-
-        int dir = facing;
-        if (step_back) {
-            dir *= -1;
-        }
-
-        rigidbody2D.velocity = new Vector2(dir * move_speed, 0);
-
-        yield return new WaitForSeconds(move_time);
-
-        rigidbody2D.velocity = Vector2.zero;
-
-        moving = false;
+        StartCoroutine(a, 0);
     }
 
     IEnumerator laser_orb()
@@ -122,17 +95,19 @@ public class BossController : MonoBehaviour
         yield return new WaitForSeconds(laser_spawn_delay);
         Instantiate(laser_orb_prefab, pos_3, Quaternion.identity);
 
-        attacking = true;
+        yield return new WaitForSeconds(pause_duration);
+        attacking = false;
     }
 
-    void optic_pillar()
+    IEnumerator optic_pillar()
     {
         Instantiate(optic_pillar_prefab, transform.position, Quaternion.identity);
 
-        finished_attacking = true;
+        yield return new WaitForSeconds(pause_duration);
+        attacking = false;
     }
 
-    IEnumerator ThreeHit()
+    IEnumerator three_hit()
     {
         // Attack values
         float[] damage = {15F, 30F, 30F}; 
@@ -147,7 +122,7 @@ public class BossController : MonoBehaviour
 
         for (int i = 0; i < 3; i ++){
             // Delay before attack
-            yield return new WaitForSeconds(delay[i]); 
+            yield return new WaitForSeconds(delay[i]);
             
             Vector2 pos = new Vector2(current_face * (sizes[i].x + boss_size.x)/2, (sizes[i].y - boss_size.y)/2);
 
@@ -165,18 +140,19 @@ public class BossController : MonoBehaviour
                     damage[i], 
                     duration[i]);
             }
-
-
         }
+
+        yield return new WaitForSeconds(duration[2] + pause_duration);
+        attacking = false;
     }
 
-    IEnumerator TwoHit()
+    IEnumerator two_hit()
     {
         // Attack values
         float[] damage = {20F, 30F}; 
         Vector2[] sizes = {new Vector2(2F,1F), new Vector2(1.5F,1F)}; 
-        float[] delay = {2F,2F}; 
-        float[] duration = {2F,2F}; 
+        float[] delay = {0.5F,0.5F}; 
+        float[] duration = {0.5F,0.5F}; 
 
         // Helper vars
         int current_face = facing;
@@ -198,35 +174,16 @@ public class BossController : MonoBehaviour
                     duration[i]);
             }
         }
+
+        yield return new WaitForSeconds(duration[1] + pause_duration);
+        attacking = false;
     }
 
-    void cattack2()
-    {
-        return;
-    }
-
-    void UpdateHealthBar()
-    {
-        // Should get called every time Player hits boss, NOT IN UPDATE!!!!!!
-        healthSlider.value = bossHealth;
-    }
-
+    private float curr_move_time = 0F;
+    private bool step_back_decision = true; //can still decide to step back
+    private int move_dir = 1;
     void Update()
     {
-        if (moving) {
-            return;
-        }
-
-        if (attacking) {
-            if (finished_attacking) {
-                curr_moves = num_moves;
-                attacking = false;
-                finished_attacking = false;
-            }
-
-            return;
-        }
-
         // Updates direction that the boss should face
         float dist_from_player = player.transform.position.x - transform.position.x;
         if (dist_from_player > 0) {
@@ -236,23 +193,44 @@ public class BossController : MonoBehaviour
             facing = -1;
         }
 
-        if (curr_moves == 0) {
-            attack(dist_from_player);
+        if (attacking) {
+            return;
+        }
+
+        if (!attacking) {
+            if (curr_move_time > move_duration || math.abs(dist_from_player) <= crange) {
+                attack(dist_from_player);
+                curr_move_time = 0F;
+                step_back_decision = true;
+                move_dir = 1;
+                return;
+            }
+
+            if ((curr_move_time > move_duration - step_back_duration) && step_back_decision) {
+                if (UnityEngine.Random.Range(0F,1F) <= step_back_chance) {
+                    move_dir = -1;
+                }
+                step_back_decision = false;
+            }
+
+            rigidbody2D.velocity = new Vector2(move_dir * facing * move_speed, 0);
+            curr_move_time += Time.deltaTime;
+        }
+    }
+
+    void UpdateHealthBar()
+    {
+        // Should get called every time Player hits boss, NOT IN UPDATE!!!!!!
+        healthSlider.value = bossHealth;
+    }
+
+    void take_damage(float damage) {
+        bossHealth -= damage;
+
+        if (bossHealth <= 0) {
+            Destroy(gameObject);
         } else {
-            int x = 11;
-            if (curr_moves == 1) {
-                x = Random.Range(0, 10) + 1;
-            }
-
-            if (x <= step_back_chance) {
-                //move towards player
-                move(true);
-            } else {
-                //move away from player
-                move(false);
-            }
-
-            curr_moves--;
+            UpdateHealthBar();
         }
     }
 }
