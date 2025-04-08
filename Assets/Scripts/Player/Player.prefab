@@ -190,7 +190,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0.65}
+  m_Offset: {x: 0, y: 1}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -201,7 +201,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.8, y: 0.2}
+  m_Size: {x: 0.5, y: 0.9}
   m_EdgeRadius: 0.05
 --- !u!70 &7496120124203443608
 CapsuleCollider2D:
@@ -210,7 +210,7 @@ CapsuleCollider2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9127127945342142499}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Density: 1
   m_Material: {fileID: 6200000, guid: 2735d4a6f58fd9a41809262683e088c1, type: 2}
   m_IncludeLayers:
@@ -277,8 +277,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e2d4937aaaf103e48aa6fc0989e152c2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  AttackSize: {x: 1.5, y: 1}
-  AttackOrigin: {x: 0, y: 0}
+  AttackSize: {x: 1.2, y: 1.75}
+  AttackPoint: {x: 0.3, y: 0.9}
   <Stats>k__BackingField: {fileID: 11400000, guid: 0a68723838a1ddb499fc4356f36fd969, type: 2}
   _drawGizmos: 1
 --- !u!114 &8250241049317331663

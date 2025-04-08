@@ -17,7 +17,7 @@ using UnityEngine;
 
         //put this in stats later
         [SerializeField] Vector2 AttackSize;
-        [SerializeField] Vector2 AttackOrigin;
+        [SerializeField] Vector2 AttackPoint;
 
         Vector2 AttackPos;
 
@@ -84,7 +84,6 @@ using UnityEngine;
 
             SetupCharacter();
             FacingRight = true;
-
         }
 
         public void OnValidate() => SetupCharacter();
@@ -156,13 +155,13 @@ using UnityEngine;
             _collider.enabled = true;
 
             // Airborne collider
-            _airborneCollider = GetComponent<CapsuleCollider2D>();
+            //_airborneCollider = GetComponent<CapsuleCollider2D>();
             //_airborneCollider.hideFlags = HideFlags.NotEditable;
-            _airborneCollider.size = new Vector2(_character.Width - SKIN_WIDTH * 2, _character.Height - SKIN_WIDTH * 2);
-            _airborneCollider.offset = new Vector2(0, _character.Height / 2);
-            _airborneCollider.sharedMaterial = _rb.sharedMaterial;
+            //_airborneCollider.size = new Vector2(_character.Width - SKIN_WIDTH * 2, _character.Height - SKIN_WIDTH * 2);
+            //_airborneCollider.offset = new Vector2(0, _character.Height / 2);
+            //_airborneCollider.sharedMaterial = _rb.sharedMaterial;
 
-            SetColliderMode(ColliderMode.Airborne);
+            SetColliderMode(ColliderMode.Standard);
 
             _hitObjects = new List<Collider2D>();
         }
@@ -333,13 +332,13 @@ using UnityEngine;
                 GroundedChanged?.Invoke(false, 0);
                 _timeLeftGrounded = _time;
                 _rb.gravityScale = GRAVITY_SCALE;
-                SetColliderMode(ColliderMode.Airborne);
+                //SetColliderMode(ColliderMode.Airborne);
             }
         }
 
         private void SetColliderMode(ColliderMode mode)
         {
-            _airborneCollider.enabled = mode == ColliderMode.Airborne;
+            //_airborneCollider.enabled = mode == ColliderMode.Airborne;
 
             switch (mode)
             {
@@ -386,9 +385,7 @@ using UnityEngine;
             else if(_frameDirection.x > 0){
                 FacingRight = true;
             }
-
-            AttackPos = new Vector2(transform.position.x + (AttackOrigin.x * (FacingRight ? 1.0f : -1.0f)), transform.position.y + AttackOrigin.y);
-
+            AttackPos = new Vector2(transform.position.x + (FacingRight ? AttackPoint.x : -AttackPoint.x), transform.position.y + AttackPoint.y);  
             _frameDirection = _frameDirection.normalized;
         }
 
@@ -639,7 +636,7 @@ using UnityEngine;
                 if(!_hitObjects.Contains(hitThisFrame[i])){
                     Debug.Log("Hit boss");
                     _hitObjects.Append(hitThisFrame[i]);
-                    // do damage stuff
+                    hitThisFrame[i].GetComponent<BossController>().take_damage(5.0f);
                 }
             }
         }
