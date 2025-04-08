@@ -134,6 +134,7 @@ GameObject:
   - component: {fileID: 7496120124203443608}
   - component: {fileID: 3583756269098422023}
   - component: {fileID: 3468117382697901065}
+  - component: {fileID: 8250241049317331663}
   m_Layer: 6
   m_Name: Player
   m_TagString: Player
@@ -280,3 +281,17 @@ MonoBehaviour:
   AttackOrigin: {x: 0, y: 0}
   <Stats>k__BackingField: {fileID: 11400000, guid: 0a68723838a1ddb499fc4356f36fd969, type: 2}
   _drawGizmos: 1
+--- !u!114 &8250241049317331663
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9127127945342142499}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 547a1d09fe9d7fc498594d2e2df112f9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHealth: 100
+  sceneTransition: {fileID: 0}
