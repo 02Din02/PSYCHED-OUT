@@ -11,4 +11,10 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/The Testing Scene.unity
     guid: 097ad69df356e6c458e2e6cc7b941098
+  - enabled: 1
+    path: Assets/Scenes/Upgrade Scene.unity
+    guid: 2760a19e934bfba4bad2e658075f5834
+  - enabled: 1
+    path: Assets/Scenes/Full Arena.unity
+    guid: 88aa8f15ddd46e143b3423bc6c12c17a
   m_configObjects: {}
