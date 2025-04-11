@@ -10,7 +10,7 @@ public class OpticPillar : MonoBehaviour
     private PlayerMovement player;
     public bool debug;
 
-    float damage = 50F;
+    int damage = 50;
     float width = 5.0F;
     float height = 10.0F;
     float attack_delay = 2F;
@@ -31,8 +31,9 @@ public class OpticPillar : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D collision)
     {
-        Debug.Log("pillar");
-        // boxCollider.enabled = false;
+        PlayerManager script = player.GetComponent<PlayerManager>();
+        script.TakeDamage(damage);
+        boxCollider.enabled = false;
     }
 
     void Start()
