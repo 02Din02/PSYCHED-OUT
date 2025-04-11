@@ -279,7 +279,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   AttackSize: {x: 1.5, y: 1}
   AttackOrigin: {x: 0, y: 0}
-  <Stats>k__BackingField: {fileID: 11400000, guid: 0a68723838a1ddb499fc4356f36fd969, type: 2}
+  <Stats>k__BackingField: {fileID: 11400000, guid: 088ffdf3a4afd426d8587f6d2371af07, type: 2}
   _drawGizmos: 1
 --- !u!114 &8250241049317331663
 MonoBehaviour:

@@ -22,6 +22,9 @@ public class PlayerStats : ScriptableObject
     [Tooltip("Velocity = smoother, but can be occasionally unreliable on jagged terrain. Immediate = Occasionally jittery, but stable")]
     public PositionCorrectionMode PositionCorrectionMode = PositionCorrectionMode.Velocity;
 
+    // Health, etc
+    [Header("Game"), Space] public float MaxHealth = 100;
+
     // Movement
     [Header("Movement"), Space] public float BaseSpeed = 9;
     public float Acceleration = 50;
@@ -29,15 +32,16 @@ public class PlayerStats : ScriptableObject
     public float AirFrictionMultiplier = 0.5f;
     public float DirectionCorrectionMultiplier = 3f;
     public float MaxWalkableSlope = 50;
-    
+
     // Attack
     [Header("Attack"), Space] public float AttackCooldown = 1.0f;
     public float AttackDuration = 0.5f;
+    public float AttackStrength = 1.0f;
 
     // Roll
     [Header("Roll"), Space] public bool AllowRoll = true;
     public float RollVelocity = 50;
-    public float RollDuration = 0.2f;
+    public float RollDuration = 0.25f;
     public float RollCooldown = 1.5f;
     public float RollEndHorizontalMultiplier = 0.5f;
 
@@ -52,7 +56,7 @@ public class PlayerStats : ScriptableObject
     // Dash
     [Header("Dash"), Space] public bool AllowDash = true;
     public float DashVelocity = 50;
-    public float DashDuration = 0.2f;
+    public float DashDuration = 0.25f;
     public float DashCooldown = 1.5f;
     public float DashEndHorizontalMultiplier = 0.5f;
 
