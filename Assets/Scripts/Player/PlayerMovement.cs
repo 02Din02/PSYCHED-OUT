@@ -15,12 +15,6 @@ using UnityEngine;
         private Rigidbody2D _rb;
         private PlayerInput _playerInput;
 
-        //put this in stats later
-        [SerializeField] Vector2 AttackSize;
-        [SerializeField] Vector2 AttackPoint;
-
-        Vector2 AttackPos;
-
         #endregion
 
         #region Interface
@@ -31,7 +25,8 @@ using UnityEngine;
         public event Action<bool, float> GroundedChanged;
         public event Action<bool, Vector2> RollChanged;
         //might have to be an AttackType later
-        public event Action<bool> AttackChanged;
+        public event Action<bool> AttackStart;
+        public event Action<AttackType> AttackReleased;
         public event Action<bool> WallGrabChanged;
         public event Action<Vector2> Repositioned;
         public event Action<bool> ToggledPlayer;
@@ -125,6 +120,8 @@ using UnityEngine;
             CleanFrameData();
 
             SaveCharacterState();
+
+            CalculateStamina();
         }
 
         #endregion
@@ -163,7 +160,9 @@ using UnityEngine;
 
             SetColliderMode(ColliderMode.Standard);
 
-            _hitObjects = new List<Collider2D>();
+            _hitObjects = new List<GameObject>();
+
+            _currentStamina = Stats.MaxStamina;
         }
 
         #endregion
@@ -385,7 +384,7 @@ using UnityEngine;
             else if(_frameDirection.x > 0){
                 FacingRight = true;
             }
-            AttackPos = new Vector2(transform.position.x + (FacingRight ? AttackPoint.x : -AttackPoint.x), transform.position.y + AttackPoint.y);  
+            _attackPosition = new Vector2(transform.position.x + (FacingRight ? _attackOrigin.x : -_attackOrigin.x), transform.position.y + _attackOrigin.y);  
             _frameDirection = _frameDirection.normalized;
         }
 
@@ -519,6 +518,27 @@ using UnityEngine;
 
         #endregion */
 
+        #region Stamina
+        public float _currentStamina;
+        private float _lastSpendTime;
+
+        private bool HasStamina(){
+            return _currentStamina > 0;
+        }
+
+        private void SpendStamina(float amount){
+            float x = _currentStamina - amount;
+            _currentStamina = x>0 ? x : 0;
+            _lastSpendTime = _time;
+        }
+
+        private void CalculateStamina(){
+            if(_time > _lastSpendTime + Stats.StamCooldown && _currentStamina < Stats.MaxStamina){
+                _currentStamina += _delta * Stats.StamRegenRate;
+            }
+        }
+        #endregion
+
         #region Jump
 
         private const float JUMP_CLEARANCE_TIME = 0.25f;
@@ -543,12 +563,13 @@ using UnityEngine;
 
         private void CalculateJump()
         {
-            if ((_jumpToConsume || HasBufferedJump) && CanStand && !_rolling && !_attacking)
+            if ((_jumpToConsume || HasBufferedJump) && CanStand && !_rolling && !_attacking && HasStamina())
             {
                 if (CanWallJump) ExecuteJump(JumpType.WallJump);
                 else if (_grounded || ClimbingLadder) ExecuteJump(JumpType.Jump);
                 else if (CanUseCoyote) ExecuteJump(JumpType.Coyote);
                 else if (CanAirJump) ExecuteJump(JumpType.AirJump);
+                SpendStamina(Stats.JumpCost);
             }
 
             if ((!_endedJumpEarly && !_grounded && !_frameInput.JumpHeld && Velocity.y > 0) || Velocity.y < 0) _endedJumpEarly = true; // Early end detection
@@ -604,39 +625,90 @@ using UnityEngine;
         #region Attack
         private bool _attackToConsume;
         private bool _canAttack;
+        private bool _attackCharging;
+        private bool _attackReleased;
         private bool _attacking;
-        private float _attackStart;
+        private float _chargingStart;
         private float _nextAttack;
+        private float _attackEnd;
+        private float _attackDamage;
+        private Vector2 _attackSize;
+        private Vector2 _attackOrigin;
+        private Vector2 _attackPosition;
 
-        private List<Collider2D> _hitObjects;
+        private List<GameObject> _hitObjects;
         
         private void CalculateGroundAttack()
         {
-            if(_canAttack && _attackToConsume && !Crouching && !_rolling && _grounded && _time > _nextAttack){
+            if(!_attacking && _canAttack && _attackToConsume && !Crouching && !_rolling && _grounded && _time > _nextAttack && HasStamina()){
+                _attackCharging = true;
+                _attackReleased = false;
                 _attacking = true;
                 _canAttack = false;
-                _attackStart = _time;
-                _nextAttack = _time + Stats.AttackCooldown;
-                _hitObjects.Clear();
-                AttackChanged?.Invoke(true);
-                CalculateHits();
+                _chargingStart = _time;
+                AttackStart?.Invoke(true);
             }
             if(_attacking){
-                if(_time > _attackStart + Stats.AttackDuration){
-                    _attacking = false;
-                    AttackChanged?.Invoke(false);
-                    _canAttack = true;
+                _attackCharging = _frameInput.AttackHeld;
+                if(!_attackCharging && !_attackReleased){
+                    //Debug.Log("release");
+                    _attackReleased = true;
+                    AttackStart?.Invoke(false);
+                    if(_chargingStart + Stats.AttackChargeTime < _time){
+                        //Debug.Log("heavy");
+                        ExecuteAttack(AttackType.Heavy);
+                        SetVelocity(7.0f * (FacingRight ? Vector2.right : Vector2.left));
+                    }
+                    else{
+                        //Debug.Log("light");
+                        ExecuteAttack(AttackType.Light);
+                    }
+                }
+                if(_attackReleased){
+                    CalculateHits();
+                    
+                    if(_time > _attackEnd){
+                        _attacking = false;
+                        _canAttack = true;                        
+                        AttackReleased?.Invoke(AttackType.None);
+                    }
                 }
             }
         }
 
+        private void ExecuteAttack(AttackType attackType){
+            AttackReleased?.Invoke(attackType);
+            if(attackType is AttackType.Light){
+                _nextAttack = _time + Stats.AttackCooldown;
+                _attackEnd = _time + Stats.LightAttackDuration;
+                _hitObjects.Clear();
+                _attackSize = Stats.LightAttackSize;
+                _attackOrigin = Stats.LightAttackOrigin;
+                _attackDamage = Stats.LightAttackDamage;
+                SpendStamina(Stats.LightAttackCost);
+            }
+
+            else if(attackType is AttackType.Heavy){
+                _nextAttack = _time + Stats.AttackCooldown;
+                _attackEnd = _time + Stats.HeavyAttackDuration;
+                _hitObjects.Clear();
+                _attackSize = Stats.HeavyAttackSize;
+                _attackOrigin = Stats.HeavyAttackOrigin;
+                _attackDamage = Stats.HeavyAttackDamage;
+                SpendStamina(Stats.HeavyAttackCost);
+            }
+
+        }
+
         private void CalculateHits(){
-            Collider2D[] hitThisFrame = Physics2D.OverlapBoxAll(AttackPos, AttackSize, 0, LayerMask.GetMask("Boss"));
+            Debug.Log(_hitObjects.Count);
+            Collider2D[] hitThisFrame = Physics2D.OverlapBoxAll(_attackPosition, _attackSize, 0, LayerMask.GetMask("Boss"));
             for(int i = 0; i<hitThisFrame.Length; i++){
-                if(!_hitObjects.Contains(hitThisFrame[i])){
+                if(!_hitObjects.Contains(hitThisFrame[i].gameObject)){
                     Debug.Log("Hit boss");
-                    _hitObjects.Append(hitThisFrame[i]);
-                    hitThisFrame[i].GetComponent<BossController>().take_damage(5.0f);
+                    _hitObjects.Add(hitThisFrame[i].gameObject);
+                    Debug.Log(_hitObjects.Count);
+                    hitThisFrame[i].GetComponent<BossController>().take_damage(_attackDamage);
                 }
             }
         }
@@ -655,7 +727,7 @@ using UnityEngine;
         {
             if (!Stats.AllowRoll) return;
 
-            if (_grounded && _rollToConsume && _canRoll && _time > _nextRollTime && !_attacking)
+            if (_grounded && _rollToConsume && _canRoll && _time > _nextRollTime && !_attacking && HasStamina())
             {
                 var dir = new Vector2(_frameInput.Move.x, Mathf.Max(_frameInput.Move.y, 0f)).normalized;
                 if (dir == Vector2.zero) return;
@@ -665,6 +737,7 @@ using UnityEngine;
                 _canRoll = false;
                 _startedRolling = _time;
                 _nextRollTime = _time + Stats.RollCooldown;
+                SpendStamina(Stats.RollCost);
                 RollChanged?.Invoke(true, dir);
             }
 
@@ -826,8 +899,9 @@ using UnityEngine;
             }
 
             var step = _hasInputThisFrame ? Stats.Acceleration : Stats.Friction;
+            
+            var xDir = (_hasInputThisFrame && !_attacking ? _frameDirection : Velocity.normalized);
 
-            var xDir = (_hasInputThisFrame ? _frameDirection : Velocity.normalized);
 
             // Quicker direction change
             if (Vector3.Dot(_trimmedFrameVelocity, _frameDirection) < 0) step *= Stats.DirectionCorrectionMultiplier;
@@ -943,8 +1017,8 @@ using UnityEngine;
             Gizmos.DrawWireCube(pos + Vector2.up * _character.Height / 2, new Vector3(_character.Width, _character.Height));
             Gizmos.color = Color.magenta;
             
-            if(_attacking){
-                Gizmos.DrawWireCube(AttackPos, AttackSize);
+            if(_attacking && !_attackCharging){
+                Gizmos.DrawWireCube(_attackPosition, _attackSize);
             }
 
             /* var rayStart = pos + Vector2.up * _character.StepHeight;
@@ -973,6 +1047,13 @@ using UnityEngine;
         Coyote,
         AirJump,
         WallJump
+    }
+
+    public enum AttackType
+    {
+        None,
+        Light,
+        Heavy
     }
 
     public interface IPlayerController

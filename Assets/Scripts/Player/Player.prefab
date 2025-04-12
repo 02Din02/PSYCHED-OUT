@@ -277,10 +277,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e2d4937aaaf103e48aa6fc0989e152c2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  AttackSize: {x: 1.2, y: 1.75}
-  AttackPoint: {x: 0.3, y: 0.9}
   <Stats>k__BackingField: {fileID: 11400000, guid: 0a68723838a1ddb499fc4356f36fd969, type: 2}
   _drawGizmos: 1
+  _currentStamina: 100
 --- !u!114 &8250241049317331663
 MonoBehaviour:
   m_ObjectHideFlags: 0
