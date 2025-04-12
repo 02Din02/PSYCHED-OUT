@@ -207,6 +207,30 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1 &35483471 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 856587909642880051, guid: fa072def37a56b248bcac3c5dae8e4b5, type: 3}
+  m_PrefabInstance: {fileID: 1097364710}
+  m_PrefabAsset: {fileID: 0}
+--- !u!224 &35483472 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 312428097046232554, guid: fa072def37a56b248bcac3c5dae8e4b5, type: 3}
+  m_PrefabInstance: {fileID: 1097364710}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &35483476
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 35483471}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c0ff9d0f342f61647890a24dc945a90a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  healthbar: {fileID: 35483472}
+  white: {fileID: 1622105216}
 --- !u!1 &41978850
 GameObject:
   m_ObjectHideFlags: 0
@@ -3611,6 +3635,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 312428097046232554, guid: fa072def37a56b248bcac3c5dae8e4b5, type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 312428097046232554, guid: fa072def37a56b248bcac3c5dae8e4b5, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 231.029
+      objectReference: {fileID: 0}
+    - target: {fileID: 312428097046232554, guid: fa072def37a56b248bcac3c5dae8e4b5, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -256.4855
+      objectReference: {fileID: 0}
     - target: {fileID: 710824127356987233, guid: fa072def37a56b248bcac3c5dae8e4b5, type: 3}
       propertyPath: m_Name
       value: Canvas
@@ -3698,7 +3734,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 856587909642880051, guid: fa072def37a56b248bcac3c5dae8e4b5, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 35483476}
   m_SourcePrefab: {fileID: 100100000, guid: fa072def37a56b248bcac3c5dae8e4b5, type: 3}
 --- !u!114 &1097364711 stripped
 MonoBehaviour:
@@ -4098,6 +4137,11 @@ Transform:
   m_Children: []
   m_Father: {fileID: 634714753}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 15.801}
+--- !u!224 &1622105216 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 8718929904822744459, guid: fa072def37a56b248bcac3c5dae8e4b5, type: 3}
+  m_PrefabInstance: {fileID: 1097364710}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1724394585
 GameObject:
   m_ObjectHideFlags: 0
@@ -4843,6 +4887,10 @@ PrefabInstance:
       propertyPath: transitions
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 8250241049317331663, guid: e0745c3bdc321814494bc154d7c99762, type: 3}
+      propertyPath: healthBarScript
+      value: 
+      objectReference: {fileID: 35483476}
     - target: {fileID: 8250241049317331663, guid: e0745c3bdc321814494bc154d7c99762, type: 3}
       propertyPath: sceneTransition
       value: 

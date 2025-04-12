@@ -8,6 +8,7 @@ public class PlayerManager : MonoBehaviour
     [SerializeField] private int maxHealth = 100;
     private PlayerMovement playerMovement;
     [SerializeField] SceneTransitionScript sceneTransition;
+    [SerializeField] HealthBarScript healthBarScript;
     // Start is called before the first frame update
     void Start()
     {
@@ -22,9 +23,11 @@ public class PlayerManager : MonoBehaviour
         {
             PlayerDeath();
         }
+
+        // debug keybinds
         if(Input.GetKeyDown(KeyCode.LeftAlt))
         {
-            PlayerDeath();
+            TakeDamage(10);
         }
     }
 
@@ -47,12 +50,15 @@ public class PlayerManager : MonoBehaviour
 
     public void TakeDamage(int damage)
     {
-        if(health < 0)
+        health -= damage;
+        if (health < 0)
         {
             health = 0;
             return;
         }
-        health -= damage;
+        float healthpercent = (float)damage / maxHealth;
+        healthBarScript.ChangeHealth(-healthpercent);
+        Debug.Log(health);
     }
 
     public int GetHealth()
@@ -60,4 +66,8 @@ public class PlayerManager : MonoBehaviour
         return health;
     }
     
+    public int GetMaxHealth()
+    {
+        return maxHealth;
+    }
 }
