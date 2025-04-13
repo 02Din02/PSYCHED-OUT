@@ -77,6 +77,10 @@ public class BossController : MonoBehaviour
 
     IEnumerator laser_orb()
     {
+        float animation_delay = 1F;
+
+        yield return new WaitForSeconds(animation_delay);
+
         float orb_dist = 2F; //distance from boss
         float orb_spread = 2F; //distance between each orb
         float orb_height = 1F; //the height of the middle orb
@@ -85,8 +89,6 @@ public class BossController : MonoBehaviour
         Vector3 pos_1 = new Vector3(orb_dist * facing, orb_height + orb_spread, 0) + transform.position;
         Vector3 pos_2 = new Vector3(orb_dist * facing, orb_height, 0) + transform.position;
         Vector3 pos_3 = new Vector3(orb_dist * facing, orb_height - orb_spread, 0) + transform.position;
-
-        Debug.Log("Orbs created");
 
         yield return new WaitForSeconds(laser_spawn_delay);
         Instantiate(laser_orb_prefab, pos_1, Quaternion.identity);
@@ -103,6 +105,10 @@ public class BossController : MonoBehaviour
 
     IEnumerator optic_pillar()
     {
+        float animation_delay = 1F;
+
+        yield return new WaitForSeconds(animation_delay);
+
         Instantiate(optic_pillar_prefab, transform.position, Quaternion.identity);
 
         yield return new WaitForSeconds(pause_duration);
@@ -111,6 +117,10 @@ public class BossController : MonoBehaviour
 
     IEnumerator three_hit()
     {
+        float animation_delay = 1F;
+
+        yield return new WaitForSeconds(animation_delay);
+        
         // Attack values
         int[] damage = {15, 30, 30}; 
         Vector2[] sizes = {new Vector2(2.5F,1F), new Vector2(2F,1F), new Vector2(4F,1F)}; 
@@ -150,6 +160,10 @@ public class BossController : MonoBehaviour
 
     IEnumerator two_hit()
     {
+        float animation_delay = 1F;
+
+        yield return new WaitForSeconds(animation_delay);
+
         // Attack values
         int[] damage = {20, 30}; 
         Vector2[] sizes = {new Vector2(2F,1F), new Vector2(1.5F,1F)}; 

@@ -31,9 +31,11 @@ public class OpticPillar : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D collision)
     {
-        PlayerManager script = player.GetComponent<PlayerManager>();
-        script.TakeDamage(damage);
-        boxCollider.enabled = false;
+        if (collision.gameObject.tag == "Player") {
+            PlayerManager script = player.GetComponent<PlayerManager>();
+            script.TakeDamage(damage);
+            boxCollider.enabled = false;
+        }
     }
 
     void Start()
@@ -57,5 +59,4 @@ public class OpticPillar : MonoBehaviour
 
         Destroy(gameObject);
     }
-
 }
