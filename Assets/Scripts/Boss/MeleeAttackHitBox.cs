@@ -5,12 +5,14 @@ using UnityEngine;
 public class MeleeAttackHitBox : MonoBehaviour
 {
     private BoxCollider2D boxCollider;
-    private float damage;
+    private PlayerMovement player;
+    private int damage;
     private float lifetime;
     private bool start_timer = false;
 
-    public void LoadVars(Vector2 center, Vector2 size, float damage1, float lifetime1 = 5F){
+    public void LoadVars(Vector2 center, Vector2 size, int damage1, float lifetime1 = 5F){
         boxCollider = GetComponent<BoxCollider2D>();
+        player = FindObjectOfType<PlayerMovement>();
         
         boxCollider.offset = center;
         boxCollider.size = size;
@@ -32,8 +34,9 @@ public class MeleeAttackHitBox : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D collision)
     {
-        // Debug.Log("Do Damage");
-        // boxCollider.enabled = false;
-        // Destroy(gameObject);
+        PlayerManager script = player.GetComponent<PlayerManager>();
+        script.TakeDamage(damage);
+        boxCollider.enabled = false;
+        Destroy(gameObject);
     }
 }
