@@ -53,6 +53,7 @@ public class PlayerManager : MonoBehaviour
             return;
         }
         health -= damage;
+        Debug.Log(health);
     }
 
     public int GetHealth()

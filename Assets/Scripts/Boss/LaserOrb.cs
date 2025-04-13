@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class LaserOrb : MonoBehaviour
 {
-    float damage = 15F;
+    int damage = 15;
     float attack_delay = 1.5F;
     float velocity = 20F;
     private BoxCollider2D boxCollider;
@@ -52,7 +52,8 @@ public class LaserOrb : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D collision)
     {
-        Debug.Log("Do Damage");
+        PlayerManager script = player.GetComponent<PlayerManager>();
+        script.TakeDamage(damage);
         boxCollider.enabled = false;
         Destroy(gameObject);
     }

@@ -8,7 +8,7 @@ public class BossController : MonoBehaviour
     //gameobjects
     private PlayerMovement player;
     private BoxCollider2D boxCollider;
-    private Rigidbody2D rigidbody2D;
+    new private Rigidbody2D rigidbody2D;
 
     //prefabs
     private GameObject laser_orb_prefab;
@@ -110,7 +110,7 @@ public class BossController : MonoBehaviour
     IEnumerator three_hit()
     {
         // Attack values
-        float[] damage = {15F, 30F, 30F}; 
+        int[] damage = {15, 30, 30}; 
         Vector2[] sizes = {new Vector2(2.5F,1F), new Vector2(2F,1F), new Vector2(4F,1F)}; 
         float[] delay = {0F,0.5F,0.7F}; //No initial delay
         float[] duration = {0.5F,0.5F,0.5F}; 
@@ -149,7 +149,7 @@ public class BossController : MonoBehaviour
     IEnumerator two_hit()
     {
         // Attack values
-        float[] damage = {20F, 30F}; 
+        int[] damage = {20, 30}; 
         Vector2[] sizes = {new Vector2(2F,1F), new Vector2(1.5F,1F)}; 
         float[] delay = {0.5F,0.5F}; 
         float[] duration = {0.5F,0.5F}; 
@@ -184,6 +184,7 @@ public class BossController : MonoBehaviour
     private int move_dir = 1;
     void Update()
     {
+        rigidbody2D.velocity = Vector2.zero;
         // Updates direction that the boss should face
         float dist_from_player = player.transform.position.x - transform.position.x;
         if (dist_from_player > 0) {
