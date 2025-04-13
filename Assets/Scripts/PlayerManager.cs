@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Mathematics;
 using UnityEngine;
 
 public class PlayerManager : MonoBehaviour
@@ -9,11 +10,15 @@ public class PlayerManager : MonoBehaviour
     private PlayerMovement playerMovement;
     [SerializeField] SceneTransitionScript sceneTransition;
     [SerializeField] HealthBarScript healthBarScript;
+
+    [SerializeField] DataManager dataManager;
+    [SerializeField] BossController bossController;
     // Start is called before the first frame update
     void Start()
     {
         health = maxHealth;
         playerMovement = GetComponent<PlayerMovement>();
+        dataManager = FindObjectOfType<DataManager>();
     }
 
     // Update is called once per frame
@@ -33,6 +38,7 @@ public class PlayerManager : MonoBehaviour
 
     private void PlayerDeath()
     {
+        dataManager.currency += (int)(bossController.health * 100 / bossController.maxhealth);
         playerMovement.enabled = false;
         StartCoroutine(PlayerDeathSequence());
         GetComponent<BoxCollider2D>().enabled = false;

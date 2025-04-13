@@ -23,7 +23,8 @@ public class BossController : MonoBehaviour
     public Slider healthSlider;
 
     // Stats
-    public float bossHealth;
+    public float maxhealth;
+    public float health;
     private float move_duration = 4F;
     private float step_back_duration = 1F;
     private float move_speed = 1F;
@@ -45,8 +46,9 @@ public class BossController : MonoBehaviour
         healthSlider.GetComponent<Slider>();
 
         // set the health on the boss health bar
-        healthSlider.maxValue = bossHealth;
-        healthSlider.value = bossHealth;
+        maxhealth = health;
+        healthSlider.maxValue = health;
+        healthSlider.value = health;
     }
     void attack(float dist)
     {
@@ -222,13 +224,13 @@ public class BossController : MonoBehaviour
     void UpdateHealthBar()
     {
         // Should get called every time Player hits boss, NOT IN UPDATE!!!!!!
-        healthSlider.value = bossHealth;
+        healthSlider.value = health;
     }
 
     void take_damage(float damage) {
-        bossHealth -= damage;
+        health -= damage;
 
-        if (bossHealth <= 0) {
+        if (health <= 0) {
             Destroy(gameObject);
         } else {
             UpdateHealthBar();
