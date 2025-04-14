@@ -243,7 +243,7 @@ public class BossController : MonoBehaviour
     }
 
     public void take_damage(float damage) {
-        bossHealth -= damage;
+        health -= damage;
         if (health <= 0) {
             Destroy(gameObject);
         } else {
