@@ -17,7 +17,8 @@ public class PlayerAnimator : MonoBehaviour
         _player.GroundedChanged += OnGroundedChanged;
         _player.RollChanged += OnRollChanged;
         _player.Jumped += OnJumped;        
-        _player.AttackChanged += OnAttackChanged;
+        _player.AttackStart += OnAttackChanged;
+        _player.AttackReleased += OnAttackExecuted;
     }
     private void Awake() {
         _player = GetComponentInParent<PlayerMovement>();
@@ -63,11 +64,15 @@ public class PlayerAnimator : MonoBehaviour
     private void OnAttackChanged(bool attacking){
         //Debug.Log(attacking);
         if(attacking){
-            _anim.SetTrigger("Attack");
+            _anim.SetTrigger("Charging");
         }
         else{
-            _anim.ResetTrigger("Attack");
+            _anim.ResetTrigger("Charging");
         }
+    }
+
+    private void OnAttackExecuted(AttackType attack){
+        _anim.SetInteger("AttackType", (int)attack);
     }
 
 }

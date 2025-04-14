@@ -242,9 +242,8 @@ public class BossController : MonoBehaviour
         healthSlider.value = health;
     }
 
-    void take_damage(float damage) {
-        health -= damage;
-
+    public void take_damage(float damage) {
+        bossHealth -= damage;
         if (health <= 0) {
             Destroy(gameObject);
         } else {
