@@ -32,7 +32,16 @@ public class PlayerStats : ScriptableObject
     
     // Attack
     [Header("Attack"), Space] public float AttackCooldown = 1.0f;
-    public float AttackDuration = 0.5f;
+    public float LightAttackDuration = 0.5f;
+    public float HeavyAttackDuration = 1.2f;
+    public float AttackChargeTime = 1.0f;
+    public Vector2 LightAttackOrigin;
+    public Vector2 HeavyAttackOrigin;
+    public Vector2 LightAttackSize;
+    public Vector2 HeavyAttackSize;
+    public float LightAttackDamage = 5f;
+    public float HeavyAttackDamage = 20f;
+
 
     // Roll
     [Header("Roll"), Space] public bool AllowRoll = true;
@@ -48,6 +57,15 @@ public class PlayerStats : ScriptableObject
     public float JumpPower = 20;
     public float EndJumpEarlyExtraForceMultiplier = 3;
     public int MaxAirJumps = 1;
+
+    // Stamina
+    [Header("Stamina"), Space] public float MaxStamina = 100f;
+    public float RollCost = 25f;
+    public float JumpCost = 5f;
+    public float LightAttackCost = 15f;
+    public float HeavyAttackCost = 20f;
+    public float StamCooldown = 0.3f;
+    public float StamRegenRate = 5f;
 
     // Dash
     [Header("Dash"), Space] public bool AllowDash = true;
