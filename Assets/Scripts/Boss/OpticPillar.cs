@@ -14,7 +14,7 @@ public class OpticPillar : MonoBehaviour
     float width = 5.0F;
     float height = 10.0F;
     float attack_delay = 2F;
-    float duration = 1.5F;
+    float duration = 3;
     void Awake()
     {
         player = FindObjectOfType<PlayerMovement>();

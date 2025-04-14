@@ -112,6 +112,7 @@ public class BossController : MonoBehaviour
         Instantiate(optic_pillar_prefab, transform.position, Quaternion.identity);
 
         yield return new WaitForSeconds(pause_duration);
+        
         attacking = false;
     }
 

@@ -296,3 +296,5 @@ MonoBehaviour:
   maxHealth: 100
   sceneTransition: {fileID: 0}
   healthBarScript: {fileID: 0}
+  dataManager: {fileID: 0}
+  bossController: {fileID: 0}
