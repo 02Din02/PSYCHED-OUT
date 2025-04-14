@@ -42,6 +42,8 @@ MonoBehaviour:
   HeavyAttackOrigin: {x: 0.5, y: 0.7}
   LightAttackSize: {x: 1.3, y: 1.5}
   HeavyAttackSize: {x: 2, y: 1.5}
+  LightAttackDamage: 5
+  HeavyAttackDamage: 20
   AllowRoll: 1
   RollVelocity: 10
   RollDuration: 0.3
