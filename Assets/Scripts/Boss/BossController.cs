@@ -9,6 +9,7 @@ public class BossController : MonoBehaviour
     private PlayerMovement player;
     private BoxCollider2D boxCollider;
     new private Rigidbody2D rigidbody2D;
+    private Animator bossAnim;
 
     //prefabs
     private GameObject laser_orb_prefab;
@@ -38,6 +39,8 @@ public class BossController : MonoBehaviour
         player = FindObjectOfType<PlayerMovement>();
         boxCollider = GetComponent<BoxCollider2D>();
         rigidbody2D = GetComponent<Rigidbody2D>();
+        bossAnim = GetComponent<Animator>();
+
 
         laser_orb_prefab = Resources.Load("Laser_Orb") as GameObject;
         optic_pillar_prefab = Resources.Load("Optic_Pillar") as GameObject;
@@ -77,14 +80,15 @@ public class BossController : MonoBehaviour
 
     IEnumerator laser_orb()
     {
-        float animation_delay = 1F;
+        float animation_delay = 0.5F;
+        bossAnim.SetTrigger("laserOrb");
 
         yield return new WaitForSeconds(animation_delay);
 
-        float orb_dist = 2F; //distance from boss
+        float orb_dist = 4F; //distance from boss
         float orb_spread = 2F; //distance between each orb
         float orb_height = 1F; //the height of the middle orb
-        float laser_spawn_delay = 0.3F; //delay between each orb spawn
+        float laser_spawn_delay = 0.1F; //delay between each orb spawn
 
         Vector3 pos_1 = new Vector3(orb_dist * facing, orb_height + orb_spread, 0) + transform.position;
         Vector3 pos_2 = new Vector3(orb_dist * facing, orb_height, 0) + transform.position;
@@ -106,6 +110,7 @@ public class BossController : MonoBehaviour
     IEnumerator optic_pillar()
     {
         float animation_delay = 1F;
+        bossAnim.SetTrigger("opticPillar");
 
         yield return new WaitForSeconds(animation_delay);
 
@@ -119,6 +124,7 @@ public class BossController : MonoBehaviour
     IEnumerator three_hit()
     {
         float animation_delay = 1F;
+        bossAnim.SetTrigger("threeHit");
 
         yield return new WaitForSeconds(animation_delay);
         
@@ -161,7 +167,8 @@ public class BossController : MonoBehaviour
 
     IEnumerator two_hit()
     {
-        float animation_delay = 1F;
+        float animation_delay = 0.1F;
+        bossAnim.SetTrigger("twoHit");
 
         yield return new WaitForSeconds(animation_delay);
 
