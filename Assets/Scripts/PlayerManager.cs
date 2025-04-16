@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.Mathematics;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerManager : MonoBehaviour
 {
@@ -9,7 +10,7 @@ public class PlayerManager : MonoBehaviour
     [SerializeField] private int maxHealth = 100;
     private PlayerMovement playerMovement;
     [SerializeField] SceneTransitionScript sceneTransition;
-    [SerializeField] HealthBarScript healthBarScript;
+    [SerializeField] private Slider healthSlider;
 
     [SerializeField] DataManager dataManager;
     [SerializeField] BossController bossController;
@@ -62,9 +63,9 @@ public class PlayerManager : MonoBehaviour
             health = 0;
             return;
         }
+        playerMovement._rb.AddForce(new Vector3(-10f, 5f, 0f), ForceMode2D.Impulse);
         float healthpercent = (float)damage / maxHealth;
-        healthBarScript.ChangeHealth(-healthpercent);
-        Debug.Log(health);
+        healthSlider.value = health;
     }
 
     public int GetHealth()

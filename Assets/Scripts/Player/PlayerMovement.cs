@@ -2,18 +2,20 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.UI;
 
 
-    //[RequireComponent(typeof(Rigidbody2D), typeof(BoxCollider2D), typeof(CapsuleCollider2D))]
-    public class PlayerMovement : MonoBehaviour
+//[RequireComponent(typeof(Rigidbody2D), typeof(BoxCollider2D), typeof(CapsuleCollider2D))]
+public class PlayerMovement : MonoBehaviour
     {
         #region References
 
-        private BoxCollider2D _collider;
-        private CapsuleCollider2D _airborneCollider;
+        public BoxCollider2D _collider;
+        public CapsuleCollider2D _airborneCollider;
         private ConstantForce2D _constantForce;
-        private Rigidbody2D _rb;
+        public Rigidbody2D _rb;
         private PlayerInput _playerInput;
+        [SerializeField] private Slider staminaSlider;
 
         #endregion
 
@@ -163,6 +165,7 @@ using UnityEngine;
             _hitObjects = new List<GameObject>();
 
             _currentStamina = Stats.MaxStamina;
+            staminaSlider.value = _currentStamina;
         }
 
         #endregion
@@ -530,11 +533,13 @@ using UnityEngine;
             float x = _currentStamina - amount;
             _currentStamina = x>0 ? x : 0;
             _lastSpendTime = _time;
+            staminaSlider.value = _currentStamina;
         }
 
         private void CalculateStamina(){
             if(_time > _lastSpendTime + Stats.StamCooldown && _currentStamina < Stats.MaxStamina){
                 _currentStamina += _delta * Stats.StamRegenRate;
+                staminaSlider.value = _currentStamina;
             }
         }
         #endregion

@@ -123,7 +123,7 @@ public class BossController : MonoBehaviour
 
     IEnumerator three_hit()
     {
-        float animation_delay = 1F;
+        float animation_delay = 1.5F;
         bossAnim.SetTrigger("threeHit");
 
         yield return new WaitForSeconds(animation_delay);
@@ -167,7 +167,7 @@ public class BossController : MonoBehaviour
 
     IEnumerator two_hit()
     {
-        float animation_delay = 0.1F;
+        float animation_delay = 0.5F;
         bossAnim.SetTrigger("twoHit");
 
         yield return new WaitForSeconds(animation_delay);
