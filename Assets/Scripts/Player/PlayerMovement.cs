@@ -165,7 +165,6 @@ public class PlayerMovement : MonoBehaviour
             _hitObjects = new List<GameObject>();
 
             _currentStamina = Stats.MaxStamina;
-            staminaSlider.value = _currentStamina;
         }
 
         #endregion

@@ -15,8 +15,6 @@ public class DataManager : MonoBehaviour
         }
         Instance = this;
         DontDestroyOnLoad(gameObject);
-        Debug.Log("printing money: 50");
-        currency = 50;
     }
 
 }

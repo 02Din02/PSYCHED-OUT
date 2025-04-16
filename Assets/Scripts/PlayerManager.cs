@@ -9,7 +9,7 @@ public class PlayerManager : MonoBehaviour
     private int health;
     [SerializeField] private int maxHealth = 100;
     private PlayerMovement playerMovement;
-    [SerializeField] SceneTransitionScript sceneTransition;
+    private RestartScene restartLevel;
     [SerializeField] private Slider healthSlider;
 
     [SerializeField] DataManager dataManager;
@@ -20,6 +20,7 @@ public class PlayerManager : MonoBehaviour
         health = maxHealth;
         playerMovement = GetComponent<PlayerMovement>();
         dataManager = FindObjectOfType<DataManager>();
+        restartLevel = FindObjectOfType<RestartScene>();
     }
 
     // Update is called once per frame
@@ -41,18 +42,8 @@ public class PlayerManager : MonoBehaviour
     {
         dataManager.currency += (int)(bossController.health * 100 / bossController.maxhealth);
         playerMovement.enabled = false;
-        StartCoroutine(PlayerDeathSequence());
+        restartLevel.FadeIn();
         GetComponent<BoxCollider2D>().enabled = false;
-        //sceneTransition.FadeOut();
-    }
-    private IEnumerator PlayerDeathSequence()
-    {
-        Time.timeScale = 0.5f;
-        yield return new WaitForSeconds(1);
-        Time.timeScale = 0;
-        yield return new WaitForSecondsRealtime(1);
-        sceneTransition.FadeOut();
-
     }
 
     public void TakeDamage(int damage)

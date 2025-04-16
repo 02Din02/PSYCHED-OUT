@@ -298,7 +298,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 100
-  sceneTransition: {fileID: 0}
   healthSlider: {fileID: 0}
   dataManager: {fileID: 0}
   bossController: {fileID: 0}
