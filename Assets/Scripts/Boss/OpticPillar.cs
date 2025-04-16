@@ -33,8 +33,13 @@ public class OpticPillar : MonoBehaviour
     {
         if (collision.gameObject.tag == "Player") {
             PlayerManager script = player.GetComponent<PlayerManager>();
+
+            if (player._rolling == false)
+            {
             script.TakeDamage(damage);
             boxCollider.enabled = false;
+            }
+            
         }
     }
 

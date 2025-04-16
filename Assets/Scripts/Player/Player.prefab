@@ -280,6 +280,7 @@ MonoBehaviour:
   <Stats>k__BackingField: {fileID: 11400000, guid: 0a68723838a1ddb499fc4356f36fd969, type: 2}
   _drawGizmos: 1
   _currentStamina: 100
+  _rolling: 0
 --- !u!114 &8250241049317331663
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -52,8 +52,12 @@ public class LaserOrb : MonoBehaviour
     {
         if (collision.gameObject.tag == "Player") {
             PlayerManager script = player.GetComponent<PlayerManager>();
-            script.TakeDamage(damage);
-            boxCollider.enabled = false;
+             if (player._rolling == false)
+             {
+                script.TakeDamage(damage);
+                boxCollider.enabled = false;
+             }
+            
         }
 
         Destroy(gameObject);

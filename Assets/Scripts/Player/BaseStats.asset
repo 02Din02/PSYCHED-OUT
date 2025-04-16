@@ -46,7 +46,7 @@ MonoBehaviour:
   HeavyAttackDamage: 20
   AllowRoll: 1
   RollVelocity: 10
-  RollDuration: 0.3
+  RollDuration: 1
   RollCooldown: 0.5
   RollEndHorizontalMultiplier: 0.2
   ExtraConstantGravity: 40

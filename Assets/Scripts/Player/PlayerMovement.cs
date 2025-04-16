@@ -719,9 +719,10 @@ using UnityEngine;
         private bool _rollToConsume;
         private bool _canRoll;
         private Vector2 _rollVel;
-        private bool _rolling;
+        public bool _rolling;
         private float _startedRolling;
         private float _nextRollTime;
+
 
         private void CalculateRoll()
         {
