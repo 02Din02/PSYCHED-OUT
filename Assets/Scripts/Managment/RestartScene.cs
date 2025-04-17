@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
+using TMPro;
 using UnityEditor.SearchService;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -9,20 +10,23 @@ public class RestartScene : MonoBehaviour
 {
     public SpriteRenderer fadeBox;
     public Canvas upgradeCanvas;
+    public TextMeshProUGUI currencyText;
+    [SerializeField] DataManager dataManager;
     void Start()
     { 
         upgradeCanvas.gameObject.SetActive(true);
+        dataManager = FindObjectOfType<DataManager>();
+        currencyText.text = dataManager.currency.ToString();
     }
 
     public void FadeIn()
     {   
         if (fadeBox != null)
         {
-            return;
+            fadeBox.DOFade(1f, 3);
+            StartCoroutine(reloadScene());
         }
-        fadeBox.DOKill();
-        fadeBox.DOFade(1f, 5);
-        StartCoroutine(reloadScene());
+        
     }
 
     public IEnumerator reloadScene()
@@ -35,9 +39,14 @@ public class RestartScene : MonoBehaviour
     {   
         if (fadeBox != null)
         {
-            return;
+            fadeBox.DOFade(0f, 5);
         }
-        fadeBox.DOKill();
-        fadeBox.DOFade(0f, 2);
+        
+    }
+
+    public void UpgradesDone()
+    {
+        upgradeCanvas.gameObject.SetActive(false);
+        FadeOut();
     }
 }

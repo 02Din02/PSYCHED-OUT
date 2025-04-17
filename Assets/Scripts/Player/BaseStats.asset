@@ -46,9 +46,9 @@ MonoBehaviour:
   HeavyAttackDamage: 20
   AllowRoll: 1
   RollVelocity: 10
-  RollDuration: 1
+  RollDuration: 0.8
   RollCooldown: 0.5
-  RollEndHorizontalMultiplier: 0.2
+  RollEndHorizontalMultiplier: 0
   ExtraConstantGravity: 40
   BufferedJumpTime: 0.15
   CoyoteTime: 0.15
@@ -61,7 +61,7 @@ MonoBehaviour:
   LightAttackCost: 15
   HeavyAttackCost: 20
   StamCooldown: 1.2
-  StamRegenRate: 5
+  StamRegenRate: 10
   AllowDash: 1
   DashVelocity: 50
   DashDuration: 0.2

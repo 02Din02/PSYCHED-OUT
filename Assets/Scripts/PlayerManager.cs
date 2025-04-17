@@ -11,6 +11,7 @@ public class PlayerManager : MonoBehaviour
     private PlayerMovement playerMovement;
     private RestartScene restartLevel;
     [SerializeField] private Slider healthSlider;
+     private bool dying = false;
 
     [SerializeField] DataManager dataManager;
     [SerializeField] BossController bossController;
@@ -40,10 +41,18 @@ public class PlayerManager : MonoBehaviour
 
     private void PlayerDeath()
     {
-        dataManager.currency += (int)(bossController.health * 100 / bossController.maxhealth);
-        playerMovement.enabled = false;
-        restartLevel.FadeIn();
-        GetComponent<BoxCollider2D>().enabled = false;
+        if (!dying)
+        {
+            dying = true;
+            float damageDone = bossController.maxhealth - bossController.health;
+            float percentDamage = (damageDone / bossController.maxhealth) * 100f;
+            dataManager.currency += Mathf.RoundToInt(percentDamage);
+            // This took me like a fucking hour bro fuck this shit what the fuck is Mathf unity documentation blows
+            playerMovement.enabled = false;
+            restartLevel.FadeIn();
+            GetComponent<BoxCollider2D>().enabled = false;
+        }
+        
     }
 
     public void TakeDamage(int damage)

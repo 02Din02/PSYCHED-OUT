@@ -11,6 +11,7 @@ public class PlayerMovement : MonoBehaviour
         #region References
 
         public BoxCollider2D _collider;
+        private Vector2 originalColliderSize;
         public CapsuleCollider2D _airborneCollider;
         private ConstantForce2D _constantForce;
         public Rigidbody2D _rb;
@@ -165,6 +166,7 @@ public class PlayerMovement : MonoBehaviour
             _hitObjects = new List<GameObject>();
 
             _currentStamina = Stats.MaxStamina;
+            originalColliderSize = _collider.size;
         }
 
         #endregion
@@ -296,8 +298,9 @@ public class PlayerMovement : MonoBehaviour
                 {
                     return false;
                 }
-
+                _collider.size = originalColliderSize;
                 return true;
+                
             }
         }
 
@@ -585,6 +588,7 @@ public class PlayerMovement : MonoBehaviour
         private void ExecuteJump(JumpType jumpType)
         {
             SetVelocity(_trimmedFrameVelocity);
+            _collider.size = new Vector2(originalColliderSize.x, originalColliderSize.y / 2);
             _endedJumpEarly = false;
             _bufferedJumpUsable = false;
             _lastJumpExecutedTime = _time;

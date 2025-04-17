@@ -1748,7 +1748,7 @@ Transform:
   m_GameObject: {fileID: 327363300}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -55.16999, y: 9.534655, z: -9.056796}
+  m_LocalPosition: {x: -55.76999, y: 9.634655, z: -9.056796}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -2466,8 +2466,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: 0
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: fc13229a4b3c40648b2f44c041d14ed9, type: 2}
+  m_sharedMaterial: {fileID: -4754336498875289499, guid: fc13229a4b3c40648b2f44c041d14ed9, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -4968,7 +4968,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &851769290
 RectTransform:
   m_ObjectHideFlags: 0
@@ -5145,6 +5145,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: DataManager
       objectReference: {fileID: 0}
+    - target: {fileID: 6637948101517726046, guid: cb67b9a3685f24803863d382b83b9ab0, type: 3}
+      propertyPath: currencyText
+      value: 
+      objectReference: {fileID: 529215968}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -7609,7 +7613,19 @@ MonoBehaviour:
   - eventID: 4
     callback:
       m_PersistentCalls:
-        m_Calls: []
+        m_Calls:
+        - m_Target: {fileID: 2085931459}
+          m_TargetAssemblyTypeName: RestartScene, Assembly-CSharp
+          m_MethodName: UpgradesDone
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
 --- !u!114 &1560238505
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8383,7 +8399,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   confinerShape2D: {fileID: 1733773399}
   player: {fileID: 9127127944598715270}
-  boss: {fileID: 0}
+  boss: {fileID: 6246243637972358561}
   virtualCam: {fileID: 327363301}
 --- !u!60 &1733773399
 PolygonCollider2D:
@@ -9400,7 +9416,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!212 &1851445010
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -10585,6 +10601,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fadeBox: {fileID: 1851445010}
   upgradeCanvas: {fileID: 851769293}
+  currencyText: {fileID: 529215968}
 --- !u!4 &2085931460
 Transform:
   m_ObjectHideFlags: 0
@@ -10794,7 +10811,7 @@ Transform:
   m_GameObject: {fileID: 9127127944598715270}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -12, y: -27.6, z: 0}
+  m_LocalPosition: {x: -12.6, y: -27.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
