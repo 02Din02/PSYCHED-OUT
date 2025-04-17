@@ -382,12 +382,13 @@ public class PlayerMovement : MonoBehaviour
                 var angle = Vector2.Angle(GroundNormal, Up);
                 if (angle < Stats.MaxWalkableSlope) _frameDirection.y = _frameDirection.x * -GroundNormal.x / GroundNormal.y;
             }
-
-            if(_frameDirection.x < 0){
-                FacingRight = false;
-            }
-            else if(_frameDirection.x > 0){
-                FacingRight = true;
+            if(!_attacking){
+                if(_frameDirection.x < 0){
+                    FacingRight = false;
+                }
+                else if(_frameDirection.x > 0){
+                    FacingRight = true;
+                }
             }
             _attackPosition = new Vector2(transform.position.x + (FacingRight ? _attackOrigin.x : -_attackOrigin.x), transform.position.y + _attackOrigin.y);  
             _frameDirection = _frameDirection.normalized;
@@ -909,8 +910,8 @@ public class PlayerMovement : MonoBehaviour
 
             var step = _hasInputThisFrame ? Stats.Acceleration : Stats.Friction;
             
-            var xDir = (_hasInputThisFrame && !_attacking ? _frameDirection : Velocity.normalized);
-
+            //var xDir = (_hasInputThisFrame && !_attacking) ? _frameDirection : Velocity.normalized;
+            var xDir = (_hasInputThisFrame && !_attacking) ? _frameDirection : Velocity.normalized*.3f;
 
             // Quicker direction change
             if (Vector3.Dot(_trimmedFrameVelocity, _frameDirection) < 0) step *= Stats.DirectionCorrectionMultiplier;
