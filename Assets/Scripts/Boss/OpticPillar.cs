@@ -13,8 +13,8 @@ public class OpticPillar : MonoBehaviour
     int damage = 50;
     float width = 5.0F;
     float height = 10.0F;
-    float attack_delay = 2F;
-    float duration = 1.5F;
+    float attack_delay = 3.7F;
+    float duration = 3;
     void Awake()
     {
         player = FindObjectOfType<PlayerMovement>();
@@ -33,8 +33,13 @@ public class OpticPillar : MonoBehaviour
     {
         if (collision.gameObject.tag == "Player") {
             PlayerManager script = player.GetComponent<PlayerManager>();
+
+            if (player._rolling == false)
+            {
             script.TakeDamage(damage);
             boxCollider.enabled = false;
+            }
+            
         }
     }
 
@@ -49,7 +54,7 @@ public class OpticPillar : MonoBehaviour
 
         boxCollider.enabled = false;
 
-        transform.position = new Vector3(player.transform.position.x, player.transform.position.y, player.transform.position.z);
+        transform.position = new Vector3(player.transform.position.x, player.transform.position.y + 4, player.transform.position.z);
 
         yield return new WaitForSeconds(attack_delay);
 

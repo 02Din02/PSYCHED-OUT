@@ -2,14 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.Mathematics;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerManager : MonoBehaviour
 {
-    private int health;
-    [SerializeField] private int maxHealth = 100;
+    private float health;
+    [SerializeField] private float maxHealth = 100;
     private PlayerMovement playerMovement;
-    [SerializeField] SceneTransitionScript sceneTransition;
-    [SerializeField] HealthBarScript healthBarScript;
+    private RestartScene restartLevel;
+    [SerializeField] private Slider healthSlider;
+     private bool dying = false;
 
     [SerializeField] DataManager dataManager;
     [SerializeField] BossController bossController;
@@ -19,6 +21,7 @@ public class PlayerManager : MonoBehaviour
         health = maxHealth;
         playerMovement = GetComponent<PlayerMovement>();
         dataManager = FindObjectOfType<DataManager>();
+        restartLevel = FindObjectOfType<RestartScene>();
     }
 
     // Update is called once per frame
@@ -34,24 +37,24 @@ public class PlayerManager : MonoBehaviour
         {
             TakeDamage(10);
         }
+
+        maxHealth = playerMovement.Stats.MaxHealth;
     }
 
     private void PlayerDeath()
     {
-        dataManager.currency += (int)(bossController.health * 100 / bossController.maxhealth);
-        playerMovement.enabled = false;
-        StartCoroutine(PlayerDeathSequence());
-        GetComponent<BoxCollider2D>().enabled = false;
-        //sceneTransition.FadeOut();
-    }
-    private IEnumerator PlayerDeathSequence()
-    {
-        Time.timeScale = 0.5f;
-        yield return new WaitForSeconds(1);
-        Time.timeScale = 0;
-        yield return new WaitForSecondsRealtime(1);
-        sceneTransition.FadeOut();
-
+        if (!dying)
+        {
+            dying = true;
+            float damageDone = bossController.maxhealth - bossController.health;
+            float percentDamage = (damageDone / bossController.maxhealth) * 100f;
+            dataManager.currency += Mathf.RoundToInt(percentDamage);
+            // This took me like a fucking hour bro fuck this shit what the fuck is Mathf unity documentation blows
+            playerMovement.enabled = false;
+            restartLevel.FadeIn();
+            GetComponent<BoxCollider2D>().enabled = false;
+        }
+        
     }
 
     public void TakeDamage(int damage)
@@ -62,18 +65,23 @@ public class PlayerManager : MonoBehaviour
             health = 0;
             return;
         }
+        playerMovement._rb.AddForce(new Vector3(-10f, 5f, 0f), ForceMode2D.Impulse);
         float healthpercent = (float)damage / maxHealth;
-        healthBarScript.ChangeHealth(-healthpercent);
-        Debug.Log(health);
+        healthSlider.value = health;
     }
 
-    public int GetHealth()
+    public float GetHealth()
     {
         return health;
     }
     
-    public int GetMaxHealth()
+    public float GetMaxHealth()
     {
         return maxHealth;
+    }
+
+    public void resetHealth(){
+        health = maxHealth;
+        healthSlider.maxValue = maxHealth;
     }
 }

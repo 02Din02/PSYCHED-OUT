@@ -28,7 +28,7 @@ public class PlayerAnimator : MonoBehaviour
     void Update()
     {
         //Handle sprite flip
-        if (_player.Input.x != 0) _sprite.flipX = _player.Input.x < 0;
+        if (_player.Input.x != 0) _sprite.flipX = !_player.FacingRight;
 
         //Handle move
         _anim.SetFloat("Speed", Mathf.Abs(_player.Velocity.x));

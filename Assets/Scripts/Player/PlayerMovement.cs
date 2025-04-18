@@ -2,18 +2,21 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.UI;
 
 
-    //[RequireComponent(typeof(Rigidbody2D), typeof(BoxCollider2D), typeof(CapsuleCollider2D))]
-    public class PlayerMovement : MonoBehaviour
+//[RequireComponent(typeof(Rigidbody2D), typeof(BoxCollider2D), typeof(CapsuleCollider2D))]
+public class PlayerMovement : MonoBehaviour
     {
         #region References
 
-        private BoxCollider2D _collider;
-        private CapsuleCollider2D _airborneCollider;
+        public BoxCollider2D _collider;
+        private Vector2 originalColliderSize;
+        public CapsuleCollider2D _airborneCollider;
         private ConstantForce2D _constantForce;
-        private Rigidbody2D _rb;
+        public Rigidbody2D _rb;
         private PlayerInput _playerInput;
+        [SerializeField] private Slider staminaSlider;
 
         #endregion
 
@@ -163,6 +166,7 @@ using UnityEngine;
             _hitObjects = new List<GameObject>();
 
             _currentStamina = Stats.MaxStamina;
+            originalColliderSize = _collider.size;
         }
 
         #endregion
@@ -294,8 +298,9 @@ using UnityEngine;
                 {
                     return false;
                 }
-
+                _collider.size = originalColliderSize;
                 return true;
+                
             }
         }
 
@@ -377,12 +382,13 @@ using UnityEngine;
                 var angle = Vector2.Angle(GroundNormal, Up);
                 if (angle < Stats.MaxWalkableSlope) _frameDirection.y = _frameDirection.x * -GroundNormal.x / GroundNormal.y;
             }
-
-            if(_frameDirection.x < 0){
-                FacingRight = false;
-            }
-            else if(_frameDirection.x > 0){
-                FacingRight = true;
+            if(!_attacking){
+                if(_frameDirection.x < 0){
+                    FacingRight = false;
+                }
+                else if(_frameDirection.x > 0){
+                    FacingRight = true;
+                }
             }
             _attackPosition = new Vector2(transform.position.x + (FacingRight ? _attackOrigin.x : -_attackOrigin.x), transform.position.y + _attackOrigin.y);  
             _frameDirection = _frameDirection.normalized;
@@ -530,11 +536,13 @@ using UnityEngine;
             float x = _currentStamina - amount;
             _currentStamina = x>0 ? x : 0;
             _lastSpendTime = _time;
+            staminaSlider.value = _currentStamina;
         }
 
         private void CalculateStamina(){
             if(_time > _lastSpendTime + Stats.StamCooldown && _currentStamina < Stats.MaxStamina){
                 _currentStamina += _delta * Stats.StamRegenRate;
+                staminaSlider.value = _currentStamina;
             }
         }
         #endregion
@@ -581,6 +589,7 @@ using UnityEngine;
         private void ExecuteJump(JumpType jumpType)
         {
             SetVelocity(_trimmedFrameVelocity);
+            _collider.size = new Vector2(originalColliderSize.x, originalColliderSize.y / 2);
             _endedJumpEarly = false;
             _bufferedJumpUsable = false;
             _lastJumpExecutedTime = _time;
@@ -708,7 +717,7 @@ using UnityEngine;
                     Debug.Log("Hit boss");
                     _hitObjects.Add(hitThisFrame[i].gameObject);
                     Debug.Log(_hitObjects.Count);
-                    hitThisFrame[i].GetComponent<BossController>().take_damage(_attackDamage);
+                    hitThisFrame[i].GetComponent<BossController>().take_damage(_attackDamage * Stats.AttackStrength);
                 }
             }
         }
@@ -719,9 +728,10 @@ using UnityEngine;
         private bool _rollToConsume;
         private bool _canRoll;
         private Vector2 _rollVel;
-        private bool _rolling;
+        public bool _rolling;
         private float _startedRolling;
         private float _nextRollTime;
+
 
         private void CalculateRoll()
         {
@@ -900,8 +910,8 @@ using UnityEngine;
 
             var step = _hasInputThisFrame ? Stats.Acceleration : Stats.Friction;
             
-            var xDir = (_hasInputThisFrame && !_attacking ? _frameDirection : Velocity.normalized);
-
+            //var xDir = (_hasInputThisFrame && !_attacking) ? _frameDirection : Velocity.normalized;
+            var xDir = (_hasInputThisFrame && !_attacking) ? _frameDirection : Velocity.normalized*.3f;
 
             // Quicker direction change
             if (Vector3.Dot(_trimmedFrameVelocity, _frameDirection) < 0) step *= Stats.DirectionCorrectionMultiplier;

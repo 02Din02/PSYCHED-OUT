@@ -277,9 +277,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e2d4937aaaf103e48aa6fc0989e152c2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _collider: {fileID: -7672500274569232126}
+  _airborneCollider: {fileID: 0}
+  _rb: {fileID: 3583756269098422023}
+  staminaSlider: {fileID: 0}
   <Stats>k__BackingField: {fileID: 11400000, guid: 0a68723838a1ddb499fc4356f36fd969, type: 2}
   _drawGizmos: 1
   _currentStamina: 100
+  _rolling: 0
 --- !u!114 &8250241049317331663
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -293,5 +298,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 100
-  sceneTransition: {fileID: 0}
-  healthBarScript: {fileID: 0}
+  healthSlider: {fileID: 0}
+  dataManager: {fileID: 0}
+  bossController: {fileID: 0}
