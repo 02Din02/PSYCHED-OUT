@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6c017d35329ed5f498c5c6b36610bdb6, type: 3}
   m_Name: BaseStats
   m_EditorClassIdentifier: 
+  currency: 0
   PlayerLayer:
     serializedVersion: 2
     m_Bits: 64
@@ -33,19 +34,25 @@ MonoBehaviour:
   AirFrictionMultiplier: 0.5
   DirectionCorrectionMultiplier: 3
   MaxWalkableSlope: 50
+  AttackCooldown: 0.5
+  AttackDuration: 1
+  AttackStrength: 1
+  AllowRoll: 1
+  RollVelocity: 10
+  RollDuration: 0.25
+  RollCooldown: 1.1
+  RollEndHorizontalMultiplier: 0.2
   ExtraConstantGravity: 40
   BufferedJumpTime: 0.15
   CoyoteTime: 0.15
   JumpPower: 15
   EndJumpEarlyExtraForceMultiplier: 3
   MaxAirJumps: 1
-  AllowRoll: 1
-  RollVelocity: 10
-  RollDuration: 0.3
-  RollCooldown: 0.5
-  RollEndHorizontalMultiplier: 0.2
-  AttackCooldown: 0.5
-  AttackDuration: 1
+  AllowDash: 1
+  DashVelocity: 50
+  DashDuration: 0.2
+  DashCooldown: 1.5
+  DashEndHorizontalMultiplier: 0.5
   AllowCrouching: 1
   CrouchSlowDownTime: 0.5
   CrouchSpeedModifier: 0.5

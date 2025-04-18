@@ -10,7 +10,9 @@ public class UpgradeManager : MonoBehaviour
     private Dictionary<string, int> upgradeTracker = new Dictionary<string, int>();
 
     [SerializeField] private PlayerStats statsManager;
-    // set in editor
+    // set in editor, should affect CurrentStats object
+    [SerializeField] private PlayerStats baseStats;
+    // set in editor, should be BaseStats object
 
     private readonly string[] upgradeList = { "Instinct", "Adrenaline", "Vital", "Harmony" };
     // Start is called before the first frame update
@@ -23,6 +25,7 @@ public class UpgradeManager : MonoBehaviour
         {
             upgradeTracker.Add(upgrade, 0);
         }
+        SyncStats();
         Debug.Log("UpgradeManager Initialized");
     }
 
@@ -46,7 +49,7 @@ public class UpgradeManager : MonoBehaviour
         }
         upgradeTracker[upgrade] += 1;
         UpdateText();
-        return;
+        SyncStats();
     }
 
     private int CalculateCost(string upgrade)
@@ -56,11 +59,11 @@ public class UpgradeManager : MonoBehaviour
 
     public void SyncStats()
     {
-        statsManager.AttackStrength += statsManager.AttackStrength * (1f + upgradeTracker["Adrenaline"] / 10f);
-        statsManager.RollCooldown -= 0.05f * upgradeTracker["Instinct"];
-        statsManager.BaseSpeed += statsManager.BaseSpeed * (1f + upgradeTracker["Instinct"] / 20f);
-        statsManager.AttackCooldown += statsManager.AttackCooldown * (1f - upgradeTracker["Instinct"] / 20f);
-        statsManager.MaxHealth += 10 * upgradeTracker["Vital"];
+        statsManager.AttackStrength = baseStats.AttackStrength * (1f + upgradeTracker["Adrenaline"] / 10f); // level 10 = doubled
+        statsManager.RollCooldown = baseStats.RollCooldown - (0.05f * upgradeTracker["Instinct"]); // level 10 = halved
+        statsManager.BaseSpeed = baseStats.BaseSpeed * (1f + upgradeTracker["Instinct"] / 20f); // level 10 = 1.5x
+        statsManager.AttackCooldown = baseStats.AttackCooldown * (1f - upgradeTracker["Instinct"] / 20f); // level 10 = halved (crazy)
+        statsManager.MaxHealth = baseStats.MaxHealth + (10 * upgradeTracker["Vital"]); // level 10 = +100
         // stamina
         Debug.LogError("TODO() IMPLEMENT STAMINA STATS & UPGRADE");
     }
