@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6c017d35329ed5f498c5c6b36610bdb6, type: 3}
-  m_Name: BaseStats
+  m_Name: CurrentStats2
   m_EditorClassIdentifier: 
   currency: 0
   PlayerLayer:
@@ -44,7 +44,6 @@ MonoBehaviour:
   HeavyAttackSize: {x: 3.2, y: 1.5}
   LightAttackDamage: 8
   HeavyAttackDamage: 20
-  AttackStrength: 1
   AllowRoll: 1
   RollVelocity: 10
   RollDuration: 0.8
@@ -53,7 +52,7 @@ MonoBehaviour:
   ExtraConstantGravity: 35
   BufferedJumpTime: 0.15
   CoyoteTime: 0.15
-  JumpPower: 17
+  JumpPower: 16
   EndJumpEarlyExtraForceMultiplier: 3
   MaxAirJumps: 0
   MaxStamina: 100
@@ -61,9 +60,8 @@ MonoBehaviour:
   JumpCost: 5
   LightAttackCost: 10
   HeavyAttackCost: 15
-  StamCooldown: 1
+  StamCooldown: 0.5
   StamRegenRate: 15
-  MaxHealth: 100
   AllowDash: 1
   DashVelocity: 50
   DashDuration: 0.2

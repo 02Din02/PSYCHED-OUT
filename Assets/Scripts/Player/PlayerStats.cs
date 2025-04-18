@@ -41,6 +41,7 @@ public class PlayerStats : ScriptableObject
     public Vector2 HeavyAttackSize;
     public float LightAttackDamage = 5f;
     public float HeavyAttackDamage = 20f;
+    public float AttackStrength = 1f;
 
 
     // Roll
@@ -66,6 +67,7 @@ public class PlayerStats : ScriptableObject
     public float HeavyAttackCost = 20f;
     public float StamCooldown = 0.3f;
     public float StamRegenRate = 5f;
+    public float MaxHealth = 100f;
 
     // Dash
     [Header("Dash"), Space] public bool AllowDash = true;

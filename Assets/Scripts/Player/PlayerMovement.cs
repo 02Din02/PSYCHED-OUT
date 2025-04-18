@@ -717,7 +717,7 @@ public class PlayerMovement : MonoBehaviour
                     Debug.Log("Hit boss");
                     _hitObjects.Add(hitThisFrame[i].gameObject);
                     Debug.Log(_hitObjects.Count);
-                    hitThisFrame[i].GetComponent<BossController>().take_damage(_attackDamage);
+                    hitThisFrame[i].GetComponent<BossController>().take_damage(_attackDamage * Stats.AttackStrength);
                 }
             }
         }

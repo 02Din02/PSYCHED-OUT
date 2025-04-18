@@ -1748,7 +1748,7 @@ Transform:
   m_GameObject: {fileID: 327363300}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -55.76999, y: 9.634655, z: -9.056796}
+  m_LocalPosition: {x: -19.46999, y: 10.634655, z: -9.056796}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -3071,6 +3071,54 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 564105717}
   m_CullTransparentMesh: 1
+--- !u!1 &569093020
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 569093022}
+  - component: {fileID: 569093021}
+  m_Layer: 0
+  m_Name: UpgradeManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &569093021
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 569093020}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5e779c3c04ac54121959457fb2efc9c9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currency: 0
+  currencyDisplay: {fileID: 529215968}
+  statsManager: {fileID: 11400000, guid: adc93b2694feebe43aa29bcab9e60fc8, type: 2}
+  baseStats: {fileID: 11400000, guid: 0a68723838a1ddb499fc4356f36fd969, type: 2}
+--- !u!4 &569093022
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 569093020}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 1027, y: 707, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &578980744
 GameObject:
   m_ObjectHideFlags: 0
@@ -3929,7 +3977,7 @@ Transform:
   m_GameObject: {fileID: 678528866}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -6.9262567, y: -25.09875, z: -10}
+  m_LocalPosition: {x: 23.770498, y: -22.49296, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -4076,7 +4124,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 569093021}
         m_TargetAssemblyTypeName: UpgradeManager, Assembly-CSharp
         m_MethodName: PurchaseUpgrade
         m_Mode: 5
@@ -4825,7 +4873,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 569093021}
         m_TargetAssemblyTypeName: UpgradeManager, Assembly-CSharp
         m_MethodName: PurchaseUpgrade
         m_Mode: 5
@@ -8606,7 +8654,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 569093021}
         m_TargetAssemblyTypeName: UpgradeManager, Assembly-CSharp
         m_MethodName: PurchaseUpgrade
         m_Mode: 5
@@ -9350,7 +9398,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 569093021}
         m_TargetAssemblyTypeName: UpgradeManager, Assembly-CSharp
         m_MethodName: PurchaseUpgrade
         m_Mode: 5
@@ -10812,7 +10860,7 @@ Transform:
   m_GameObject: {fileID: 9127127944598715270}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -12.6, y: -27.5, z: 0}
+  m_LocalPosition: {x: 23.7, y: -26.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -10905,7 +10953,7 @@ MonoBehaviour:
   _airborneCollider: {fileID: 0}
   _rb: {fileID: 3583756269309197474}
   staminaSlider: {fileID: 223367368}
-  <Stats>k__BackingField: {fileID: 11400000, guid: 0a68723838a1ddb499fc4356f36fd969, type: 2}
+  <Stats>k__BackingField: {fileID: 11400000, guid: adc93b2694feebe43aa29bcab9e60fc8, type: 2}
   _drawGizmos: 1
   _currentStamina: 100
   _rolling: 0
@@ -11250,3 +11298,4 @@ SceneRoots:
   - {fileID: 183300520}
   - {fileID: 872489908}
   - {fileID: 2085931460}
+  - {fileID: 569093022}

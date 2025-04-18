@@ -6,8 +6,8 @@ using UnityEngine.UI;
 
 public class PlayerManager : MonoBehaviour
 {
-    private int health;
-    [SerializeField] private int maxHealth = 100;
+    private float health;
+    [SerializeField] private float maxHealth = 100;
     private PlayerMovement playerMovement;
     private RestartScene restartLevel;
     [SerializeField] private Slider healthSlider;
@@ -37,6 +37,8 @@ public class PlayerManager : MonoBehaviour
         {
             TakeDamage(10);
         }
+
+        maxHealth = playerMovement.Stats.MaxHealth;
     }
 
     private void PlayerDeath()
@@ -68,13 +70,18 @@ public class PlayerManager : MonoBehaviour
         healthSlider.value = health;
     }
 
-    public int GetHealth()
+    public float GetHealth()
     {
         return health;
     }
     
-    public int GetMaxHealth()
+    public float GetMaxHealth()
     {
         return maxHealth;
+    }
+
+    public void resetHealth(){
+        health = maxHealth;
+        healthSlider.maxValue = maxHealth;
     }
 }
