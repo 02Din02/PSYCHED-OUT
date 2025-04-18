@@ -18,7 +18,7 @@ MonoBehaviour:
     m_Bits: 64
   CollisionLayers:
     serializedVersion: 2
-    m_Bits: 1
+    m_Bits: 9
   CharacterSize:
     Height: 1.5
     Width: 0.6
@@ -35,19 +35,33 @@ MonoBehaviour:
   DirectionCorrectionMultiplier: 3
   MaxWalkableSlope: 50
   AttackCooldown: 0.5
-  AttackDuration: 1
-  AttackStrength: 1
+  LightAttackDuration: 0.5
+  HeavyAttackDuration: 0.8
+  AttackChargeTime: 0.5
+  LightAttackOrigin: {x: 0.9, y: 0.8}
+  HeavyAttackOrigin: {x: 1, y: 0.7}
+  LightAttackSize: {x: 2.8, y: 1.5}
+  HeavyAttackSize: {x: 3.2, y: 1.5}
+  LightAttackDamage: 8
+  HeavyAttackDamage: 20
   AllowRoll: 1
   RollVelocity: 10
-  RollDuration: 0.25
-  RollCooldown: 1.1
-  RollEndHorizontalMultiplier: 0.2
-  ExtraConstantGravity: 40
+  RollDuration: 0.8
+  RollCooldown: 0.5
+  RollEndHorizontalMultiplier: 0
+  ExtraConstantGravity: 35
   BufferedJumpTime: 0.15
   CoyoteTime: 0.15
-  JumpPower: 15
+  JumpPower: 16
   EndJumpEarlyExtraForceMultiplier: 3
-  MaxAirJumps: 1
+  MaxAirJumps: 0
+  MaxStamina: 100
+  RollCost: 15
+  JumpCost: 5
+  LightAttackCost: 10
+  HeavyAttackCost: 15
+  StamCooldown: 0.5
+  StamRegenRate: 15
   AllowDash: 1
   DashVelocity: 50
   DashDuration: 0.2

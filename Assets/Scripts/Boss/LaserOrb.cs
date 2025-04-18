@@ -38,8 +38,6 @@ public class LaserOrb : MonoBehaviour
 
         Vector3 target_position = player.transform.position;
         direction = (target_position - transform.position).normalized;
-        Debug.Log(direction);
-        Debug.Log(velocity);
     }
 
     void OnDrawGizmos() {
@@ -52,9 +50,16 @@ public class LaserOrb : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D collision)
     {
-        PlayerManager script = player.GetComponent<PlayerManager>();
-        script.TakeDamage(damage);
-        boxCollider.enabled = false;
+        if (collision.gameObject.tag == "Player") {
+            PlayerManager script = player.GetComponent<PlayerManager>();
+             if (player._rolling == false)
+             {
+                script.TakeDamage(damage);
+                boxCollider.enabled = false;
+             }
+            
+        }
+
         Destroy(gameObject);
     }
 }

@@ -9,6 +9,7 @@ public class BossController : MonoBehaviour
     private PlayerMovement player;
     private BoxCollider2D boxCollider;
     new private Rigidbody2D rigidbody2D;
+    private Animator bossAnim;
 
     //prefabs
     private GameObject laser_orb_prefab;
@@ -23,7 +24,8 @@ public class BossController : MonoBehaviour
     public Slider healthSlider;
 
     // Stats
-    public float bossHealth;
+    public float maxhealth;
+    public float health;
     private float move_duration = 4F;
     private float step_back_duration = 1F;
     private float move_speed = 1F;
@@ -37,6 +39,8 @@ public class BossController : MonoBehaviour
         player = FindObjectOfType<PlayerMovement>();
         boxCollider = GetComponent<BoxCollider2D>();
         rigidbody2D = GetComponent<Rigidbody2D>();
+        bossAnim = GetComponent<Animator>();
+
 
         laser_orb_prefab = Resources.Load("Laser_Orb") as GameObject;
         optic_pillar_prefab = Resources.Load("Optic_Pillar") as GameObject;
@@ -45,8 +49,9 @@ public class BossController : MonoBehaviour
         healthSlider.GetComponent<Slider>();
 
         // set the health on the boss health bar
-        healthSlider.maxValue = bossHealth;
-        healthSlider.value = bossHealth;
+        maxhealth = health;
+        healthSlider.maxValue = health;
+        healthSlider.value = health;
     }
     void attack(float dist)
     {
@@ -75,16 +80,19 @@ public class BossController : MonoBehaviour
 
     IEnumerator laser_orb()
     {
-        float orb_dist = 2F; //distance from boss
+        float animation_delay = 0.5F;
+        bossAnim.SetTrigger("laserOrb");
+
+        yield return new WaitForSeconds(animation_delay);
+
+        float orb_dist = 4F; //distance from boss
         float orb_spread = 2F; //distance between each orb
         float orb_height = 1F; //the height of the middle orb
-        float laser_spawn_delay = 0.3F; //delay between each orb spawn
+        float laser_spawn_delay = 0.1F; //delay between each orb spawn
 
         Vector3 pos_1 = new Vector3(orb_dist * facing, orb_height + orb_spread, 0) + transform.position;
         Vector3 pos_2 = new Vector3(orb_dist * facing, orb_height, 0) + transform.position;
         Vector3 pos_3 = new Vector3(orb_dist * facing, orb_height - orb_spread, 0) + transform.position;
-
-        Debug.Log("Orbs created");
 
         yield return new WaitForSeconds(laser_spawn_delay);
         Instantiate(laser_orb_prefab, pos_1, Quaternion.identity);
@@ -101,22 +109,30 @@ public class BossController : MonoBehaviour
 
     IEnumerator optic_pillar()
     {
+        float animation_delay = 1F;
+        bossAnim.SetTrigger("opticPillar");
+
+        yield return new WaitForSeconds(animation_delay);
+
         Instantiate(optic_pillar_prefab, transform.position, Quaternion.identity);
 
         yield return new WaitForSeconds(pause_duration);
+        
         attacking = false;
     }
 
     IEnumerator three_hit()
     {
+        bossAnim.SetTrigger("threeHit");
+
         // Attack values
         int[] damage = {15, 30, 30}; 
-        Vector2[] sizes = {new Vector2(2.5F,1F), new Vector2(2F,1F), new Vector2(4F,1F)}; 
-        float[] delay = {0F,0.5F,0.7F}; //No initial delay
-        float[] duration = {0.5F,0.5F,0.5F}; 
+        Vector2[] sizes = {new Vector2(2F,1F), new Vector2(2F,1F), new Vector2(4F,1F)}; 
+        float[] delay = {0.7F,0.7F,0.5F}; //No initial delay
+        float[] duration = {0.3F,0.2F,0.2F}; 
 
         // Helper vars
-        int current_face = facing;
+        int current_face = -1;
         Vector3 boss_size = GetComponent<BoxCollider2D>().size;
         Vector2 corner = new Vector2(transform.position.x + (current_face * boss_size.x/2), transform.position.y - boss_size.y/2);
 
@@ -148,14 +164,16 @@ public class BossController : MonoBehaviour
 
     IEnumerator two_hit()
     {
+        bossAnim.SetTrigger("twoHit");
+
         // Attack values
         int[] damage = {20, 30}; 
-        Vector2[] sizes = {new Vector2(2F,1F), new Vector2(1.5F,1F)}; 
-        float[] delay = {0.5F,0.5F}; 
-        float[] duration = {0.5F,0.5F}; 
+        Vector2[] sizes = {new Vector2(2F,0.5F), new Vector2(0F,0F)};  //Vector2(1.5F,1F)
+        float[] delay = {0.7F,0.5F}; 
+        float[] duration = {0.3F,0.5F}; 
 
         // Helper vars
-        int current_face = facing;
+        int current_face = -1;
         Vector3 boss_size = GetComponent<BoxCollider2D>().size;
         Vector2 corner = new Vector2(transform.position.x + (current_face * boss_size.x/2), transform.position.y - boss_size.y/2);
 
@@ -194,6 +212,8 @@ public class BossController : MonoBehaviour
             facing = -1;
         }
 
+        gameObject.transform.localScale = new Vector3(-3 * facing, 3, 1);
+
         if (attacking) {
             return;
         }
@@ -222,13 +242,12 @@ public class BossController : MonoBehaviour
     void UpdateHealthBar()
     {
         // Should get called every time Player hits boss, NOT IN UPDATE!!!!!!
-        healthSlider.value = bossHealth;
+        healthSlider.value = health;
     }
 
-    void take_damage(float damage) {
-        bossHealth -= damage;
-
-        if (bossHealth <= 0) {
+    public void take_damage(float damage) {
+        health -= damage;
+        if (health <= 0) {
             Destroy(gameObject);
         } else {
             UpdateHealthBar();

@@ -22,9 +22,6 @@ public class PlayerStats : ScriptableObject
     [Tooltip("Velocity = smoother, but can be occasionally unreliable on jagged terrain. Immediate = Occasionally jittery, but stable")]
     public PositionCorrectionMode PositionCorrectionMode = PositionCorrectionMode.Velocity;
 
-    // Health, etc
-    [Header("Game"), Space] public float MaxHealth = 100;
-
     // Movement
     [Header("Movement"), Space] public float BaseSpeed = 9;
     public float Acceleration = 50;
@@ -32,16 +29,24 @@ public class PlayerStats : ScriptableObject
     public float AirFrictionMultiplier = 0.5f;
     public float DirectionCorrectionMultiplier = 3f;
     public float MaxWalkableSlope = 50;
-
+    
     // Attack
     [Header("Attack"), Space] public float AttackCooldown = 1.0f;
-    public float AttackDuration = 0.5f;
-    public float AttackStrength = 1.0f;
+    public float LightAttackDuration = 0.5f;
+    public float HeavyAttackDuration = 1.2f;
+    public float AttackChargeTime = 1.0f;
+    public Vector2 LightAttackOrigin;
+    public Vector2 HeavyAttackOrigin;
+    public Vector2 LightAttackSize;
+    public Vector2 HeavyAttackSize;
+    public float LightAttackDamage = 5f;
+    public float HeavyAttackDamage = 20f;
+
 
     // Roll
     [Header("Roll"), Space] public bool AllowRoll = true;
     public float RollVelocity = 50;
-    public float RollDuration = 0.25f;
+    public float RollDuration = 0.2f;
     public float RollCooldown = 1.5f;
     public float RollEndHorizontalMultiplier = 0.5f;
 
@@ -53,10 +58,19 @@ public class PlayerStats : ScriptableObject
     public float EndJumpEarlyExtraForceMultiplier = 3;
     public int MaxAirJumps = 1;
 
+    // Stamina
+    [Header("Stamina"), Space] public float MaxStamina = 100f;
+    public float RollCost = 25f;
+    public float JumpCost = 5f;
+    public float LightAttackCost = 15f;
+    public float HeavyAttackCost = 20f;
+    public float StamCooldown = 0.3f;
+    public float StamRegenRate = 5f;
+
     // Dash
     [Header("Dash"), Space] public bool AllowDash = true;
     public float DashVelocity = 50;
-    public float DashDuration = 0.25f;
+    public float DashDuration = 0.2f;
     public float DashCooldown = 1.5f;
     public float DashEndHorizontalMultiplier = 0.5f;
 

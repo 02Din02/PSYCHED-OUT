@@ -34,9 +34,14 @@ public class MeleeAttackHitBox : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D collision)
     {
-        PlayerManager script = player.GetComponent<PlayerManager>();
-        script.TakeDamage(damage);
-        boxCollider.enabled = false;
-        Destroy(gameObject);
+        if (collision.gameObject.tag == "Player") {
+            PlayerManager script = player.GetComponent<PlayerManager>();
+            if (player._rolling == false)
+            {
+            script.TakeDamage(damage);
+            boxCollider.enabled = false;
+            }
+            
+        }
     }
 }
