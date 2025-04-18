@@ -123,19 +123,16 @@ public class BossController : MonoBehaviour
 
     IEnumerator three_hit()
     {
-        float animation_delay = 1.5F;
         bossAnim.SetTrigger("threeHit");
 
-        yield return new WaitForSeconds(animation_delay);
-        
         // Attack values
         int[] damage = {15, 30, 30}; 
-        Vector2[] sizes = {new Vector2(2.5F,1F), new Vector2(2F,1F), new Vector2(4F,1F)}; 
-        float[] delay = {0F,0.5F,0.7F}; //No initial delay
-        float[] duration = {0.5F,0.5F,0.5F}; 
+        Vector2[] sizes = {new Vector2(2F,1F), new Vector2(2F,1F), new Vector2(4F,1F)}; 
+        float[] delay = {0.7F,0.7F,0.5F}; //No initial delay
+        float[] duration = {0.3F,0.2F,0.2F}; 
 
         // Helper vars
-        int current_face = facing;
+        int current_face = -1;
         Vector3 boss_size = GetComponent<BoxCollider2D>().size;
         Vector2 corner = new Vector2(transform.position.x + (current_face * boss_size.x/2), transform.position.y - boss_size.y/2);
 
@@ -167,19 +164,16 @@ public class BossController : MonoBehaviour
 
     IEnumerator two_hit()
     {
-        float animation_delay = 0.5F;
         bossAnim.SetTrigger("twoHit");
-
-        yield return new WaitForSeconds(animation_delay);
 
         // Attack values
         int[] damage = {20, 30}; 
-        Vector2[] sizes = {new Vector2(2F,1F), new Vector2(1.5F,1F)}; 
-        float[] delay = {0.5F,0.5F}; 
-        float[] duration = {0.5F,0.5F}; 
+        Vector2[] sizes = {new Vector2(2F,0.5F), new Vector2(0F,0F)};  //Vector2(1.5F,1F)
+        float[] delay = {0.7F,0.5F}; 
+        float[] duration = {0.3F,0.5F}; 
 
         // Helper vars
-        int current_face = facing;
+        int current_face = -1;
         Vector3 boss_size = GetComponent<BoxCollider2D>().size;
         Vector2 corner = new Vector2(transform.position.x + (current_face * boss_size.x/2), transform.position.y - boss_size.y/2);
 
@@ -217,6 +211,8 @@ public class BossController : MonoBehaviour
         else {
             facing = -1;
         }
+
+        gameObject.transform.localScale = new Vector3(-3 * facing, 3, 1);
 
         if (attacking) {
             return;
