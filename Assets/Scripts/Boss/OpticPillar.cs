@@ -54,7 +54,7 @@ public class OpticPillar : MonoBehaviour
 
         boxCollider.enabled = false;
 
-        transform.position = new Vector3(player.transform.position.x, player.transform.position.y + 4, player.transform.position.z);
+        transform.position = new Vector3(player.transform.position.x, -55F, player.transform.position.z);
 
         yield return new WaitForSeconds(attack_delay);
 
