@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
 using Unity.Mathematics;
+using UnityEngine.Scripting.APIUpdating;
 
 public class BossController : MonoBehaviour
 {
@@ -26,11 +27,12 @@ public class BossController : MonoBehaviour
     // Stats
     public float maxhealth;
     public float health;
-    private float move_duration = 4F;
+    private float move_duration = 5F;
     private float step_back_duration = 1F;
-    private float move_speed = 1F;
-    private float step_back_chance = 0.2F; //out of 1
-    private float pause_duration = 1F;
+    private float step_back_speed = 5F;
+    private float move_speed = 2F;
+    private float step_back_chance = 0.25F; //out of 1
+    private float pause_duration = 2F;
     private bool attacking = false;
     int facing = -1; //1 for right, -1 for left
 
@@ -52,11 +54,12 @@ public class BossController : MonoBehaviour
         maxhealth = health;
         healthSlider.maxValue = health;
         healthSlider.value = health;
+        curr_move_speed = move_speed;
     }
     void attack(float dist)
     {
         //movesets for each range
-        string[] lset = {"laser_orb", "optic_pillar"};
+        string[] lset = {"optic_pillar", "laser_orb",};
         string[] mset = {"three_hit"};
         string[] cset = {"two_hit"};
 
@@ -127,7 +130,7 @@ public class BossController : MonoBehaviour
 
         // Attack values
         int[] damage = {15, 30, 30}; 
-        Vector2[] sizes = {new Vector2(2F,1F), new Vector2(2F,1F), new Vector2(4F,1F)}; 
+        Vector2[] sizes = {new Vector2(2F,1F), new Vector2(1.5F,1F), new Vector2(4F,1F)}; 
         float[] delay = {0.7F,0.7F,0.5F}; //No initial delay
         float[] duration = {0.3F,0.2F,0.2F}; 
 
@@ -197,12 +200,54 @@ public class BossController : MonoBehaviour
         attacking = false;
     }
 
+    IEnumerator axe_slam()
+    {
+        bossAnim.SetTrigger("twoHit");
+
+        // Attack values
+        int[] damage = {30}; 
+        Vector2[] sizes = {new Vector2(2F,1F)};
+        float[] delay = {0.7F}; 
+        float[] duration = {0.2F};
+
+        // Helper vars
+        int current_face = -1;
+        Vector3 boss_size = GetComponent<BoxCollider2D>().size;
+        Vector2 corner = new Vector2(transform.position.x + (current_face * boss_size.x/2), transform.position.y - boss_size.y/2);
+
+        for (int i = 0; i < 1; i ++){
+            // Delay before attack
+            yield return new WaitForSeconds(delay[i]); 
+            
+            // Set size of first attack here. Don't change hitbox_pos
+            GameObject hit = Instantiate(melee_attack_prefab, transform);
+            MeleeAttackHitBox box = hit.GetComponent<MeleeAttackHitBox>();
+            if (box != null){
+                box.LoadVars(
+                    new Vector2(current_face * (sizes[i].x + boss_size.x)/2, (sizes[i].y - boss_size.y)/2), 
+                    sizes[i], 
+                    damage[i], 
+                    duration[i]);
+            }
+        }
+
+        yield return new WaitForSeconds(duration[0] + pause_duration);
+        attacking = false;
+    }
+
     private float curr_move_time = 0F;
     private bool step_back_decision = true; //can still decide to step back
     private int move_dir = 1;
+    private float curr_move_speed;
     void Update()
     {
         rigidbody2D.velocity = Vector2.zero;
+        gameObject.transform.localScale = new Vector3(-3 * facing, 3, 1);
+
+        if (attacking) {
+            return;
+        }
+
         // Updates direction that the boss should face
         float dist_from_player = player.transform.position.x - transform.position.x;
         if (dist_from_player > 0) {
@@ -212,29 +257,26 @@ public class BossController : MonoBehaviour
             facing = -1;
         }
 
-        gameObject.transform.localScale = new Vector3(-3 * facing, 3, 1);
-
-        if (attacking) {
-            return;
-        }
-
         if (!attacking) {
-            if (curr_move_time > move_duration || math.abs(dist_from_player) <= crange) {
-                attack(dist_from_player);
-                curr_move_time = 0F;
-                step_back_decision = true;
-                move_dir = 1;
-                return;
-            }
-
-            if ((curr_move_time > move_duration - step_back_duration) && step_back_decision) {
+            if (((curr_move_time > move_duration - step_back_duration) || math.abs(dist_from_player) <= crange) && step_back_decision) {
                 if (UnityEngine.Random.Range(0F,1F) <= step_back_chance) {
                     move_dir = -1;
+                    curr_move_speed = step_back_speed;
+                    curr_move_time = move_duration - step_back_duration;
                 }
                 step_back_decision = false;
             }
 
-            rigidbody2D.velocity = new Vector2(move_dir * facing * move_speed, 0);
+            if (curr_move_time > move_duration || (math.abs(dist_from_player) <= crange && move_dir == 1)) {
+                attack(dist_from_player);
+                curr_move_time = 0F;
+                step_back_decision = true;
+                move_dir = 1;
+                curr_move_speed = move_speed;
+                return;
+            }
+
+            rigidbody2D.velocity = new Vector2(move_dir * facing * curr_move_speed, 0);
             curr_move_time += Time.deltaTime;
         }
     }
