@@ -7,6 +7,7 @@ public class UpgradeManager : MonoBehaviour
 {
     [SerializeField] private int currency;
     [SerializeField] private TextMeshProUGUI currencyDisplay;
+    [SerializeField] private TextMeshProUGUI costDisplay;
     private Dictionary<string, int> upgradeTracker = new Dictionary<string, int>();
 
     [SerializeField] private PlayerStats statsManager;
@@ -50,6 +51,21 @@ public class UpgradeManager : MonoBehaviour
         upgradeTracker[upgrade] += 1;
         UpdateText();
         SyncStats();
+    }
+
+    public void ShowCost(string upgrade)
+    {
+        int cost = CalculateCost(upgrade);
+
+        if (currency >= cost)
+        {
+            costDisplay.text = "-" + cost;
+        }
+        else
+        {
+            costDisplay.text = "Broke AS FUCK!!";
+        }
+          
     }
 
     private int CalculateCost(string upgrade)
