@@ -3920,7 +3920,7 @@ MonoBehaviour:
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: Instinct
+          m_StringArgument: Vital
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!114 &686295748
@@ -5084,9 +5084,9 @@ MonoBehaviour:
   m_HandleRect: {fileID: 349568994}
   m_Direction: 0
   m_MinValue: 0
-  m_MaxValue: 100
+  m_MaxValue: 200
   m_WholeNumbers: 0
-  m_Value: 100
+  m_Value: 0
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -7471,6 +7471,18 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+        - m_Target: {fileID: 8250241050041901418}
+          m_TargetAssemblyTypeName: PlayerManager, Assembly-CSharp
+          m_MethodName: resetHealth
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
 --- !u!114 &1560238505
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8472,7 +8484,7 @@ MonoBehaviour:
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: Instinct
+          m_StringArgument: Adrenaline
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!114 &1735533492
@@ -9228,7 +9240,7 @@ MonoBehaviour:
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: Instinct
+          m_StringArgument: Harmony
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!114 &1848365854
