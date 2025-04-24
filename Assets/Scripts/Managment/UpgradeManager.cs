@@ -41,6 +41,7 @@ public class UpgradeManager : MonoBehaviour
         if (currency - CalculateCost(upgrade) >= 0)
         {
             currency -= CalculateCost(upgrade);
+            upgradeTracker[upgrade] += 1;
         }
         else
         {
@@ -50,6 +51,12 @@ public class UpgradeManager : MonoBehaviour
         upgradeTracker[upgrade] += 1;
         UpdateText();
         SyncStats();
+    }
+
+    public void ShowCost(string upgrade)
+    {
+        int cost = CalculateCost(upgrade);
+          
     }
 
     private int CalculateCost(string upgrade)
