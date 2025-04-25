@@ -7,6 +7,8 @@ public class UpgradeManager : MonoBehaviour
 {
     [SerializeField] private int currency;
     [SerializeField] private TextMeshProUGUI currencyDisplay;
+    [SerializeField] private TextMeshProUGUI costDisplay;
+
     private Dictionary<string, int> upgradeTracker = new Dictionary<string, int>();
 
     [SerializeField] private PlayerStats statsManager;
@@ -37,7 +39,7 @@ public class UpgradeManager : MonoBehaviour
     public void PurchaseUpgrade(string upgrade)
     {
         Debug.Assert(upgradeTracker.ContainsKey(upgrade));
-        Debug.Log("Purchasing upgrade: " + upgrade);
+        Debug.Log("Attempting upgrade: " + upgrade);
         if (currency - CalculateCost(upgrade) >= 0)
         {
             currency -= CalculateCost(upgrade);
@@ -48,15 +50,18 @@ public class UpgradeManager : MonoBehaviour
             Debug.Log("No more money :(");
             // broadcast event no money lolsies
         }
-        upgradeTracker[upgrade] += 1;
         UpdateText();
+        ShowCost(upgrade);
         SyncStats();
     }
 
     public void ShowCost(string upgrade)
     {
-        int cost = CalculateCost(upgrade);
-          
+        costDisplay.text = $"- {CalculateCost(upgrade)}";
+    }
+    public void HideCost()
+    {
+        costDisplay.text = "";
     }
 
     private int CalculateCost(string upgrade)
@@ -72,7 +77,7 @@ public class UpgradeManager : MonoBehaviour
         statsManager.AttackCooldown = baseStats.AttackCooldown * (1f - upgradeTracker["Instinct"] / 20f); // level 10 = halved (crazy)
         statsManager.MaxHealth = baseStats.MaxHealth + (10 * upgradeTracker["Vital"]); // level 10 = +100
         statsManager.MaxStamina = baseStats.MaxStamina + (10 * upgradeTracker["Harmony"]);
-        
+
     }
 }
 
