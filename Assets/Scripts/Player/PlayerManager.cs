@@ -57,15 +57,19 @@ public class PlayerManager : MonoBehaviour
         
     }
 
-    public void TakeDamage(int damage)
+    public void TakeDamage(int damage, Vector2? direction = null)
     {
+        if(direction == null){
+            direction = Vector2.left*14f;
+        }
         health -= damage;
         if (health < 0)
         {
             health = 0;
             return;
         }
-        playerMovement._rb.AddForce(new Vector3(-10f, 5f, 0f), ForceMode2D.Impulse);
+        playerMovement.AddFrameForce((Vector2)direction, true);
+        playerMovement.ApplyHitstun(damage);
         float healthpercent = (float)damage / maxHealth;
         healthSlider.value = health;
     }
