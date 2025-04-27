@@ -28,7 +28,7 @@ MonoBehaviour:
   VerticalDeadZoneThreshold: 0.3
   HorizontalDeadZoneThreshold: 0.1
   PositionCorrectionMode: 0
-  BaseSpeed: 4
+  BaseSpeed: 6
   Acceleration: 40
   Friction: 15
   AirFrictionMultiplier: 0.5
@@ -44,6 +44,7 @@ MonoBehaviour:
   HeavyAttackSize: {x: 3.2, y: 1.5}
   LightAttackDamage: 8
   HeavyAttackDamage: 20
+  AttackStrength: 1
   AllowRoll: 1
   RollVelocity: 10
   RollDuration: 0.8
@@ -62,6 +63,7 @@ MonoBehaviour:
   HeavyAttackCost: 15
   StamCooldown: 0.5
   StamRegenRate: 15
+  MaxHealth: 100
   AllowDash: 1
   DashVelocity: 50
   DashDuration: 0.2
