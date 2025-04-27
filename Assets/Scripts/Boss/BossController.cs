@@ -64,9 +64,9 @@ public class BossController : MonoBehaviour
     void attack(float dist)
     {
         //movesets for each range
-        string[] lset = {"optic_pillar", "laser_orb"}; //"optic_pillar", "laser_orb"
-        string[] mset = {"shockwave_slash"}; //"three_hit", 
-        string[] cset = {"shockwave_slash"}; //"two_hit"
+        string[] lset = {"optic_pillar", "laser_orb"};
+        string[] mset = {"three_hit", "shockwave_slash"};
+        string[] cset = {"two_hit", "axe_slam"};
 
         dist = Mathf.Abs(dist);
 
@@ -208,7 +208,7 @@ public class BossController : MonoBehaviour
 
     IEnumerator axe_slam()
     {
-        // bossAnim.SetTrigger("twoHit");
+        bossAnim.SetTrigger("twoHit");
 
         // Attack values
         int[] damage = {30}; 
