@@ -8,6 +8,8 @@ public class CameraBoundsScript : MonoBehaviour
     [SerializeField] PolygonCollider2D confinerShape2D; // Drag the zone�s collider here (self)
     [SerializeField] GameObject player;
     [SerializeField] GameObject boss;
+
+    [SerializeField] GameObject bossHP_bar;
     [SerializeField] Cinemachine.CinemachineVirtualCamera virtualCam;
 
     //private void FixedUpdate()
@@ -28,6 +30,7 @@ public class CameraBoundsScript : MonoBehaviour
             var camConfiner = virtualCam.GetComponentInChildren<Cinemachine.CinemachineConfiner2D>();
             camConfiner.m_BoundingShape2D = confinerShape2D;
             boss.gameObject.SetActive(true);
+            bossHP_bar.gameObject.SetActive(true);
             player.GetComponent<PlayerManager>().resetHealth();
             //Debug.Log("Camera switched");
         }
