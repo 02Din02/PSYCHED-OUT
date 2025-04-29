@@ -1007,7 +1007,7 @@ public class PlayerMovement : MonoBehaviour
         }
         public void ApplyHitstun(int damage){
             _inHitstun = true;
-            _remainingHitstun = damage/10;
+            _remainingHitstun = damage/20;
         }
 
         #endregion

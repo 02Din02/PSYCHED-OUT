@@ -31,7 +31,7 @@ public class CameraBoundsScript : MonoBehaviour
             camConfiner.m_BoundingShape2D = confinerShape2D;
             boss.gameObject.SetActive(true);
             bossHP_bar.gameObject.SetActive(true);
-            player.GetComponent<PlayerManager>().resetHealth();
+            player.GetComponent<PlayerManager>().ResetHealth();
             //Debug.Log("Camera switched");
         }
     }
