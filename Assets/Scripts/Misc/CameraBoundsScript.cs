@@ -10,6 +10,7 @@ public class CameraBoundsScript : MonoBehaviour
     [SerializeField] GameObject boss;
 
     [SerializeField] GameObject bossHP_bar;
+    [SerializeField] private SetupScript setupScript;
     [SerializeField] Cinemachine.CinemachineVirtualCamera virtualCam;
 
     //private void FixedUpdate()
@@ -25,8 +26,13 @@ public class CameraBoundsScript : MonoBehaviour
     //}
     void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.CompareTag("Player")) // Make sure your player has the "Player" tag
+        if (other.CompareTag("Player"))
         {
+            Color c = setupScript.fadeBox.color;
+            c.a = 1f;
+            setupScript.fadeBox.color = c;
+
+
             var camConfiner = virtualCam.GetComponentInChildren<Cinemachine.CinemachineConfiner2D>();
             camConfiner.m_BoundingShape2D = confinerShape2D;
             boss.gameObject.SetActive(true);

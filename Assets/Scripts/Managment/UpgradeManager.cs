@@ -6,7 +6,9 @@ using UnityEngine;
 public class UpgradeManager : MonoBehaviour
 {
     [SerializeField] private int currency;
+    [SerializeField] private int attemptNum;
     [SerializeField] private TextMeshProUGUI currencyDisplay;
+     [SerializeField] private TextMeshProUGUI attemptNumberDisplay;
     [SerializeField] private TextMeshProUGUI costDisplay;
     [SerializeField] private TextMeshProUGUI currentStatsDisplay;
     [SerializeField] private TextMeshProUGUI upgradeEffectDisplay;
@@ -25,6 +27,7 @@ public class UpgradeManager : MonoBehaviour
     {
         Debug.Log("Initializing UpgradeManager");
         currency = DataManager.Instance.currency;
+        attemptNum = DataManager.Instance.attemptNum;
         UpdateText();
         foreach (string upgrade in upgradeList)
         {
@@ -37,6 +40,7 @@ public class UpgradeManager : MonoBehaviour
     void UpdateText()
     {
         currencyDisplay.text = $"{currency}";
+        attemptNumberDisplay.text = $"# {attemptNum}";
     }
 
     public void PurchaseUpgrade(string upgrade)

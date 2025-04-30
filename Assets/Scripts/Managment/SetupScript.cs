@@ -5,47 +5,50 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class RestartScene : MonoBehaviour
+public class SetupScript : MonoBehaviour
 {
     public SpriteRenderer fadeBox;
     public Canvas upgradeCanvas;
     public TextMeshProUGUI currencyText;
     [SerializeField] DataManager dataManager;
     void Start()
-    { 
+    {
         upgradeCanvas.gameObject.SetActive(true);
         dataManager = FindObjectOfType<DataManager>();
         currencyText.text = dataManager.currency.ToString();
     }
 
     public void FadeIn()
-    {   
+    {
         if (fadeBox != null)
         {
-            fadeBox.DOFade(1f, 3);
-            StartCoroutine(reloadScene());
+            float fadeDuration = 3f;
+            fadeBox.DOFade(1f, fadeDuration);
+            StartCoroutine(reloadScene(fadeDuration));
         }
-        
     }
 
-    public IEnumerator reloadScene()
+    public IEnumerator reloadScene(float delay)
     {
-        yield return new WaitForSeconds(5);
+        yield return new WaitForSeconds(delay);
         SceneManager.LoadScene(1);
     }
 
-    public void FadeOut()
-    {   
+    public void FadeOut(int time)
+    {
+
         if (fadeBox != null)
         {
-            fadeBox.DOFade(0f, 5);
+            fadeBox.DOFade(0f, time);
         }
-        
+
     }
+
+
 
     public void UpgradesDone()
     {
         upgradeCanvas.gameObject.SetActive(false);
-        FadeOut();
+        FadeOut(5);
     }
 }

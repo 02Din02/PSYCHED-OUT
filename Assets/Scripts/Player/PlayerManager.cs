@@ -9,7 +9,7 @@ public class PlayerManager : MonoBehaviour
     private float health;
     [SerializeField] private float maxHealth = 100;
     private PlayerMovement playerMovement;
-    private RestartScene restartLevel;
+    private SetupScript setupScript;
     [SerializeField] private Slider healthSlider;
     private bool dying = false;
 
@@ -21,7 +21,7 @@ public class PlayerManager : MonoBehaviour
         health = maxHealth;
         playerMovement = GetComponent<PlayerMovement>();
         dataManager = FindObjectOfType<DataManager>();
-        restartLevel = FindObjectOfType<RestartScene>();
+        setupScript = FindObjectOfType<SetupScript>();
 
         SetupHealthSlider();
     }
@@ -58,12 +58,13 @@ public class PlayerManager : MonoBehaviour
         if (!dying)
         {
             dying = true;
+            dataManager.attemptNum += 1;
             float damageDone = bossController.maxhealth - bossController.health;
             float percentDamage = (damageDone / bossController.maxhealth) * 100f;
             dataManager.currency += Mathf.RoundToInt(percentDamage);
 
             playerMovement.enabled = false;
-            restartLevel.FadeIn();
+            setupScript.FadeIn();
             GetComponent<BoxCollider2D>().enabled = false;
         }
     }

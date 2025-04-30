@@ -13,6 +13,7 @@ public class BossController : MonoBehaviour
     private BoxCollider2D boxCollider;
     new private Rigidbody2D rigidbody2D;
     private Animator bossAnim;
+    private SetupScript setupScript;
 
     //prefabs
     private GameObject laser_orb_prefab;
@@ -46,6 +47,7 @@ public class BossController : MonoBehaviour
         boxCollider = GetComponent<BoxCollider2D>();
         rigidbody2D = GetComponent<Rigidbody2D>();
         bossAnim = GetComponent<Animator>();
+        setupScript = FindObjectOfType<SetupScript>();
 
 
         laser_orb_prefab = Resources.Load("Laser_Orb") as GameObject;
@@ -60,6 +62,8 @@ public class BossController : MonoBehaviour
         healthSlider.maxValue = health;
         healthSlider.value = health;
         curr_move_speed = move_speed;
+
+        setupScript.FadeOut(8);
     }
     void attack(float dist)
     {
