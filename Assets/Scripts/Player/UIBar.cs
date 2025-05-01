@@ -8,6 +8,7 @@ public class UIBar : MonoBehaviour
     [SerializeField] RectTransform rectTransform;
     private Vector2 initSize;
     private float leftEdge;
+    private float rightEdge;
 
         // Start is called before the first frame update
         void Start()
