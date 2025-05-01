@@ -1068,6 +1068,7 @@ GameObject:
   m_Component:
   - component: {fileID: 223367367}
   - component: {fileID: 223367368}
+  - component: {fileID: 223367369}
   m_Layer: 5
   m_Name: Stamina
   m_TagString: Untagged
@@ -1148,6 +1149,19 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &223367369
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 223367366}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a6731b7e6db8b2540b77c9d68e6d67b5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rectTransform: {fileID: 0}
 --- !u!1 &250511428
 GameObject:
   m_ObjectHideFlags: 0
@@ -5281,6 +5295,7 @@ GameObject:
   m_Component:
   - component: {fileID: 886708747}
   - component: {fileID: 886708748}
+  - component: {fileID: 886708749}
   m_Layer: 5
   m_Name: Health
   m_TagString: Untagged
@@ -5361,6 +5376,19 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &886708749
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 886708746}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a6731b7e6db8b2540b77c9d68e6d67b5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rectTransform: {fileID: 0}
 --- !u!1 &894118382
 GameObject:
   m_ObjectHideFlags: 0
@@ -10950,7 +10978,7 @@ MonoBehaviour:
   staminaSlider: {fileID: 223367368}
   <Stats>k__BackingField: {fileID: 11400000, guid: adc93b2694feebe43aa29bcab9e60fc8, type: 2}
   _drawGizmos: 1
-  _currentStamina: 100
+  _currentStamina: 120
   _rolling: 0
 --- !u!50 &3583756269309197474
 Rigidbody2D:
@@ -11196,7 +11224,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 100
+  maxStamina: 100
   healthSlider: {fileID: 886708748}
+  healthBar: {fileID: 886708749}
+  StaminaSlider: {fileID: 223367368}
+  StaminaBar: {fileID: 223367369}
   dataManager: {fileID: 1495921744}
   bossController: {fileID: 8531385817902120835}
 --- !u!114 &8531385817902120835
