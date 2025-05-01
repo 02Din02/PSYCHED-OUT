@@ -7,10 +7,15 @@ using UnityEngine.UI;
 public class PlayerManager : MonoBehaviour
 {
     private float health;
+    private float stamina;
     [SerializeField] private float maxHealth = 100;
+    [SerializeField] private float maxStamina = 100;
     private PlayerMovement playerMovement;
     private SetupScript setupScript;
     [SerializeField] private Slider healthSlider;
+    [SerializeField] private UIBar healthBar;
+    [SerializeField] private Slider StaminaSlider;
+    [SerializeField] private UIBar StaminaBar;
     private bool dying = false;
 
     [SerializeField] private DataManager dataManager;
@@ -19,6 +24,7 @@ public class PlayerManager : MonoBehaviour
     void Start()
     {
         health = maxHealth;
+        stamina = maxStamina;
         playerMovement = GetComponent<PlayerMovement>();
         dataManager = FindObjectOfType<DataManager>();
         setupScript = FindObjectOfType<SetupScript>();
@@ -45,12 +51,24 @@ public class PlayerManager : MonoBehaviour
             maxHealth = playerMovement.Stats.MaxHealth;
             SetupHealthSlider();
         }
+        if (maxStamina != playerMovement.Stats.MaxStamina)
+        {
+            maxStamina = playerMovement.Stats.MaxStamina;
+            SetupStaminaSlider();
+        }
     }
 
     private void SetupHealthSlider()
     {
         healthSlider.maxValue = maxHealth;
-        healthSlider.value = health;
+        healthSlider.value = healthSlider.maxValue;
+        healthBar.ChangeBar(healthSlider.maxValue);
+    }
+    private void SetupStaminaSlider()
+    {
+        StaminaSlider.maxValue = maxStamina;
+        StaminaSlider.value = StaminaSlider.maxValue;
+        StaminaBar.ChangeBar(StaminaSlider.maxValue);
     }
 
     private void PlayerDeath()
@@ -102,5 +120,6 @@ public class PlayerManager : MonoBehaviour
     {
         health = maxHealth;
         SetupHealthSlider();
+        SetupStaminaSlider();
     }
 }
