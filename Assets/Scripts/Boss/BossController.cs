@@ -5,6 +5,7 @@ using Unity.Mathematics;
 using UnityEngine.Scripting.APIUpdating;
 using UnityEditor;
 using System;
+using DG.Tweening;
 
 public class BossController : MonoBehaviour
 {
@@ -291,6 +292,7 @@ public class BossController : MonoBehaviour
     private float curr_move_speed;
     void Update()
     {
+        
         rigidbody2D.velocity = Vector2.zero;
         gameObject.transform.localScale = new Vector3(-3 * facing, 3, 1);
 

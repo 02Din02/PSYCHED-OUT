@@ -743,6 +743,10 @@ public class PlayerMovement : MonoBehaviour
         private void CalculateRoll()
         {
             if (!Stats.AllowRoll) return;
+            /*if(_time>_nextRollTime){
+                _collider.isTrigger = false;
+                _collider.
+            }*/
 
             if (_grounded && _rollToConsume && _canRoll && _time > _nextRollTime && !_attacking && HasStamina())
             {
@@ -761,19 +765,28 @@ public class PlayerMovement : MonoBehaviour
             }
 
             if (_rolling)
-            {
+            {   
+                RaycastHit2D h = Physics2D.Raycast(_framePosition+Vector2.up, Vector2.right* (FacingRight ? -1:1), 1f, LayerMask.GetMask("Boss"));
+                // Debug.Log(h);
+                if(!h){
                 if (_time > _startedRolling + Stats.RollDuration)
                 {
                     _rolling = false;
                     RollChanged?.Invoke(false, Vector2.zero);
 
                     SetVelocity(new Vector2(Velocity.x * Stats.RollEndHorizontalMultiplier, Velocity.y));
+                    //_collider.isTrigger = true;
+
                     if (_grounded) _canRoll = true;
                     _collider.excludeLayers = _originalColliderLayers;
+                }
+                }else{
+                    Debug.Log(h.collider);
                 }
             }
         }
 
+        
         #endregion 
 
         #region Crouching
