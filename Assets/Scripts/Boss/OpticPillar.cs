@@ -36,8 +36,8 @@ public class OpticPillar : MonoBehaviour
 
             if (player._rolling == false)
             {
-            script.TakeDamage(damage);
-            boxCollider.enabled = false;
+                boxCollider.enabled = false;
+                script.TakeDamage(damage, Vector2.up * 25);
             }
             
         }

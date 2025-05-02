@@ -38,6 +38,7 @@ public class LaserOrb : MonoBehaviour
 
         Vector3 target_position = player.transform.position;
         direction = (target_position - transform.position).normalized;
+        direction.y += 0.1f;
     }
 
     void OnDrawGizmos() {
@@ -54,7 +55,7 @@ public class LaserOrb : MonoBehaviour
             PlayerManager script = player.GetComponent<PlayerManager>();
              if (player._rolling == false)
              {
-                script.TakeDamage(damage);
+                script.TakeDamage(damage, new Vector2(direction.x * velocity * 0.5f ,10));
                 boxCollider.enabled = false;
              }
             

@@ -35,7 +35,7 @@ public class Shockwave : MonoBehaviour
 
             if (player._rolling == false)
             {
-            script.TakeDamage(damage);
+            script.TakeDamage(damage, new Vector2(10 * facing, 10));
             boxCollider.enabled = false;
             }
             
