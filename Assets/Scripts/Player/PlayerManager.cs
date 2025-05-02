@@ -99,7 +99,7 @@ public class PlayerManager : MonoBehaviour
         {
             health = 0;
         }
-
+        
         playerMovement.AddFrameForce((Vector2)direction, true);
         playerMovement.ApplyHitstun(damage);
 
