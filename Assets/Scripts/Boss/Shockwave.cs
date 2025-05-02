@@ -1,20 +1,19 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Runtime.InteropServices.WindowsRuntime;
-using System.Threading;
 using UnityEngine;
 
-public class OpticPillar : MonoBehaviour
+public class Shockwave : MonoBehaviour
 {
     private BoxCollider2D boxCollider;
     private PlayerMovement player;
     public bool debug;
+    public int facing;
 
-    int damage = 50;
-    float width = 5.0F;
-    float height = 10.0F;
-    float attack_delay = 3.7F;
-    float duration = 1;
+    int damage = 30;
+    float width = 9.0F;
+    float height = 2.0F;
+    float duration = 10;
+    float velocity = 20F;
     void Awake()
     {
         player = FindObjectOfType<PlayerMovement>();
@@ -48,20 +47,18 @@ public class OpticPillar : MonoBehaviour
         StartCoroutine(Activate());
     }
 
-    public IEnumerator Activate(){
+    public IEnumerator Activate() {
         boxCollider.size = new Vector2(width, height);
-        // boxCollider.offset = new Vector2(0, height/2);
-
-        boxCollider.enabled = false;
-
-        transform.position = new Vector3(player.transform.position.x, -55F, player.transform.position.z);
-
-        yield return new WaitForSeconds(attack_delay);
-
-        boxCollider.enabled = true;
-
+        transform.position = new Vector3(transform.position.x, -57.75F, transform.position.z);
         yield return new WaitForSeconds(duration);
 
         Destroy(gameObject);
+    }
+
+    void Update() {
+        if (facing != 0)
+        {
+            transform.position += new Vector3(facing, 0, 0) * Time.deltaTime * velocity;
+        }
     }
 }

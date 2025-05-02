@@ -7,24 +7,31 @@ using UnityEngine.UI;
 public class PlayerManager : MonoBehaviour
 {
     private float health;
+    private float stamina;
     [SerializeField] private float maxHealth = 100;
+    [SerializeField] private float maxStamina = 100;
     private PlayerMovement playerMovement;
-    private RestartScene restartLevel;
+    private SetupScript setupScript;
     [SerializeField] private Slider healthSlider;
-     private bool dying = false;
+    [SerializeField] private UIBar healthBar;
+    [SerializeField] private Slider StaminaSlider;
+    [SerializeField] private UIBar StaminaBar;
+    private bool dying = false;
 
-    [SerializeField] DataManager dataManager;
-    [SerializeField] BossController bossController;
-    // Start is called before the first frame update
+    [SerializeField] private DataManager dataManager;
+    [SerializeField] private BossController bossController;
+
     void Start()
     {
         health = maxHealth;
+        stamina = maxStamina;
         playerMovement = GetComponent<PlayerMovement>();
         dataManager = FindObjectOfType<DataManager>();
-        restartLevel = FindObjectOfType<RestartScene>();
+        setupScript = FindObjectOfType<SetupScript>();
+
+        SetupHealthSlider();
     }
 
-    // Update is called once per frame
     void Update()
     {
         if (health <= 0)
@@ -32,13 +39,36 @@ public class PlayerManager : MonoBehaviour
             PlayerDeath();
         }
 
-        // debug keybinds
-        if(Input.GetKeyDown(KeyCode.LeftAlt))
+        //take damage button
+        if (Input.GetKeyDown(KeyCode.LeftAlt))
         {
             TakeDamage(10);
         }
 
-        maxHealth = playerMovement.Stats.MaxHealth;
+        // Update maxHealth and slider if it changes so no overflow happens
+        if (maxHealth != playerMovement.Stats.MaxHealth)
+        {
+            maxHealth = playerMovement.Stats.MaxHealth;
+            SetupHealthSlider();
+        }
+        if (maxStamina != playerMovement.Stats.MaxStamina)
+        {
+            maxStamina = playerMovement.Stats.MaxStamina;
+            SetupStaminaSlider();
+        }
+    }
+
+    private void SetupHealthSlider()
+    {
+        healthSlider.maxValue = maxHealth;
+        healthSlider.value = healthSlider.maxValue;
+        healthBar.ChangeBar(healthSlider.maxValue);
+    }
+    private void SetupStaminaSlider()
+    {
+        StaminaSlider.maxValue = maxStamina;
+        StaminaSlider.value = StaminaSlider.maxValue;
+        StaminaBar.ChangeBar(StaminaSlider.maxValue);
     }
 
     private void PlayerDeath()
@@ -46,27 +76,33 @@ public class PlayerManager : MonoBehaviour
         if (!dying)
         {
             dying = true;
+            dataManager.attemptNum += 1;
             float damageDone = bossController.maxhealth - bossController.health;
             float percentDamage = (damageDone / bossController.maxhealth) * 100f;
             dataManager.currency += Mathf.RoundToInt(percentDamage);
-            // This took me like a fucking hour bro fuck this shit what the fuck is Mathf unity documentation blows
+
             playerMovement.enabled = false;
-            restartLevel.FadeIn();
+            setupScript.FadeIn();
             GetComponent<BoxCollider2D>().enabled = false;
         }
-        
     }
 
-    public void TakeDamage(int damage)
+    public void TakeDamage(int damage, Vector2? direction = null)
     {
+        if (direction == null)
+        {
+            direction = Vector2.left * 14f;
+        }
+
         health -= damage;
         if (health < 0)
         {
             health = 0;
-            return;
         }
-        playerMovement._rb.AddForce(new Vector3(-10f, 5f, 0f), ForceMode2D.Impulse);
-        float healthpercent = (float)damage / maxHealth;
+
+        playerMovement.AddFrameForce((Vector2)direction, true);
+        playerMovement.ApplyHitstun(damage);
+
         healthSlider.value = health;
     }
 
@@ -74,14 +110,16 @@ public class PlayerManager : MonoBehaviour
     {
         return health;
     }
-    
+
     public float GetMaxHealth()
     {
         return maxHealth;
     }
 
-    public void resetHealth(){
+    public void ResetHealth()
+    {
         health = maxHealth;
-        healthSlider.maxValue = maxHealth;
+        SetupHealthSlider();
+        SetupStaminaSlider();
     }
 }

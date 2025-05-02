@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.WebSockets;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -12,7 +13,6 @@ public class PlayerMovement : MonoBehaviour
 
         public BoxCollider2D _collider;
         private Vector2 originalColliderSize;
-        public CapsuleCollider2D _airborneCollider;
         private ConstantForce2D _constantForce;
         public Rigidbody2D _rb;
         private PlayerInput _playerInput;
@@ -125,6 +125,8 @@ public class PlayerMovement : MonoBehaviour
             SaveCharacterState();
 
             CalculateStamina();
+
+            CalculateHitstun();
         }
 
         #endregion
@@ -167,6 +169,10 @@ public class PlayerMovement : MonoBehaviour
 
             _currentStamina = Stats.MaxStamina;
             originalColliderSize = _collider.size;
+
+            _originalColliderLayers = _collider.excludeLayers; 
+
+            _inHitstun = false;
         }
 
         #endregion
@@ -178,24 +184,24 @@ public class PlayerMovement : MonoBehaviour
         private void GatherInput()
         {
             _frameInput = _playerInput.Gather();
+            if(!_inHitstun){
+                if (_frameInput.JumpDown)
+                {
+                    _jumpToConsume = true;
+                    _timeJumpWasPressed = _time;
+                    //Debug.Log(_jumpToConsume);
+                }
 
+                if (_frameInput.RollDown)
+                {
+                    _rollToConsume = true;
+                    //Debug.Log(_rollToConsume);
+                }
 
-            if (_frameInput.JumpDown)
-            {
-                _jumpToConsume = true;
-                _timeJumpWasPressed = _time;
-                //Debug.Log(_jumpToConsume);
-            }
-
-            if (_frameInput.RollDown)
-            {
-                _rollToConsume = true;
-                //Debug.Log(_rollToConsume);
-            }
-
-            if(_frameInput.AttackDown)
-            {
-                _attackToConsume = true;
+                if(_frameInput.AttackDown)
+                {
+                    _attackToConsume = true;
+                }
             }
         }
 
@@ -589,7 +595,6 @@ public class PlayerMovement : MonoBehaviour
         private void ExecuteJump(JumpType jumpType)
         {
             SetVelocity(_trimmedFrameVelocity);
-            _collider.size = new Vector2(originalColliderSize.x, originalColliderSize.y / 2);
             _endedJumpEarly = false;
             _bufferedJumpUsable = false;
             _lastJumpExecutedTime = _time;
@@ -731,6 +736,7 @@ public class PlayerMovement : MonoBehaviour
         public bool _rolling;
         private float _startedRolling;
         private float _nextRollTime;
+        private int _originalColliderLayers;
 
 
         private void CalculateRoll()
@@ -748,6 +754,8 @@ public class PlayerMovement : MonoBehaviour
                 _startedRolling = _time;
                 _nextRollTime = _time + Stats.RollCooldown;
                 SpendStamina(Stats.RollCost);
+                int bossLayer = LayerMask.NameToLayer("Boss");
+                _collider.excludeLayers |= (1 << bossLayer);
                 RollChanged?.Invoke(true, dir);
             }
 
@@ -760,6 +768,7 @@ public class PlayerMovement : MonoBehaviour
 
                     SetVelocity(new Vector2(Velocity.x * Stats.RollEndHorizontalMultiplier, Velocity.y));
                     if (_grounded) _canRoll = true;
+                    _collider.excludeLayers = _originalColliderLayers;
                 }
             }
         }
@@ -900,7 +909,7 @@ public class PlayerMovement : MonoBehaviour
             var extraForce = new Vector2(0, _grounded ? 0 : -Stats.ExtraConstantGravity * (_endedJumpEarly && Velocity.y > 0 ? Stats.EndJumpEarlyExtraForceMultiplier : 1));
             _constantForce.force = extraForce * _rb.mass;
 
-            var targetSpeed = _hasInputThisFrame ? Stats.BaseSpeed : 0;
+            var targetSpeed = (_hasInputThisFrame && !_attacking && !_inHitstun) ? Stats.BaseSpeed : 0;
 
             if (Crouching)
             {
@@ -908,10 +917,10 @@ public class PlayerMovement : MonoBehaviour
                 targetSpeed *= Mathf.Lerp(1, Stats.CrouchSpeedModifier, crouchPoint);
             }
 
-            var step = _hasInputThisFrame ? Stats.Acceleration : Stats.Friction;
+            var step = (_hasInputThisFrame  && !_attacking && !_inHitstun) ? Stats.Acceleration : Stats.Friction;
             
             //var xDir = (_hasInputThisFrame && !_attacking) ? _frameDirection : Velocity.normalized;
-            var xDir = (_hasInputThisFrame && !_attacking) ? _frameDirection : Velocity.normalized*.3f;
+            var xDir = (_hasInputThisFrame  && !_attacking && !_inHitstun) ? _frameDirection : Velocity.normalized*.3f;
 
             // Quicker direction change
             if (Vector3.Dot(_trimmedFrameVelocity, _frameDirection) < 0) step *= Stats.DirectionCorrectionMultiplier;
@@ -983,6 +992,25 @@ public class PlayerMovement : MonoBehaviour
                 Grounded = _grounded
             };
         }
+        #region Hitstun
+        private float _remainingHitstun = 0;
+        private bool _inHitstun;
+        private void CalculateHitstun(){
+            if(_inHitstun && _remainingHitstun > 0){
+                _remainingHitstun -= _delta; 
+                Debug.Log(_remainingHitstun);
+            }
+            if(_inHitstun && _remainingHitstun <= 0){
+                _remainingHitstun = 0;
+                _inHitstun = false;
+            }
+        }
+        public void ApplyHitstun(int damage){
+            _inHitstun = true;
+            _remainingHitstun = damage/20;
+        }
+
+        #endregion
         
 
         #region External Triggers

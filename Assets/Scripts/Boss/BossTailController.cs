@@ -21,10 +21,10 @@ public class BossTailController : MonoBehaviour
         if (collision.gameObject.tag == "Player" && !is_slowed) 
         {
             player.Stats.BaseSpeed *= slow_percent;
-            Debug.Log(player.Stats.BaseSpeed + " Enter");
+            // Debug.Log(player.Stats.BaseSpeed + " Enter");
             is_slowed = true;
         }
-        Debug.Log(player.Stats.BaseSpeed);
+        // Debug.Log(player.Stats.BaseSpeed);
     }
     void OnTriggerExit2D(Collider2D collision)
     {
@@ -32,7 +32,7 @@ public class BossTailController : MonoBehaviour
         {
             exit_count += 1;
             StartCoroutine(delaySlow());
-            Debug.Log(exit_count + " " + player.Stats.BaseSpeed + " Exit");
+            // Debug.Log(exit_count + " " + player.Stats.BaseSpeed + " Exit");
         }
     }
     public IEnumerator delaySlow()
@@ -40,7 +40,7 @@ public class BossTailController : MonoBehaviour
         yield return new WaitForSeconds(3);
         if (exit_count == 1){
             player.Stats.BaseSpeed /= slow_percent;
-            Debug.Log(exit_count + " " + player.Stats.BaseSpeed + " Decrease");
+            // Debug.Log(exit_count + " " + player.Stats.BaseSpeed + " Decrease");
             is_slowed = false;
         }
         exit_count -= 1;

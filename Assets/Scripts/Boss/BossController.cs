@@ -3,6 +3,8 @@ using System.Collections;
 using UnityEngine.UI;
 using Unity.Mathematics;
 using UnityEngine.Scripting.APIUpdating;
+using UnityEditor;
+using System;
 
 public class BossController : MonoBehaviour
 {
@@ -11,11 +13,14 @@ public class BossController : MonoBehaviour
     private BoxCollider2D boxCollider;
     new private Rigidbody2D rigidbody2D;
     private Animator bossAnim;
+    private SetupScript setupScript;
 
     //prefabs
     private GameObject laser_orb_prefab;
     private GameObject optic_pillar_prefab;
     private GameObject melee_attack_prefab;
+
+    private GameObject shockwave_prefab;
 
     //ranges (P____[L]____lrange____[M]____mrange____[C]____B)
     float mrange = 10F;
@@ -42,11 +47,13 @@ public class BossController : MonoBehaviour
         boxCollider = GetComponent<BoxCollider2D>();
         rigidbody2D = GetComponent<Rigidbody2D>();
         bossAnim = GetComponent<Animator>();
+        setupScript = FindObjectOfType<SetupScript>();
 
 
         laser_orb_prefab = Resources.Load("Laser_Orb") as GameObject;
         optic_pillar_prefab = Resources.Load("Optic_Pillar") as GameObject;
         melee_attack_prefab = Resources.Load("Melee_Attack") as GameObject;
+        shockwave_prefab = Resources.Load("Shockwave") as GameObject;
 
         healthSlider.GetComponent<Slider>();
 
@@ -55,13 +62,15 @@ public class BossController : MonoBehaviour
         healthSlider.maxValue = health;
         healthSlider.value = health;
         curr_move_speed = move_speed;
+
+        setupScript.FadeOut(8);
     }
     void attack(float dist)
     {
         //movesets for each range
-        string[] lset = {"optic_pillar", "laser_orb",};
-        string[] mset = {"three_hit"};
-        string[] cset = {"two_hit"};
+        string[] lset = {"optic_pillar", "laser_orb"};
+        string[] mset = {"three_hit", "shockwave_slash"};
+        string[] cset = {"two_hit", "axe_slam"};
 
         dist = Mathf.Abs(dist);
 
@@ -78,6 +87,7 @@ public class BossController : MonoBehaviour
             a = lset[UnityEngine.Random.Range(0, lset.Length)];
         }
 
+        Debug.Log(a);
         StartCoroutine(a, 0);
     }
 
@@ -232,6 +242,46 @@ public class BossController : MonoBehaviour
         }
 
         yield return new WaitForSeconds(duration[0] + pause_duration);
+        attacking = false;
+    }
+
+    IEnumerator shockwave_slash()
+    {
+        bossAnim.SetTrigger("twoHit");
+
+        // Attack values
+        int[] damage = {40}; 
+        Vector2[] sizes = {new Vector2(2F,1F)};
+        float[] delay = {0.7F}; 
+        float[] duration = {0.2F};
+
+        // Helper vars
+        int current_face = -1;
+        Vector3 boss_size = GetComponent<BoxCollider2D>().size;
+        Vector2 corner = new Vector2(transform.position.x + (current_face * boss_size.x/2), transform.position.y - boss_size.y/2);
+
+        for (int i = 0; i < 1; i ++){
+            // Delay before attack
+            yield return new WaitForSeconds(delay[i]); 
+            
+            // Set size of first attack here. Don't change hitbox_pos
+            GameObject hit = Instantiate(melee_attack_prefab, transform);
+            MeleeAttackHitBox box = hit.GetComponent<MeleeAttackHitBox>();
+            if (box != null){
+                box.LoadVars(
+                    new Vector2(current_face * (sizes[i].x + boss_size.x)/2, (sizes[i].y - boss_size.y)/2), 
+                    sizes[i], 
+                    damage[i], 
+                    duration[i]);
+            }
+            GameObject shockwave = Instantiate(shockwave_prefab, transform.position, Quaternion.identity);
+            Shockwave shockwave_script = shockwave.GetComponent<Shockwave>();
+            shockwave_script.facing = facing;
+            
+        }
+
+        yield return new WaitForSeconds(duration[0] + pause_duration);
+
         attacking = false;
     }
 
