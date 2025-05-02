@@ -33,6 +33,7 @@ public class PlayerMovement : MonoBehaviour
         public event Action<bool> WallGrabChanged;
         public event Action<Vector2> Repositioned;
         public event Action<bool> ToggledPlayer;
+        public event Action<bool> Hurt;
 
         public bool Active { get; private set; } = true;
         public Vector2 Up { get; private set; }
@@ -1003,9 +1004,11 @@ public class PlayerMovement : MonoBehaviour
             if(_inHitstun && _remainingHitstun <= 0){
                 _remainingHitstun = 0;
                 _inHitstun = false;
+                Hurt?.Invoke(false);
             }
         }
         public void ApplyHitstun(int damage){
+            Hurt?.Invoke(true);
             _inHitstun = true;
             _remainingHitstun = damage/20;
         }
