@@ -19,6 +19,7 @@ public class PlayerAnimator : MonoBehaviour
         _player.Jumped += OnJumped;        
         _player.AttackStart += OnAttackChanged;
         _player.AttackReleased += OnAttackExecuted;
+        _player.Hurt += OnHurt;
     }
     private void Awake() {
         _player = GetComponentInParent<PlayerMovement>();
@@ -73,6 +74,18 @@ public class PlayerAnimator : MonoBehaviour
 
     private void OnAttackExecuted(AttackType attack){
         _anim.SetInteger("AttackType", (int)attack);
+    }
+
+    private void OnHurt(bool hurt)
+    {
+        if (hurt)
+        {
+            _anim.SetTrigger("Hurt");
+        }
+        else{
+            _anim.ResetTrigger("Hurt");
+        }
+        
     }
 
 }
