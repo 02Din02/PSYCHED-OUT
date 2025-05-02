@@ -5,6 +5,7 @@ using Unity.Mathematics;
 using UnityEngine.Scripting.APIUpdating;
 using UnityEditor;
 using System;
+using DG.Tweening;
 
 public class BossController : MonoBehaviour
 {
@@ -39,7 +40,7 @@ public class BossController : MonoBehaviour
     private float step_back_chance = 0.25F; //out of 1
     private float pause_duration = 2F;
     private bool attacking = false;
-    int facing = -1; //1 for right, -1 for left
+    public int facing = -1; //1 for right, -1 for left
 
     void Start()
     {
@@ -68,9 +69,9 @@ public class BossController : MonoBehaviour
     void attack(float dist)
     {
         //movesets for each range
-        string[] lset = {"optic_pillar", "laser_orb"};
+        string[] lset = {"optic_pillar", "laser_orb", "shockwave_slash"};
         string[] mset = {"three_hit", "shockwave_slash"};
-        string[] cset = {"two_hit", "axe_slam"};
+        string[] cset = {"two_hit", "axe_slam", "three_hit"};
 
         dist = Mathf.Abs(dist);
 
@@ -87,7 +88,7 @@ public class BossController : MonoBehaviour
             a = lset[UnityEngine.Random.Range(0, lset.Length)];
         }
 
-        Debug.Log(a);
+        // Debug.Log(a);
         StartCoroutine(a, 0);
     }
 
@@ -251,7 +252,7 @@ public class BossController : MonoBehaviour
 
         // Attack values
         int[] damage = {40}; 
-        Vector2[] sizes = {new Vector2(2F,1F)};
+        Vector2[] sizes = {new Vector2(1F,0.5F)};
         float[] delay = {0.7F}; 
         float[] duration = {0.2F};
 
@@ -308,13 +309,18 @@ public class BossController : MonoBehaviour
         }
 
         if (!attacking) {
-            if (((curr_move_time > move_duration - step_back_duration) || math.abs(dist_from_player) <= crange) && step_back_decision) {
-                if (UnityEngine.Random.Range(0F,1F) <= step_back_chance) {
-                    move_dir = -1;
-                    curr_move_speed = step_back_speed;
-                    curr_move_time = move_duration - step_back_duration;
+            float step_back_distance = step_back_speed * step_back_duration;
+            RaycastHit2D ray = Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y), Vector2.left * facing, step_back_distance + 1, LayerMask.GetMask("Ground"));
+
+            if (!ray) {
+                if (((curr_move_time > move_duration - step_back_duration) || math.abs(dist_from_player) <= crange) && step_back_decision) {
+                    if (UnityEngine.Random.Range(0F,1F) <= step_back_chance) {
+                        move_dir = -1;
+                        curr_move_speed = step_back_speed;
+                        curr_move_time = move_duration - step_back_duration;
+                    }
+                    step_back_decision = false;
                 }
-                step_back_decision = false;
             }
 
             if (curr_move_time > move_duration || (math.abs(dist_from_player) <= crange && move_dir == 1)) {
