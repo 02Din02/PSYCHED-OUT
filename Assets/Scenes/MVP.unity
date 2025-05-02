@@ -10978,7 +10978,7 @@ MonoBehaviour:
   staminaSlider: {fileID: 223367368}
   <Stats>k__BackingField: {fileID: 11400000, guid: adc93b2694feebe43aa29bcab9e60fc8, type: 2}
   _drawGizmos: 1
-  _currentStamina: 120
+  _currentStamina: 100
   _rolling: 0
 --- !u!50 &3583756269309197474
 Rigidbody2D:
