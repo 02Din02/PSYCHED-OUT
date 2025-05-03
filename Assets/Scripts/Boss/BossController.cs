@@ -213,7 +213,7 @@ public class BossController : MonoBehaviour
 
     IEnumerator axe_slam()
     {
-        bossAnim.SetTrigger("twoHit");
+        bossAnim.SetTrigger("downwardAxe");
 
         // Attack values
         int[] damage = {30}; 
