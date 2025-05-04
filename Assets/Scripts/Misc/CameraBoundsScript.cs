@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Cinemachine;
+using UnityEngine.SceneManagement;
+using System.Threading;
 
 public class CameraBoundsScript : MonoBehaviour
 {
@@ -29,19 +31,28 @@ public class CameraBoundsScript : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            Color c = setupScript.fadeBox.color;
-            c.a = 1f;
-            setupScript.fadeBox.color = c;
+            //Color c = setupScript.fadeBox.color;
+            //c.a = 1f;
+            //setupScript.fadeBox.color = c;
 
-
-            var camConfiner = virtualCam.GetComponentInChildren<Cinemachine.CinemachineConfiner2D>();
-            camConfiner.m_BoundingShape2D = confinerShape2D;
-            playerLight.SetActive(false);
-            boss.gameObject.SetActive(true);
-            bossHP_bar.gameObject.SetActive(true);
-            player.GetComponent<PlayerManager>().ResetHealth();
+            StartCoroutine(switchCam());
+            
             //Debug.Log("Camera switched");
         }
+    }
+
+    public IEnumerator switchCam()
+    {
+        setupScript.FadeInWithoutRestarting(1);
+        yield return new WaitForSeconds(1);
+        var camConfiner = virtualCam.GetComponentInChildren<Cinemachine.CinemachineConfiner2D>();
+        camConfiner.m_BoundingShape2D = confinerShape2D;
+        setupScript.FadeOut(1);
+        yield return new WaitForSeconds(1);
+        playerLight.SetActive(false);
+        boss.gameObject.SetActive(true);
+        bossHP_bar.gameObject.SetActive(true);
+        player.GetComponent<PlayerManager>().ResetHealth();
     }
 }
 
