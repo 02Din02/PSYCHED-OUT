@@ -39,11 +39,11 @@ public class PlayerManager : MonoBehaviour
             PlayerDeath();
         }
 
-        //take damage button
-        if (Input.GetKeyDown(KeyCode.LeftAlt))
-        {
-            TakeDamage(10);
-        }
+        ////take damage button
+        //if (Input.GetKeyDown(KeyCode.LeftAlt))
+        //{
+        //    TakeDamage(10);
+        //}
 
         // Update maxHealth and slider if it changes so no overflow happens
         if (maxHealth != playerMovement.Stats.MaxHealth)

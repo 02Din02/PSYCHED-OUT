@@ -36,12 +36,21 @@ public class SetupScript : MonoBehaviour
 
     public void FadeOut(int time)
     {
-
         if (fadeBox != null)
         {
+            fadeBox.DOKill();
+            fadeBox.color = new Color(0, 0, 0, 1f);
             fadeBox.DOFade(0f, time);
         }
 
+    }
+
+    public void FadeInWithoutRestarting(int fadeDuration)
+    {
+        if (fadeBox != null)
+        {
+            fadeBox.DOFade(1f, fadeDuration);
+        }
     }
 
 
