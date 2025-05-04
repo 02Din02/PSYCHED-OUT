@@ -68,6 +68,7 @@ public class BossController : MonoBehaviour
     }
     void attack(float dist)
     {
+        bossAnim.ResetTrigger("turn");
         //movesets for each range
         string[] lset = {"optic_pillar", "laser_orb", "shockwave_slash"};
         string[] mset = {"three_hit", "shockwave_slash"};
@@ -94,6 +95,7 @@ public class BossController : MonoBehaviour
 
     IEnumerator laser_orb()
     {
+        bossAnim.ResetTrigger("turn");
         float animation_delay = 0.5F;
         bossAnim.SetTrigger("laserOrb");
 
@@ -123,6 +125,7 @@ public class BossController : MonoBehaviour
 
     IEnumerator optic_pillar()
     {
+        bossAnim.ResetTrigger("turn");
         float animation_delay = 1F;
         bossAnim.SetTrigger("opticPillar");
 
@@ -137,6 +140,7 @@ public class BossController : MonoBehaviour
 
     IEnumerator three_hit()
     {
+        bossAnim.ResetTrigger("turn");
         bossAnim.SetTrigger("threeHit");
 
         // Attack values
@@ -178,6 +182,7 @@ public class BossController : MonoBehaviour
 
     IEnumerator two_hit()
     {
+        bossAnim.ResetTrigger("turn");
         bossAnim.SetTrigger("twoHit");
 
         // Attack values
@@ -213,6 +218,7 @@ public class BossController : MonoBehaviour
 
     IEnumerator axe_slam()
     {
+        bossAnim.ResetTrigger("turn");
         bossAnim.SetTrigger("downwardAxe");
 
         // Attack values
@@ -248,6 +254,7 @@ public class BossController : MonoBehaviour
 
     IEnumerator shockwave_slash()
     {
+        bossAnim.ResetTrigger("turn");
         bossAnim.SetTrigger("twoHit");
 
         // Attack values
@@ -303,9 +310,17 @@ public class BossController : MonoBehaviour
         // Updates direction that the boss should face
         float dist_from_player = player.transform.position.x - transform.position.x;
         if (dist_from_player > 0) {
+           // if (facing == -1)
+            //{
+                //bossAnim.SetTrigger("turn");
+           // }
             facing = 1;
         }
         else {
+           // if (facing == 1)
+           // {
+            //    bossAnim.SetTrigger("turn");
+           // }
             facing = -1;
         }
 

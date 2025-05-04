@@ -9,6 +9,6 @@ EditorBuildSettings:
     path: Assets/Scenes/Main Menu.unity
     guid: 57faff1d3ccdf8848913a3df32ab7f11
   - enabled: 1
-    path: Assets/Scenes/MVP.unity
+    path: Assets/Scenes/Game.unity
     guid: 007189e5b3bc7f743aa71c189507ca2d
   m_configObjects: {}
