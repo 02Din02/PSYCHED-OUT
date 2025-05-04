@@ -64,7 +64,7 @@ public class BossController : MonoBehaviour
         healthSlider.value = health;
         curr_move_speed = move_speed;
 
-        setupScript.FadeOut(8);
+        //setupScript.FadeOut(8);
     }
     void attack(float dist)
     {
