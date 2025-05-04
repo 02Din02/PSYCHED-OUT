@@ -24,7 +24,7 @@ public class BossController : MonoBehaviour
     private GameObject shockwave_prefab;
 
     //ranges (P____[L]____lrange____[M]____mrange____[C]____B)
-    float mrange = 10F;
+    float mrange = 7F;
     float crange = 5F;
     
     // UI
@@ -70,9 +70,9 @@ public class BossController : MonoBehaviour
     {
         bossAnim.ResetTrigger("turn");
         //movesets for each range
-        string[] lset = {"optic_pillar", "laser_orb", "shockwave_slash"};
+        string[] lset = {"laser_orb"}; //"optic_pillar", "shockwave_slash"
         string[] mset = {"three_hit", "shockwave_slash"};
-        string[] cset = {"two_hit", "axe_slam", "three_hit"};
+        string[] cset = {"axe_slam", "three_hit", "two_hit"}; //"axe_slam", "three_hit", "two_hit"
 
         dist = Mathf.Abs(dist);
 
@@ -145,7 +145,7 @@ public class BossController : MonoBehaviour
 
         // Attack values
         int[] damage = {15, 30, 30}; 
-        Vector2[] sizes = {new Vector2(2F,1F), new Vector2(1.5F,1F), new Vector2(4F,1F)}; 
+        Vector2[] sizes = {new Vector2(1.35F,1F), new Vector2(1.7F,1F), new Vector2(4.7F,1F)}; 
         float[] delay = {0.7F,0.7F,0.5F}; //No initial delay
         float[] duration = {0.3F,0.2F,0.2F}; 
 
@@ -187,7 +187,7 @@ public class BossController : MonoBehaviour
 
         // Attack values
         int[] damage = {20, 30}; 
-        Vector2[] sizes = {new Vector2(2F,0.5F), new Vector2(0F,0F)};  //Vector2(1.5F,1F)
+        Vector2[] sizes = {new Vector2(1.7F,0.5F), new Vector2(0F,0F)};  //Vector2(1.5F,1F)
         float[] delay = {0.7F,0.5F}; 
         float[] duration = {0.3F,0.5F}; 
 
