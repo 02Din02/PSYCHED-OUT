@@ -11,6 +11,7 @@ public class PlayerManager : MonoBehaviour
     [SerializeField] private float maxHealth = 100;
     [SerializeField] private float maxStamina = 100;
     private PlayerMovement playerMovement;
+    [SerializeField] private Animator playerAnimator;
     private SetupScript setupScript;
     [SerializeField] private Slider healthSlider;
     [SerializeField] private UIBar healthBar;
@@ -76,6 +77,7 @@ public class PlayerManager : MonoBehaviour
         if (!dying)
         {
             dying = true;
+            playerAnimator.SetBool("Death", true);
             dataManager.attemptNum += 1;
             float damageDone = bossController.maxhealth - bossController.health;
             float percentDamage = (damageDone / bossController.maxhealth) * 100f;
