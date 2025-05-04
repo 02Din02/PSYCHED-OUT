@@ -11713,6 +11713,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealth: 100
   maxStamina: 100
+  playerAnimator: {fileID: 3746724185216210433}
   healthSlider: {fileID: 886708748}
   healthBar: {fileID: 886708749}
   StaminaSlider: {fileID: 223367368}
