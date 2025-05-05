@@ -1008,7 +1008,7 @@ public class PlayerMovement : MonoBehaviour
         }
         #region Hitstun
         private float _remainingHitstun = 0;
-        private bool _inHitstun;
+        public bool _inHitstun;
         private void CalculateHitstun(){
             if(_inHitstun && _remainingHitstun > 0){
                 _remainingHitstun -= _delta; 

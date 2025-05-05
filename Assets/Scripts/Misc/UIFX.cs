@@ -1,14 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
+using TMPro;
 using UnityEngine;
 
 public class UIFX : MonoBehaviour
 {
     public Vector3 targetScale = new Vector3(1.1f, 1.1f, 1);
     public Vector3 oldScale = new Vector3(1, 1, 1);
-
-    // Change these in INSPECTOR if needed
+    
+    private TextMeshProUGUI tutText;
 
     public void MakeBigger()
     {
@@ -31,11 +32,22 @@ public class UIFX : MonoBehaviour
 
     }
 
+    
+
     void OnDisable()
     {
         transform.DOKill();
         transform.localScale = oldScale;
         transform.localRotation = Quaternion.identity;
+    }
+
+    void OnTriggerEnter2D(Collider2D collision)
+    {
+        tutText = GetComponent<TextMeshProUGUI>();
+        if (tutText != null)
+        {
+            tutText.DOFade(0f, 1.5f);
+        }
     }
 
 }
