@@ -1432,6 +1432,8 @@ RectTransform:
   - {fileID: 1079569041}
   - {fileID: 858329789}
   - {fileID: 744228714}
+  - {fileID: 775264188}
+  - {fileID: 1217428116}
   m_Father: {fileID: 1910121510}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -1581,7 +1583,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 180}
+  m_AnchoredPosition: {x: 0, y: 202}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &384727401
@@ -2007,13 +2009,20 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Programming
+  m_text: 'PROGRAMMING
 
-    name  - role
+    -
 
-    name - role
+    David Dai
 
-    name - role'
+    Quinten Schafer
+
+    Prathik Srinvivasan
+
+    Kyle
+    Li
+
+    Chi Jay'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: fc13229a4b3c40648b2f44c041d14ed9, type: 2}
   m_sharedMaterial: {fileID: -4754336498875289499, guid: fc13229a4b3c40648b2f44c041d14ed9, type: 2}
@@ -2510,6 +2519,81 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 744228713}
   m_CullTransparentMesh: 1
+--- !u!1 &775264187
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 775264188}
+  - component: {fileID: 775264190}
+  - component: {fileID: 775264189}
+  m_Layer: 5
+  m_Name: Image
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &775264188
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 775264187}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0.049999997, y: 0.049999997, z: 0.625}
+  m_ConstrainProportionsScale: 1
+  m_Children: []
+  m_Father: {fileID: 312252827}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 100, y: 128}
+  m_SizeDelta: {x: 1048, y: 959}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &775264189
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 775264187}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 0.8773585, g: 0.8773585, b: 0.8773585, a: 1}
+  m_RaycastTarget: 0
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 21300000, guid: ba064dc5d13bc874e88c3815170c7c42, type: 3}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &775264190
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 775264187}
+  m_CullTransparentMesh: 1
 --- !u!1 &787474193
 GameObject:
   m_ObjectHideFlags: 0
@@ -2923,13 +3007,11 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Design
+  m_text: 'DESIGN
 
-    name  - role
+    -
 
-    name - role
-
-    name - role'
+    Jamison Maloney'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: fc13229a4b3c40648b2f44c041d14ed9, type: 2}
   m_sharedMaterial: {fileID: -4754336498875289499, guid: fc13229a4b3c40648b2f44c041d14ed9, type: 2}
@@ -3455,13 +3537,13 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Audio
+  m_text: 'AUDIO
 
-    name  - role
+    -
 
-    name - role
+    Peter Canalia
 
-    name - role'
+    dannyzzajac'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: fc13229a4b3c40648b2f44c041d14ed9, type: 2}
   m_sharedMaterial: {fileID: -4754336498875289499, guid: fc13229a4b3c40648b2f44c041d14ed9, type: 2}
@@ -4015,6 +4097,81 @@ CanvasRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1171478368}
+  m_CullTransparentMesh: 1
+--- !u!1 &1217428115
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1217428116}
+  - component: {fileID: 1217428118}
+  - component: {fileID: 1217428117}
+  m_Layer: 5
+  m_Name: Image (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1217428116
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1217428115}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0.2, y: 0.2, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 312252827}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: -37.49997, y: 128.00003}
+  m_SizeDelta: {x: 1043, y: 120}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1217428117
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1217428115}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 0
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 21300000, guid: 0bcade88f636a4448abe2a01bd23c5e1, type: 3}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &1217428118
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1217428115}
   m_CullTransparentMesh: 1
 --- !u!1 &1288028110
 GameObject:
@@ -5459,13 +5616,18 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Art
+  m_text: 'ART
 
-    name  - role
+    -
 
-    name - role
+    Isaac William Ling
 
-    name - role'
+    Seidy Joanne Montufar
+
+    Danny
+    Klonecki
+
+    Emmett Quan'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: fc13229a4b3c40648b2f44c041d14ed9, type: 2}
   m_sharedMaterial: {fileID: -4754336498875289499, guid: fc13229a4b3c40648b2f44c041d14ed9, type: 2}
