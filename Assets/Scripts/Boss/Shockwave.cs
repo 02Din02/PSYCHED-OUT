@@ -49,7 +49,7 @@ public class Shockwave : MonoBehaviour
 
     public IEnumerator Activate() {
         boxCollider.size = new Vector2(width, height);
-        transform.position = new Vector3(transform.position.x, -57.75F, transform.position.z);
+        transform.position = new Vector3(transform.position.x, -65.5F, transform.position.z);
         yield return new WaitForSeconds(duration);
 
         Destroy(gameObject);

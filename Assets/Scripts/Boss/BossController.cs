@@ -70,7 +70,7 @@ public class BossController : MonoBehaviour
     {
         bossAnim.ResetTrigger("turn");
         //movesets for each range
-        string[] lset = {"laser_orb"}; //"optic_pillar", "shockwave_slash"
+        string[] lset = {"laser_orb", "optic_pillar", "shockwave_slash"}; //"optic_pillar", "shockwave_slash"
         string[] mset = {"three_hit", "shockwave_slash"};
         string[] cset = {"axe_slam", "three_hit", "two_hit"}; //"axe_slam", "three_hit", "two_hit"
 
