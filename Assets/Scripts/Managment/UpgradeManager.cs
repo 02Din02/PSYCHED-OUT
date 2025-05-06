@@ -25,7 +25,6 @@ public class UpgradeManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        Cursor.lockState = CursorLockMode.None;
         Debug.Log("Initializing UpgradeManager");
         currency = DataManager.Instance.currency;
         attemptNum = DataManager.Instance.attemptNum;

@@ -44,7 +44,7 @@ public class PauseManager : MonoBehaviour
         if (pauseCanvas != null)
         {
             pauseCanvas.SetActive(false); // Get rid of menu
-           // Cursor.lockState = CursorLockMode.Locked; // Locks mouse in place
+            Cursor.lockState = CursorLockMode.Locked; // Locks mouse in place
             Time.timeScale = 1; // Un-Freeze time
         }
 
