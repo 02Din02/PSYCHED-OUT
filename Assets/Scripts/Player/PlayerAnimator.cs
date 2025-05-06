@@ -38,8 +38,6 @@ public class PlayerAnimator : MonoBehaviour
         //Handle crouching
         _anim.SetBool("Crouching", _player.Crouching);
 
-        _anim.SetBool("HurtPlaying", _player._inHitstun);
-
 
     }
     
@@ -87,6 +85,7 @@ public class PlayerAnimator : MonoBehaviour
         else{
             _anim.ResetTrigger("Hurt");
         }
+        
     }
 
 }
