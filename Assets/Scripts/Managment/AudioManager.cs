@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class AudioManager : MonoBehaviour
 {
+    private AudioSource sfx;
     [Header("BOSS AUDIO STUFF")]
     public AudioClip threeHitSFX;
     public AudioClip twoHitSFX;
@@ -15,6 +16,7 @@ public class AudioManager : MonoBehaviour
     public AudioClip laserReleaseSFX;
     public AudioClip bossGetHitSFX;
     public AudioClip bossDeath;
+    public AudioClip bossWalk;
 
     [Header("PLAYER AUDIO STUFF")]
     public AudioClip walk;
@@ -29,16 +31,13 @@ public class AudioManager : MonoBehaviour
     public AudioClip Purchase;
     public AudioClip Click;
 
-
-
     void Start()
     {
-
+        sfx = GetComponent<AudioSource>();
     }
 
-    // Update is called once per frame
-    void Update()
+    public void PlaySound(AudioClip clip)
     {
-
+        sfx.PlayOneShot(clip);
     }
 }

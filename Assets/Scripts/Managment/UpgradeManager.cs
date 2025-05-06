@@ -79,12 +79,12 @@ public class UpgradeManager : MonoBehaviour
 
     public void SyncStats()
     {
-        statsManager.AttackStrength = baseStats.AttackStrength * (1f + upgradeTracker["Adrenaline"] / 10f); // level 10 = doubled
+        statsManager.AttackStrength = baseStats.AttackStrength * (1f + upgradeTracker["Adrenaline"] * 0.3f); //30% increase (?)
         statsManager.RollCooldown = baseStats.RollCooldown - (0.05f * upgradeTracker["Instinct"]); // level 10 = halved
-        statsManager.BaseSpeed = baseStats.BaseSpeed * (1f + upgradeTracker["Instinct"] / 20f); // level 10 = 1.5x
-        statsManager.AttackCooldown = baseStats.AttackCooldown * (1f - upgradeTracker["Instinct"] / 20f); // level 10 = halved (crazy)
-        statsManager.MaxHealth = baseStats.MaxHealth + (10 * upgradeTracker["Vital"]); // level 10 = +100
-        statsManager.MaxStamina = baseStats.MaxStamina + (10 * upgradeTracker["Harmony"]);
+        statsManager.BaseSpeed = baseStats.BaseSpeed * (1f + upgradeTracker["Instinct"] * 0.25f); // 25% increase per rank (?)
+        statsManager.AttackCooldown = baseStats.AttackCooldown * (1f - upgradeTracker["Instinct"] * 0.25f); // 25% decrease  per rank (?)
+        statsManager.MaxHealth = baseStats.MaxHealth + (50 * upgradeTracker["Vital"]); // level 10 = 500
+        statsManager.MaxStamina = baseStats.MaxStamina + (25 * upgradeTracker["Harmony"]); // level 10 = 250 (?)
 
         currentStatsDisplay.text = $"health : {statsManager.MaxHealth}\n" +
                                    $"stamina : {statsManager.MaxStamina}\n" +
@@ -101,16 +101,16 @@ public class UpgradeManager : MonoBehaviour
         switch (upgrade)
         {
             case "Adrenaline":
-                upgradeEffectDisplay.text = "\n\n\n   +0. 1x\n\n\n";
+                upgradeEffectDisplay.text = "\n\n\n   +0. 3x\n\n\n";
                 break;
             case "Instinct":
-                upgradeEffectDisplay.text = "\n\n +0. 1x\n\n   -0. 05x\n     -0. 1x";
+                upgradeEffectDisplay.text = "\n\n +0. 25x\n\n   -0. 25x\n     -0. 1x";
                 break;
             case "Vital":
-                upgradeEffectDisplay.text = "+10\n\n\n\n\n\n";
+                upgradeEffectDisplay.text = "+50\n\n\n\n\n\n";
                 break;
             case "Harmony":
-                upgradeEffectDisplay.text = "\n  +10\n\n\n\n\n";
+                upgradeEffectDisplay.text = "\n  +25\n\n\n\n\n";
                 break;
         }
     }
