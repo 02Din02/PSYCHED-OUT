@@ -3690,7 +3690,7 @@ Transform:
   m_GameObject: {fileID: 569093020}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 1002.4054, y: 731.8757, z: 0.045914628}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -6799,25 +6799,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 78a3a10d653a3964e9f545642111f5fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  threeHitSFX: {fileID: 0}
-  twoHitSFX: {fileID: 0}
-  upwardSFX: {fileID: 0}
-  downwardSFX: {fileID: 0}
-  pillarChargeSFX: {fileID: 0}
-  pillarReleaseSFX: {fileID: 0}
-  laserChargeSFX: {fileID: 0}
-  laserReleaseSFX: {fileID: 0}
-  bossGetHitSFX: {fileID: 0}
-  bossDeath: {fileID: 0}
-  walk: {fileID: 0}
-  jump: {fileID: 0}
-  land: {fileID: 0}
-  lightAttack: {fileID: 0}
-  heavyAttack: {fileID: 0}
-  hurt: {fileID: 0}
-  die: {fileID: 0}
-  Purchase: {fileID: 0}
-  Click: {fileID: 0}
+  threeHitSFX: {fileID: 8300000, guid: f7dd3862b67e9fa419957e8b860b1941, type: 3}
+  twoHitSFX: {fileID: 8300000, guid: 83d3a8a83b135ef48b4d3f33d9dcc4ad, type: 3}
+  upwardSFX: {fileID: 8300000, guid: 1cc0067202b46f745a8b7674666faf70, type: 3}
+  downwardSFX: {fileID: 8300000, guid: a90cbf551b992e941b24629c930e4b84, type: 3}
+  pillarChargeSFX: {fileID: 8300000, guid: 659f445d4a5d55c43a1145c81755271c, type: 3}
+  pillarReleaseSFX: {fileID: 8300000, guid: b2103496b0f3e4546bc839d93841e967, type: 3}
+  laserChargeSFX: {fileID: 8300000, guid: e61b0fe6fbef58f44a476d2032aae83a, type: 3}
+  laserReleaseSFX: {fileID: 8300000, guid: 7419529922ce8ef4eaedb32b2619baa8, type: 3}
+  bossGetHitSFX: {fileID: 8300000, guid: 2e32e715ab000b546ac33db93d406b45, type: 3}
+  bossDeath: {fileID: 8300000, guid: f5094fbd55cb3b244807f9e65a547f70, type: 3}
+  bossWalk: {fileID: 8300000, guid: 0e2bd9e8d8f0db844b8ef7bace465bfe, type: 3}
+  walk: {fileID: 8300000, guid: 47bec7ee975c7bc4bacde82d8da58bc3, type: 3}
+  jump: {fileID: 8300000, guid: 910577e0cdbd9ab44a9118968133b3e6, type: 3}
+  land: {fileID: 8300000, guid: fe6283fd44eae6f4790fcd59c886ac4f, type: 3}
+  lightAttack: {fileID: 8300000, guid: 9d29a34d252798347ae0bca38bdd25f7, type: 3}
+  heavyAttack: {fileID: 8300000, guid: d1e8a92804f960d4886a493b3aff7a2e, type: 3}
+  hurt: {fileID: 8300000, guid: 2d323b3b649e8984988d2ca81ea6bc78, type: 3}
+  die: {fileID: 8300000, guid: 9a2e041a53f65274581f0ca3a31d6503, type: 3}
+  Purchase: {fileID: 8300000, guid: 59bdc1920913f3e4eb057241e7d89352, type: 3}
+  Click: {fileID: 8300000, guid: f6edc5c2bbd63f544ab8d3a2035282eb, type: 3}
 --- !u!82 &1017767202
 AudioSource:
   m_ObjectHideFlags: 0
@@ -6829,7 +6830,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
-  m_PlayOnAwake: 1
+  m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
   Loop: 0
@@ -11629,7 +11630,7 @@ Transform:
   m_GameObject: {fileID: 1967253037}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -24.5946, y: 24.875677, z: 0.045914628}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -12006,7 +12007,7 @@ Transform:
   m_GameObject: {fileID: 1990289743}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -31.3, y: -2.06, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -12333,7 +12334,7 @@ Transform:
   m_GameObject: {fileID: 2085931458}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 13.886848, y: -15.919779, z: 283.20557}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
