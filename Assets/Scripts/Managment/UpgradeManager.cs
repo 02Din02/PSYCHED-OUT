@@ -12,6 +12,7 @@ public class UpgradeManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI costDisplay;
     [SerializeField] private TextMeshProUGUI currentStatsDisplay;
     [SerializeField] private TextMeshProUGUI upgradeEffectDisplay;
+    [SerializeField] private AudioManager audioM;
 
 
     private Dictionary<string, int> upgradeTracker = new Dictionary<string, int>();
@@ -52,6 +53,7 @@ public class UpgradeManager : MonoBehaviour
         {
             currency -= CalculateCost(upgrade);
             upgradeTracker[upgrade] += 1;
+            audioM.PlaySound(audioM.Purchase);
         }
         else
         {

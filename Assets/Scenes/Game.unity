@@ -3679,6 +3679,7 @@ MonoBehaviour:
   costDisplay: {fileID: 127412177}
   currentStatsDisplay: {fileID: 2146765632}
   upgradeEffectDisplay: {fileID: 916549063}
+  audioM: {fileID: 1017767201}
   statsManager: {fileID: 11400000, guid: adc93b2694feebe43aa29bcab9e60fc8, type: 2}
   baseStats: {fileID: 11400000, guid: 0a68723838a1ddb499fc4356f36fd969, type: 2}
 --- !u!4 &569093022
@@ -6828,7 +6829,7 @@ AudioSource:
   m_GameObject: {fileID: 1017767199}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: 24300002, guid: 315ad3f5140df074ab7b0067a6ca8dd1, type: 2}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 0
   m_Volume: 1
