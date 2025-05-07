@@ -61,13 +61,13 @@ public class PlayerManager : MonoBehaviour
         }
     }
 
-    private void SetupHealthSlider()
+    public void SetupHealthSlider()
     {
         healthSlider.maxValue = maxHealth;
         healthSlider.value = healthSlider.maxValue;
         healthBar.ChangeBar(healthSlider.maxValue);
     }
-    private void SetupStaminaSlider()
+    public void SetupStaminaSlider()
     {
         StaminaSlider.maxValue = maxStamina;
         StaminaSlider.value = StaminaSlider.maxValue;
