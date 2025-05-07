@@ -73,8 +73,8 @@ public class BossController : MonoBehaviour
     {
         bossAnim.ResetTrigger("turn");
         //movesets for each range
-        string[] lset = {"laser_orb", "optic_pillar", "shockwave_slash"}; //"optic_pillar", "shockwave_slash"
-        string[] mset = {"three_hit", "shockwave_slash"};
+        string[] lset = {"laser_orb", "optic_pillar"}; //"optic_pillar", "shockwave_slash"
+        string[] mset = {"three_hit"};
         string[] cset = {"axe_slam", "three_hit", "two_hit"}; //"axe_slam", "three_hit", "two_hit"
 
         dist = Mathf.Abs(dist);
@@ -163,13 +163,13 @@ public class BossController : MonoBehaviour
         // Helper vars
         int current_face = -1;
         Vector3 boss_size = GetComponent<BoxCollider2D>().size;
-        Vector2 corner = new Vector2(transform.position.x + (current_face * boss_size.x/2), transform.position.y - boss_size.y/2);
+        Vector2 corner = new Vector2(transform.position.x + (current_face * boss_size.x/2), transform.position.y - boss_size.y/2.5f);
 
         for (int i = 0; i < 3; i ++){
             // Delay before attack
             yield return new WaitForSeconds(delay[i]);
             
-            Vector2 pos = new Vector2(current_face * (sizes[i].x + boss_size.x)/2, (sizes[i].y - boss_size.y)/2);
+            Vector2 pos = new Vector2(current_face * (sizes[i].x + boss_size.x)/2, (sizes[i].y - boss_size.y)/2.5f);
 
             // Set size of first attack here. Don't change hitbox_pos
             GameObject hit = Instantiate(melee_attack_prefab, transform);
