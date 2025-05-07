@@ -22,6 +22,8 @@ public class BossController : MonoBehaviour
     private GameObject melee_attack_prefab;
 
     private GameObject shockwave_prefab;
+    private AudioManager audioM;
+    private bool isPlaying = false;
 
     //ranges (P____[L]____lrange____[M]____mrange____[C]____B)
     float mrange = 7F;
@@ -49,6 +51,7 @@ public class BossController : MonoBehaviour
         rigidbody2D = GetComponent<Rigidbody2D>();
         bossAnim = GetComponent<Animator>();
         setupScript = FindObjectOfType<SetupScript>();
+        audioM = FindObjectOfType<AudioManager>();
 
 
         laser_orb_prefab = Resources.Load("Laser_Orb") as GameObject;
@@ -98,7 +101,6 @@ public class BossController : MonoBehaviour
         bossAnim.ResetTrigger("turn");
         float animation_delay = 0.5F;
         bossAnim.SetTrigger("laserOrb");
-
         yield return new WaitForSeconds(animation_delay);
 
         float orb_dist = 4F; //distance from boss
@@ -112,28 +114,35 @@ public class BossController : MonoBehaviour
 
         yield return new WaitForSeconds(laser_spawn_delay);
         Instantiate(laser_orb_prefab, pos_1, Quaternion.identity);
+        audioM.PlaySound(audioM.laserChargeSFX);
+
 
         yield return new WaitForSeconds(laser_spawn_delay);
         Instantiate(laser_orb_prefab, pos_2, Quaternion.identity);
+        audioM.PlaySound(audioM.laserChargeSFX);
 
         yield return new WaitForSeconds(laser_spawn_delay);
         Instantiate(laser_orb_prefab, pos_3, Quaternion.identity);
+        audioM.PlaySound(audioM.laserChargeSFX);
 
         yield return new WaitForSeconds(pause_duration);
+        
         attacking = false;
+
+        yield return new WaitForSeconds(1);
+        audioM.PlaySound(audioM.laserReleaseSFX);
     }
 
     IEnumerator optic_pillar()
     {
         bossAnim.ResetTrigger("turn");
-        float animation_delay = 1F;
         bossAnim.SetTrigger("opticPillar");
-
+        float animation_delay = 1F;
+        audioM.PlaySound(audioM.pillarChargeSFX);
         yield return new WaitForSeconds(animation_delay);
-
         Instantiate(optic_pillar_prefab, transform.position, Quaternion.identity);
-
         yield return new WaitForSeconds(pause_duration);
+        audioM.PlaySound(audioM.pillarReleaseSFX);
         
         attacking = false;
     }
@@ -142,6 +151,8 @@ public class BossController : MonoBehaviour
     {
         bossAnim.ResetTrigger("turn");
         bossAnim.SetTrigger("threeHit");
+
+        audioM.PlaySound(audioM.threeHitSFX);
 
         // Attack values
         int[] damage = {15, 30, 30}; 
@@ -184,6 +195,7 @@ public class BossController : MonoBehaviour
     {
         bossAnim.ResetTrigger("turn");
         bossAnim.SetTrigger("twoHit");
+        audioM.PlaySound(audioM.twoHitSFX);
 
         // Attack values
         int[] damage = {20, 30}; 
@@ -220,6 +232,7 @@ public class BossController : MonoBehaviour
     {
         bossAnim.ResetTrigger("turn");
         bossAnim.SetTrigger("downwardAxe");
+        audioM.PlaySound(audioM.downwardSFX);
 
         // Attack values
         int[] damage = {30}; 
@@ -256,6 +269,7 @@ public class BossController : MonoBehaviour
     {
         bossAnim.ResetTrigger("turn");
         bossAnim.SetTrigger("twoHit");
+        audioM.PlaySound(audioM.upwardSFX);
 
         // Attack values
         int[] damage = {40}; 
@@ -306,7 +320,7 @@ public class BossController : MonoBehaviour
         if (attacking) {
             return;
         }
-
+        
         // Updates direction that the boss should face
         float dist_from_player = player.transform.position.x - transform.position.x;
         if (dist_from_player > 0) {
@@ -349,7 +363,19 @@ public class BossController : MonoBehaviour
             }
 
             rigidbody2D.velocity = new Vector2(move_dir * facing * curr_move_speed, 0);
+            StartCoroutine(walkSFX());
             curr_move_time += Time.deltaTime;
+        }
+    }
+
+    private IEnumerator walkSFX()
+    {
+        if (!isPlaying)
+        {
+            isPlaying = true;
+            yield return new WaitForSeconds(0.5f);
+            audioM.PlaySound(audioM.bossWalk);
+            isPlaying = false;
         }
     }
 
@@ -363,8 +389,10 @@ public class BossController : MonoBehaviour
         health -= damage;
         if (health <= 0) {
             Destroy(gameObject);
+            audioM.PlaySound(audioM.bossDeath);
         } else {
             UpdateHealthBar();
+            audioM.PlaySound(audioM.bossGetHitSFX);
         }
     }
 }

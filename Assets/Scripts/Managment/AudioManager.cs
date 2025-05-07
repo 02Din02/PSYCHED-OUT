@@ -38,6 +38,6 @@ public class AudioManager : MonoBehaviour
 
     public void PlaySound(AudioClip clip)
     {
-        sfx.PlayOneShot(clip);
+        sfx.PlayOneShot(clip, 1);
     }
 }

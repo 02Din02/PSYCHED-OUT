@@ -13,6 +13,7 @@ public class PauseManager : MonoBehaviour
     // Volume Slider
     public Slider volumeSlider;
     public TextMeshProUGUI volumeNumText;
+    
 
     // Input
     [SerializeField] private InputActionReference pauseAction;

@@ -3679,6 +3679,7 @@ MonoBehaviour:
   costDisplay: {fileID: 127412177}
   currentStatsDisplay: {fileID: 2146765632}
   upgradeEffectDisplay: {fileID: 916549063}
+  audioM: {fileID: 1017767201}
   statsManager: {fileID: 11400000, guid: adc93b2694feebe43aa29bcab9e60fc8, type: 2}
   baseStats: {fileID: 11400000, guid: 0a68723838a1ddb499fc4356f36fd969, type: 2}
 --- !u!4 &569093022
@@ -6814,7 +6815,7 @@ MonoBehaviour:
   jump: {fileID: 8300000, guid: 910577e0cdbd9ab44a9118968133b3e6, type: 3}
   land: {fileID: 8300000, guid: fe6283fd44eae6f4790fcd59c886ac4f, type: 3}
   lightAttack: {fileID: 8300000, guid: 9d29a34d252798347ae0bca38bdd25f7, type: 3}
-  heavyAttack: {fileID: 8300000, guid: d1e8a92804f960d4886a493b3aff7a2e, type: 3}
+  heavyAttack: {fileID: 8300000, guid: 9d29a34d252798347ae0bca38bdd25f7, type: 3}
   hurt: {fileID: 8300000, guid: 2d323b3b649e8984988d2ca81ea6bc78, type: 3}
   die: {fileID: 8300000, guid: 9a2e041a53f65274581f0ca3a31d6503, type: 3}
   Purchase: {fileID: 8300000, guid: 59bdc1920913f3e4eb057241e7d89352, type: 3}
@@ -6828,7 +6829,7 @@ AudioSource:
   m_GameObject: {fileID: 1017767199}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: 24300002, guid: 315ad3f5140df074ab7b0067a6ca8dd1, type: 2}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 0
   m_Volume: 1
@@ -10621,7 +10622,7 @@ Canvas:
   m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
-  m_SortingOrder: 2
+  m_SortingOrder: 20
   m_TargetDisplay: 0
 --- !u!1 &1848365850
 GameObject:

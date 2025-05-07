@@ -21,6 +21,7 @@ public class PlayerManager : MonoBehaviour
 
     [SerializeField] private DataManager dataManager;
     [SerializeField] private BossController bossController;
+    private AudioManager audioM;
 
     void Start()
     {
@@ -29,6 +30,7 @@ public class PlayerManager : MonoBehaviour
         playerMovement = GetComponent<PlayerMovement>();
         dataManager = FindObjectOfType<DataManager>();
         setupScript = FindObjectOfType<SetupScript>();
+        audioM = FindObjectOfType<AudioManager>();
 
         SetupHealthSlider();
     }
@@ -77,6 +79,7 @@ public class PlayerManager : MonoBehaviour
         if (!dying)
         {
             dying = true;
+            audioM.PlaySound(audioM.die);
             playerAnimator.SetBool("Death", true);
             dataManager.attemptNum += 1;
             float damageDone = bossController.maxhealth - bossController.health;
@@ -95,7 +98,7 @@ public class PlayerManager : MonoBehaviour
         {
             direction = Vector2.left * 14f;
         }
-
+        audioM.PlaySound(audioM.hurt);
         health -= damage;
         if (health < 0)
         {
