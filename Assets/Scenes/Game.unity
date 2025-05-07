@@ -6815,7 +6815,7 @@ MonoBehaviour:
   jump: {fileID: 8300000, guid: 910577e0cdbd9ab44a9118968133b3e6, type: 3}
   land: {fileID: 8300000, guid: fe6283fd44eae6f4790fcd59c886ac4f, type: 3}
   lightAttack: {fileID: 8300000, guid: 9d29a34d252798347ae0bca38bdd25f7, type: 3}
-  heavyAttack: {fileID: 8300000, guid: d1e8a92804f960d4886a493b3aff7a2e, type: 3}
+  heavyAttack: {fileID: 8300000, guid: 9d29a34d252798347ae0bca38bdd25f7, type: 3}
   hurt: {fileID: 8300000, guid: 2d323b3b649e8984988d2ca81ea6bc78, type: 3}
   die: {fileID: 8300000, guid: 9a2e041a53f65274581f0ca3a31d6503, type: 3}
   Purchase: {fileID: 8300000, guid: 59bdc1920913f3e4eb057241e7d89352, type: 3}
@@ -10622,7 +10622,7 @@ Canvas:
   m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
-  m_SortingOrder: 2
+  m_SortingOrder: 20
   m_TargetDisplay: 0
 --- !u!1 &1848365850
 GameObject:

@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.WebSockets;
@@ -17,6 +18,7 @@ public class PlayerMovement : MonoBehaviour
         public Rigidbody2D _rb;
         private PlayerInput _playerInput;
         [SerializeField] private Slider staminaSlider;
+        private AudioManager audioM;
 
         #endregion
 
@@ -128,6 +130,24 @@ public class PlayerMovement : MonoBehaviour
             CalculateStamina();
 
             CalculateHitstun();
+
+            if (_grounded && _hasInputThisFrame)
+            {
+                StartCoroutine(WalkSound());
+            }
+        }
+        private bool isPlaying = false;
+        private IEnumerator WalkSound()
+        {
+            if (!isPlaying)
+            {
+            isPlaying = true;
+            yield return new WaitForSeconds(0.5f);
+            audioM.PlaySound(audioM.walk);
+            isPlaying = false;
+            }
+           
+
         }
 
         #endregion
@@ -156,6 +176,7 @@ public class PlayerMovement : MonoBehaviour
             //_collider.hideFlags = HideFlags.NotEditable;
             _collider.sharedMaterial = _rb.sharedMaterial;
             _collider.enabled = true;
+            audioM = FindObjectOfType<AudioManager>();
 
             // Airborne collider
             //_airborneCollider = GetComponent<CapsuleCollider2D>();
@@ -326,6 +347,7 @@ public class PlayerMovement : MonoBehaviour
             _grounded = grounded;
             if (grounded)
             {
+                audioM.PlaySound(audioM.land);
                 GroundedChanged?.Invoke(true, _lastFrameY);
                 _rb.gravityScale = 0;
                 SetVelocity(_trimmedFrameVelocity);
@@ -596,6 +618,7 @@ public class PlayerMovement : MonoBehaviour
         private void ExecuteJump(JumpType jumpType)
         {
             SetVelocity(_trimmedFrameVelocity);
+            audioM.PlaySound(audioM.jump);
             _endedJumpEarly = false;
             _bufferedJumpUsable = false;
             _lastJumpExecutedTime = _time;
@@ -659,7 +682,7 @@ public class PlayerMovement : MonoBehaviour
                 _attackCharging = true;
                 _attackReleased = false;
                 _attacking = true;
-                _canAttack = false;
+                _canAttack = false; 
                 _chargingStart = _time;
                 AttackStart?.Invoke(true);
             }
@@ -672,11 +695,13 @@ public class PlayerMovement : MonoBehaviour
                     if(_chargingStart + Stats.AttackChargeTime < _time){
                         //Debug.Log("heavy");
                         ExecuteAttack(AttackType.Heavy);
+                        audioM.PlaySound(audioM.heavyAttack);
                         SetVelocity(7.0f * (FacingRight ? Vector2.right : Vector2.left));
                     }
                     else{
                         //Debug.Log("light");
                         ExecuteAttack(AttackType.Light);
+                        audioM.PlaySound(audioM.lightAttack);
                     }
                 }
                 if(_attackReleased){
@@ -871,7 +896,6 @@ public class PlayerMovement : MonoBehaviour
             {
                 _rb.velocity += AdditionalFrameVelocities();
                 _rb.AddForce(_forceToApplyThisFrame * _rb.mass, ForceMode2D.Impulse);
-
                 // Returning provides the crispest & most accurate jump experience
                 // Required for reliable slope jumps
                 return;
