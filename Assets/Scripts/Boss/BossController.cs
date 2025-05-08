@@ -126,11 +126,12 @@ public class BossController : MonoBehaviour
         audioM.PlaySound(audioM.laserChargeSFX);
 
         yield return new WaitForSeconds(pause_duration);
+        audioM.PlaySound(audioM.laserReleaseSFX);
         
         attacking = false;
 
         yield return new WaitForSeconds(1);
-        audioM.PlaySound(audioM.laserReleaseSFX);
+        
     }
 
     IEnumerator optic_pillar()
@@ -141,8 +142,8 @@ public class BossController : MonoBehaviour
         audioM.PlaySound(audioM.pillarChargeSFX);
         yield return new WaitForSeconds(animation_delay);
         Instantiate(optic_pillar_prefab, transform.position, Quaternion.identity);
-        yield return new WaitForSeconds(pause_duration);
         audioM.PlaySound(audioM.pillarReleaseSFX);
+        yield return new WaitForSeconds(pause_duration);
         
         attacking = false;
     }

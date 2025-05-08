@@ -11,6 +11,8 @@ public class CameraBoundsScript : MonoBehaviour
     [SerializeField] GameObject player;
     [SerializeField] GameObject boss;
     [SerializeField] GameObject playerLight;
+    [SerializeField] GameObject bossMusic;
+    [SerializeField] GameObject tutMusic;
 
     [SerializeField] GameObject bossHP_bar;
     [SerializeField] private SetupScript setupScript;
@@ -31,6 +33,8 @@ public class CameraBoundsScript : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
+            tutMusic.SetActive(false);
+            bossMusic.SetActive(true);
             //Color c = setupScript.fadeBox.color;
             //c.a = 1f;
             //setupScript.fadeBox.color = c;
