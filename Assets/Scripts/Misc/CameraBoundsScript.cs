@@ -57,6 +57,7 @@ public class CameraBoundsScript : MonoBehaviour
         boss.gameObject.SetActive(true);
         bossHP_bar.gameObject.SetActive(true);
         player.GetComponent<PlayerManager>().ResetHealth();
+        
     }
 }
 
