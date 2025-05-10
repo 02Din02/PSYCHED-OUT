@@ -741,13 +741,13 @@ public class PlayerMovement : MonoBehaviour
         }
 
         private void CalculateHits(){
-            Debug.Log(_hitObjects.Count);
+            //Debug.Log(_hitObjects.Count);
             Collider2D[] hitThisFrame = Physics2D.OverlapBoxAll(_attackPosition, _attackSize, 0, LayerMask.GetMask("Boss"));
             for(int i = 0; i<hitThisFrame.Length; i++){
                 if(!_hitObjects.Contains(hitThisFrame[i].gameObject)){
-                    Debug.Log("Hit boss");
+                   // Debug.Log("Hit boss");
                     _hitObjects.Add(hitThisFrame[i].gameObject);
-                    Debug.Log(_hitObjects.Count);
+                   // Debug.Log(_hitObjects.Count);
                     hitThisFrame[i].GetComponent<BossController>().take_damage(_attackDamage * Stats.AttackStrength);
                 }
             }
@@ -776,7 +776,8 @@ public class PlayerMovement : MonoBehaviour
             if (_grounded && _rollToConsume && _canRoll && _time > _nextRollTime && !_attacking && HasStamina())
             {
                 var dir = new Vector2(_frameInput.Move.x, Mathf.Max(_frameInput.Move.y, 0f)).normalized;
-                if (dir == Vector2.zero) return;
+                if (dir == Vector2.zero)
+                dir = new Vector2(FacingRight ? 1f : -1f, 0f);
 
                 _rollVel = dir * Stats.RollVelocity;
                 _rolling = true;
@@ -806,7 +807,7 @@ public class PlayerMovement : MonoBehaviour
                     _collider.excludeLayers = _originalColliderLayers;
                 }
                 }else{
-                    Debug.Log(h.collider);
+                    //Debug.Log(h.collider);
                 }
             }
         }
@@ -1036,7 +1037,7 @@ public class PlayerMovement : MonoBehaviour
         private void CalculateHitstun(){
             if(_inHitstun && _remainingHitstun > 0){
                 _remainingHitstun -= _delta; 
-                Debug.Log(_remainingHitstun);
+                //Debug.Log(_remainingHitstun);
             }
             if(_inHitstun && _remainingHitstun <= 0){
                 _remainingHitstun = 0;
@@ -1062,6 +1063,11 @@ public class PlayerMovement : MonoBehaviour
         private void OnTriggerEnter2D(Collider2D other)
         {
             if (other.TryGetComponent(out ISpeedModifier modifier)) _modifiers.Add(modifier);
+
+            if (other.CompareTag("GameController"))
+            {
+                _currentStamina = Stats.MaxStamina;
+            }
         }
 
         private void OnTriggerExit2D(Collider2D other)

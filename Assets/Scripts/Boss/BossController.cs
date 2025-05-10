@@ -14,6 +14,7 @@ public class BossController : MonoBehaviour
     private BoxCollider2D boxCollider;
     new private Rigidbody2D rigidbody2D;
     private Animator bossAnim;
+    private SpriteRenderer spriteRenderer;
     private SetupScript setupScript;
 
     //prefabs
@@ -23,6 +24,8 @@ public class BossController : MonoBehaviour
 
     private GameObject shockwave_prefab;
     private AudioManager audioM;
+    [SerializeField] private Material hurtMaterial;
+    [SerializeField] private Material normalMaterial;
     private bool isPlaying = false;
 
     //ranges (P____[L]____lrange____[M]____mrange____[C]____B)
@@ -52,7 +55,7 @@ public class BossController : MonoBehaviour
         bossAnim = GetComponent<Animator>();
         setupScript = FindObjectOfType<SetupScript>();
         audioM = FindObjectOfType<AudioManager>();
-
+        spriteRenderer = GetComponent<SpriteRenderer>();
 
         laser_orb_prefab = Resources.Load("Laser_Orb") as GameObject;
         optic_pillar_prefab = Resources.Load("Optic_Pillar") as GameObject;
@@ -394,6 +397,15 @@ public class BossController : MonoBehaviour
         } else {
             UpdateHealthBar();
             audioM.PlaySound(audioM.bossGetHitSFX);
+            StartCoroutine(Ouch());
         }
+    }
+
+    IEnumerator Ouch()
+    {
+        yield return new WaitForSeconds(0.2f);
+        spriteRenderer.material = hurtMaterial;
+        yield return new WaitForSeconds(0.5f);
+        spriteRenderer.material = normalMaterial;
     }
 }

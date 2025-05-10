@@ -88,12 +88,12 @@ public class UpgradeManager : MonoBehaviour
         statsManager.MaxHealth = baseStats.MaxHealth + (50 * upgradeTracker["Vital"]); // level 10 = 500
         statsManager.MaxStamina = baseStats.MaxStamina + (25 * upgradeTracker["Harmony"]); // level 10 = 250 (?)
 
-        currentStatsDisplay.text = $"health : {statsManager.MaxHealth}\n" +
-                                   $"stamina : {statsManager.MaxStamina}\n" +
-                                   $"speed : {statsManager.BaseSpeed / baseStats.BaseSpeed:F2}x\n" +
-                                   $"attack : {statsManager.AttackStrength / baseStats.AttackStrength:F2}x\n" +
-                                   $"atk spd : {statsManager.AttackCooldown / baseStats.AttackCooldown:F2}x\n" +
-                                   $"roll spd : {statsManager.RollCooldown / baseStats.RollCooldown:F2}x";
+        currentStatsDisplay.text = $"Health : {statsManager.MaxHealth}\n" +
+                                   $"Stamina : {statsManager.MaxStamina}\n" +
+                                   $"Speed : {statsManager.BaseSpeed / baseStats.BaseSpeed:F2}x\n" +
+                                   $"Damage : {statsManager.AttackStrength / baseStats.AttackStrength:F2}x\n" +
+                                   $"Atk Speed : {statsManager.AttackCooldown / baseStats.AttackCooldown:F2}x\n" +
+                                   $"Roll Speed : {statsManager.RollCooldown / baseStats.RollCooldown:F2}x";
 
     }
 
