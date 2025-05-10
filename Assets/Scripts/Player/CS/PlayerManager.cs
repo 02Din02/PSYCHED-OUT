@@ -84,7 +84,7 @@ public class PlayerManager : MonoBehaviour
             dataManager.attemptNum += 1;
             float damageDone = bossController.maxhealth - bossController.health;
             float percentDamage = (damageDone / bossController.maxhealth) * 100f;
-            dataManager.currency += Mathf.RoundToInt(percentDamage);
+            dataManager.currency = Mathf.RoundToInt(percentDamage);
 
             playerMovement.enabled = false;
             setupScript.FadeIn();

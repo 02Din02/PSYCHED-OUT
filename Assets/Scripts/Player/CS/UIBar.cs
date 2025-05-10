@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
@@ -21,6 +22,6 @@ public class UIBar : MonoBehaviour
 
     public void ChangeBar(float health)
     {
-        rectTransform.offsetMax += new Vector2(health - 100, 0);
+        rectTransform.offsetMax += new Vector2(Math.Min(400,(health - 100)), 0);
     }
 }

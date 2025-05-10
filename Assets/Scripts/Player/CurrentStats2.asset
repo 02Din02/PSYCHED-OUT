@@ -28,7 +28,7 @@ MonoBehaviour:
   VerticalDeadZoneThreshold: 0.3
   HorizontalDeadZoneThreshold: 0.1
   PositionCorrectionMode: 0
-  BaseSpeed: 6
+  BaseSpeed: 4
   Acceleration: 40
   Friction: 15
   AirFrictionMultiplier: 0.5
@@ -61,7 +61,7 @@ MonoBehaviour:
   JumpCost: 5
   LightAttackCost: 10
   HeavyAttackCost: 15
-  StamCooldown: 0.5
+  StamCooldown: 1.5
   StamRegenRate: 15
   MaxHealth: 100
   AllowDash: 1

@@ -37,7 +37,7 @@ public class BossTailController : MonoBehaviour
     }
     public IEnumerator delaySlow()
     {
-        yield return new WaitForSeconds(3);
+        yield return new WaitForSeconds(0);
         if (exit_count == 1){
             player.Stats.BaseSpeed /= slow_percent;
             // Debug.Log(exit_count + " " + player.Stats.BaseSpeed + " Decrease");

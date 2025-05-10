@@ -61,7 +61,7 @@ MonoBehaviour:
   JumpCost: 5
   LightAttackCost: 10
   HeavyAttackCost: 15
-  StamCooldown: 1
+  StamCooldown: 1.5
   StamRegenRate: 15
   MaxHealth: 100
   AllowDash: 1
