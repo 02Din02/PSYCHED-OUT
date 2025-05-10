@@ -12,14 +12,17 @@ public class MainMenu : MonoBehaviour
     public GameObject creditsCanvas; // Guess what this is
 
     public GameObject currentCanvas; //The canvas the player is on currently (used to close later)
+    DataManager dataManager;
 
     void Start()
     {
-
+        //dataManager = FindObjectOfType<DataManager>();
     }
 
     public void StartClicked()
     {
+        //dataManager.attemptNum = 0;
+        //dataManager.currency = 0;
         SceneManager.LoadScene(gameScene); // Called by clicking Start Button
     }
 
