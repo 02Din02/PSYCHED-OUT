@@ -51,7 +51,7 @@ MonoBehaviour:
   RollCooldown: 0.5
   RollEndHorizontalMultiplier: 0
   ExtraConstantGravity: 35
-  BufferedJumpTime: 0.15
+  BufferedJumpTime: 0.4
   CoyoteTime: 0.15
   JumpPower: 17
   EndJumpEarlyExtraForceMultiplier: 3

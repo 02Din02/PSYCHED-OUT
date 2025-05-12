@@ -6,6 +6,7 @@ using UnityEngine.Scripting.APIUpdating;
 using UnityEditor;
 using System;
 using DG.Tweening;
+using TMPro;
 
 public class BossController : MonoBehaviour
 {
@@ -34,6 +35,7 @@ public class BossController : MonoBehaviour
     
     // UI
     public Slider healthSlider;
+    public TextMeshProUGUI currency;
 
     // Stats
     public float maxhealth;
@@ -160,7 +162,7 @@ public class BossController : MonoBehaviour
 
         // Attack values
         int[] damage = {15, 30, 30}; 
-        Vector2[] sizes = {new Vector2(1.35F,1F), new Vector2(1.7F,1F), new Vector2(4.7F,1F)}; 
+        Vector2[] sizes = {new Vector2(1.35F,1F), new Vector2(1.7F,1F), new Vector2(4.5F,1F)}; 
         float[] delay = {0.7F,0.7F,0.5F}; //No initial delay
         float[] duration = {0.3F,0.2F,0.2F}; 
 
@@ -173,7 +175,7 @@ public class BossController : MonoBehaviour
             // Delay before attack
             yield return new WaitForSeconds(delay[i]);
             
-            Vector2 pos = new Vector2(current_face * (sizes[i].x + boss_size.x)/2, (sizes[i].y - boss_size.y)/2.5f);
+            Vector2 pos = new Vector2(current_face * (sizes[i].x + boss_size.x)/2 + 0.5f, (sizes[i].y - boss_size.y)/2.5f - 0.5f);
 
             // Set size of first attack here. Don't change hitbox_pos
             GameObject hit = Instantiate(melee_attack_prefab, transform);
@@ -221,7 +223,7 @@ public class BossController : MonoBehaviour
             MeleeAttackHitBox box = hit.GetComponent<MeleeAttackHitBox>();
             if (box != null){
                 box.LoadVars(
-                    new Vector2(current_face * (sizes[i].x + boss_size.x)/2, (sizes[i].y - boss_size.y)/2), 
+                    new Vector2(current_face * (sizes[i].x + boss_size.x)/2 +0.5f, (sizes[i].y - boss_size.y)/2), 
                     sizes[i], 
                     damage[i], 
                     duration[i]);
@@ -258,7 +260,7 @@ public class BossController : MonoBehaviour
             MeleeAttackHitBox box = hit.GetComponent<MeleeAttackHitBox>();
             if (box != null){
                 box.LoadVars(
-                    new Vector2(current_face * (sizes[i].x + boss_size.x)/2, (sizes[i].y - boss_size.y)/2), 
+                    new Vector2(current_face * (sizes[i].x + boss_size.x)/2 +0.5f, (sizes[i].y - boss_size.y)/2), 
                     sizes[i], 
                     damage[i], 
                     duration[i]);
@@ -387,6 +389,8 @@ public class BossController : MonoBehaviour
     {
         // Should get called every time Player hits boss, NOT IN UPDATE!!!!!!
         healthSlider.value = health;
+        float googoogaga = ((maxhealth - health) / maxhealth) * 100f;
+        currency.text = "= $" + googoogaga.ToString("0");
     }
 
     public void take_damage(float damage) {

@@ -10,9 +10,11 @@ public class SetupScript : MonoBehaviour
     public SpriteRenderer fadeBox;
     public Canvas upgradeCanvas;
     public TextMeshProUGUI currencyText;
+    private PlayerManager player;
     [SerializeField] DataManager dataManager;
     void Start()
     {
+        player = FindObjectOfType<PlayerManager>();
         upgradeCanvas.gameObject.SetActive(true);
         dataManager = FindObjectOfType<DataManager>();
         currencyText.text = dataManager.currency.ToString();
@@ -58,6 +60,7 @@ public class SetupScript : MonoBehaviour
     public void UpgradesDone()
     {
         upgradeCanvas.gameObject.SetActive(false);
+
         FadeOut(5);
     }
 }
