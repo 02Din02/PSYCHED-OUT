@@ -28,7 +28,7 @@ MonoBehaviour:
   VerticalDeadZoneThreshold: 0.3
   HorizontalDeadZoneThreshold: 0.1
   PositionCorrectionMode: 0
-  BaseSpeed: 4
+  BaseSpeed: 1.2
   Acceleration: 40
   Friction: 15
   AirFrictionMultiplier: 0.5
@@ -51,7 +51,7 @@ MonoBehaviour:
   RollCooldown: 0.5
   RollEndHorizontalMultiplier: 0
   ExtraConstantGravity: 35
-  BufferedJumpTime: 0.15
+  BufferedJumpTime: 0.4
   CoyoteTime: 0.15
   JumpPower: 16
   EndJumpEarlyExtraForceMultiplier: 3
