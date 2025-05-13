@@ -82,8 +82,8 @@ public class PauseManager : MonoBehaviour
         }
         else if (dropdown == 3)
         {
-            widith = 10;
-            height = 10;
+            widith = 1000;
+            height = 1000;
         }
 
         Screen.SetResolution(widith, height, Screen.fullScreen);
