@@ -398,7 +398,7 @@ public class BossController : MonoBehaviour
         if (health <= 0) {
             Destroy(gameObject);
             audioM.PlaySound(audioM.bossDeath);
-            setupScript.FadeIn();
+            setupScript.Win();
         } else {
             UpdateHealthBar();
             audioM.PlaySound(audioM.bossGetHitSFX);

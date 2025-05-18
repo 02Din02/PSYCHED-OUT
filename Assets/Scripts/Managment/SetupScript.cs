@@ -30,10 +30,26 @@ public class SetupScript : MonoBehaviour
         }
     }
 
+    public void Win()
+    {
+        if (fadeBox != null)
+        {
+            float fadeDuration = 3f;
+            fadeBox.DOFade(1f, fadeDuration);
+            StartCoroutine(winscene(fadeDuration));
+        }
+    }
+
     public IEnumerator reloadScene(float delay)
     {
         yield return new WaitForSeconds(delay);
         SceneManager.LoadScene(1);
+    }
+
+     public IEnumerator winscene(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        SceneManager.LoadScene(2);
     }
 
     public void FadeOut(int time)

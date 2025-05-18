@@ -58,9 +58,9 @@ MonoBehaviour:
   MaxAirJumps: 0
   MaxStamina: 100
   RollCost: 15
-  JumpCost: 5
+  JumpCost: 0
   LightAttackCost: 10
-  HeavyAttackCost: 15
+  HeavyAttackCost: 12
   StamCooldown: 1.5
   StamRegenRate: 15
   MaxHealth: 100
